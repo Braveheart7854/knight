@@ -1,0 +1,33 @@
+.editor {
+  display: table;
+  background: #fff;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  padding: 2rem 4rem 0 4rem;
+  border: 1px solid#b2b2b2;
+}
+#markdown{
+  display: table-cell;
+  vertical-align: top;
+  width: 100%;
+  padding: 1rem;
+  border: #00d95a;
+}
+
+.editor-option{
+  display: table-cell;
+  vertical-align: top;
+  max-width: 30%;
+  min-width: 20%;
+  height: 100%;
+  border: 1px dashed#00a8c6;
+  padding: 1rem;
+  &:before{
+    content: '';
+
+  }
+}
+.md-select-content {
+  width: 14rem;
+}

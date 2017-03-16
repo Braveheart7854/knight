@@ -1,0 +1,224 @@
+
+
+.page {
+    height: 90vh;
+    width: 90vw;
+    margin: 20px auto;
+    background-color: #2e213d;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.sky {
+    height: 30%;
+    width: 100%;
+    background-color: transparent;
+}
+
+.sky .moon {
+    position: absolute;
+    right: 110px;
+    top: 60px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.sky .moon .crescent {
+    position: absolute;
+    right: -5px;
+    top: -5px;
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
+    background-color: #2e213d;
+}
+
+.street-light {
+    position: absolute;
+    top: -70px;
+    left: 120px;
+}
+
+.street-light .base {
+    position: relative;
+    height: 70px;
+    width: 10px;
+    background-color: #281f33;
+}
+
+.street-light .middle {
+    position: absolute;
+    top: -30px;
+    left: 1.7px;
+    height: 30px;
+    width: 7px;
+    background-color: #392e46;
+}
+
+.street-light .upper {
+    position: absolute;
+    top: -95px;
+    left: 2.75px;
+    height: 95px;
+    width: 4px;
+    background-color: #281f33;
+}
+
+.street-light .solar-panel {
+    position: absolute;
+    top: -120px;
+    left: 2.75px;
+    height: 45px;
+    width: 6px;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    background-color: #281f33;
+}
+
+.street-light .ball {
+    position: absolute;
+    top: -80px;
+    left: 0px;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: #281f33;
+}
+
+.street-light .curve {
+    position: absolute;
+    top: -85px;
+    left: -5px;
+    height: 60px;
+    width: 60px;
+    border-top: 4px solid #281f33;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-radius: 50%;
+}
+
+.street-light .bulb-container {
+    position: absolute;
+    top: -75px;
+    left: 40px;
+    height: 11px;
+    width: 22px;
+    border-radius: 11px 11px 0 0;
+    background-color: #281f33;
+}
+
+.street-light .bulb {
+    position: absolute;
+    top: -64px;
+    left: 42px;
+    height: 9px;
+    width: 18px;
+    border-radius: 0 0 11px 11px;
+    background-color: #fff;
+}
+
+.city {
+    width: 100%;
+    height: 45%;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.city .buildings {
+    height: 76%;
+}
+
+.city .background-1 {
+    height: 12%;
+    background-color: #422a38;
+}
+
+.city .background-2 {
+    height: 12%;
+    background-color: #5c4051;
+}
+
+.ground {
+    width: 100%;
+    height: 25%;
+    background-color: #97787E;
+}
+
+.ground .sidewalk-top {
+    position: relative;
+    height: 7%;
+    background-color: #2d112c;
+}
+
+.ground .sidewalk-top .bench-shadow {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    top: 5px;
+    left: 220px;
+    width: 200px;
+    height: 20px;
+    border-radius: 0 0 15px 15px;
+}
+
+.ground .sidewalk-top .bench {
+    position: absolute;
+    top: -76px;
+    left: 220px;
+    width: 160px;
+    height: 80px;
+}
+
+.ground .sidewalk-top .bench .left-leg {
+    float: left;
+    height: 100%;
+    width: 5%;
+    background-color: #fff7eb;
+}
+
+.ground .sidewalk-top .bench .back {
+    float: left;
+    margin-top: 5px;
+    height: 55%;
+    width: 90%;
+    background-color: transparent;
+}
+
+.ground .sidewalk-top .bench .back .back-top {
+    height: 10px;
+    background-color: #fff7eb;
+}
+
+.ground .sidewalk-top .bench .back .pegs {
+    height: 25px;
+}
+
+.ground .sidewalk-top .bench .back .pegs .peg {
+    float: left;
+    height: 100%;
+    width: 3.2px;
+    margin: 0 2px;
+    background-color: #fff7eb;
+}
+
+.ground .sidewalk-top .bench .back .seat {
+    box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.3);
+    height: 10px;
+    background-color: #fff7eb;
+}
+
+.ground .sidewalk-top .bench .right-leg {
+    float: right;
+    height: 100%;
+    width: 5%;
+    background-color: #fff7eb;
+}
+
+.ground .sidewalk {
+    height: 43%;
+    background-color: #78617a;
+}
+
+.ground .street {
+    height: 50%;
+    background-color: #36385e;
+}

@@ -1,0 +1,12 @@
+{
+    "repositories": {
+
+    },
+    "autoload": {
+        "psr-4": {"Knight\\": "api/"}
+    },
+    "require": {
+        "racecourse/courser": "dev-develop",
+        "racecourse/mews": "dev-master"
+    }
+}
