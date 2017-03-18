@@ -17,6 +17,12 @@ return [
         'port' => '3306',
         'user' => 'root',
         'password' => '123123',
-        'database' => 'test',
+        'database' => 'knight',
+    ],
+    'session' => [
+        'issuer' => 'localhost',
+        'audience' => '127.0.0.1',
+        'expired' => 3600,
+        'key' => 'test',
     ],
 ];

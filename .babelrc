@@ -1,0 +1,18 @@
+{
+  "plugins": [
+    [
+      "transform-async-to-module-method",
+      {
+        "module": "bluebird",
+        "method": "coroutine"
+      }
+    ],
+    [
+      "transform-es2015-modules-commonjs"
+    ]
+  ],
+  "ignore": [
+    "build/",
+    "node_modules/"
+  ]
+}

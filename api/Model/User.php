@@ -6,11 +6,22 @@
  * @date      : 2017/3/16
  * @time      : 下午5:42
  */
-
 namespace Knight\Model;
 
+use Kngiht\Component\Dao;
 
-class User
+class User extends Dao
 {
+    public $table = 'users';
 
+    public $fields = [
+        'id' => ['column' => 'id', 'pk' => true, 'type' => 'int'],
+        'username' => ['column' => 'username', 'type' => 'string'],
+        'nickname' => ['column' => 'nickname', 'type' => 'string'],
+        'password' => ['column' => 'password', 'type' => 'string'],
+        'salt' => ['column' => 'salt', 'type' => 'string'],
+        'email' => ['column' => 'email', 'type' => 'string', 'default' => ''],
+        'created' => ['column' => 'created', 'type' => 'int'],
+        'updated' => ['column' => 'updated', 'type' => 'timestamp'],
+    ];
 }

@@ -1,12 +1,16 @@
 {
-    "repositories": {
-
-    },
+    "version": "0.1.1",
     "autoload": {
-        "psr-4": {"Knight\\": "api/"}
+        "psr-4": {
+            "Knight\\": "api/",
+            "Courser\\": "courser/src/",
+            "Mews\\": "mews/src/"
+        }
     },
-    "require": {
-        "racecourse/courser": "dev-develop",
-        "racecourse/mews": "dev-master"
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
 }
