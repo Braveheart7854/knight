@@ -13,12 +13,17 @@ $config = require APP_ROOT . '/api/config/index.php';
 use Courser\Courser;
 use Courser\Session;
 use Courser\Server\HttpServer;
-use Knight\Controller\Article;
-//$session = new Session\Session($config['session']);
-//Courser::used($session);
+$session = new Session\Session($config['session']);
+Courser::used($session);
+Courser::notFound(function($req, $res) {
+    $res->status(404)->json(['message' => 'Not Found']);
+});
 
-new Article(1, 1);
 Courser::get('/', ['\Knight\Controller\Article' => 'posts']);
+Courser::get('/posts/:id', ['\Knight\Controller\Article' => 'detail']);
+Courser::get('/comments/:id', ['\Knight\Controller\Article' => 'comment']);
+
+
 //Courser::get('/article/:id', ['Knight\Controller\Article' => 'detail']);
 //Courser::post('/login', ['Knight\Controller\User' => 'login']);
 

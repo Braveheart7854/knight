@@ -10,6 +10,7 @@ namespace Knight\Controller;
 
 use Knight\Model\User;
 use Knight\Model\Post;
+
 class Article
 {
     public $request;
@@ -24,14 +25,35 @@ class Article
 
     public function posts()
     {
+//        $session = $this->request->session;
+//        $session->id = 123;
+//        $session->save();
         $article = new Post();
         $condition = [
-            'isShow' => 1
+            'id' => ['$gt' => 0],
+            'created' => ['$gt' => 1],
+            'isShow' => 1,
         ];
         $options = [
             'order' => ['id' => 'desc'],
         ];
         $list = $article->find($condition, $options);
+        $this->response->json([
+            'message' => 'ok',
+            'code' => '0',
+            'data' => $list,
+        ]);
+    }
+
+    public function detail()
+    {
+        $id = $this->request->params['id'];
+        $article = new Post();
+        $condition = [
+            'id' => $id,
+            'isShow' => 1
+        ];
+        $list = $article->findOne($condition);
         $this->response->json([
             'message' => 'ok',
             'code' => '0',

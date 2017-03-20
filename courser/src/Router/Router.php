@@ -212,6 +212,7 @@ class Router
             if (is_array($md)) {
                 if (Util::isIndexArray($md)) {
                     $this->compose($md);
+                    continue;
                 }
                 foreach ($md as $class => $action) {
 //                    $class = str_replace('\\', '\\\\', $class);
