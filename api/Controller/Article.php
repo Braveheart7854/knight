@@ -25,8 +25,8 @@ class Article
 
     public function posts()
     {
-//        $session = $this->request->session;
-//        $session->id = 123;
+        $session = $this->request->session;
+        $session->id = 123;
 //        $session->save();
         $article = new Post();
         $condition = [

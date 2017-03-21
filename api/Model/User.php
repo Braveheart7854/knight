@@ -8,7 +8,7 @@
  */
 namespace Knight\Model;
 
-use Kngiht\Component\Dao;
+use Knight\Component\Dao;
 
 class User extends Dao
 {
@@ -19,7 +19,6 @@ class User extends Dao
         'username' => ['column' => 'username', 'type' => 'string'],
         'nickname' => ['column' => 'nickname', 'type' => 'string'],
         'password' => ['column' => 'password', 'type' => 'string'],
-        'salt' => ['column' => 'salt', 'type' => 'string'],
         'email' => ['column' => 'email', 'type' => 'string', 'default' => ''],
         'created' => ['column' => 'created', 'type' => 'int'],
         'updated' => ['column' => 'updated', 'type' => 'timestamp'],
