@@ -34,7 +34,7 @@ class Auth extends Controller
             ]);
         }
 
-        $verify = password_verify($password, $userInfo['password']);
+        $verify = password_verify($password, $userInfo->password);
         if (!$verify) {
             return $this->response->status(401)->json([
                 'message' => 'Password Incorrect',
@@ -51,6 +51,10 @@ class Auth extends Controller
         ]);
     }
 
+    /*
+     * route: /register
+     * register
+     * */
     public function register()
     {
         $username = $this->request->body('username');
@@ -73,6 +77,7 @@ class Auth extends Controller
         $user->username = $username;
         $user->password = password_hash($password, PASSWORD_DEFAULT);
         $user->email = $email;
+        $user->nickname = $username;
         $user->created = time();
         $user->save();
         $userInfo = $user->toArray();
@@ -80,6 +85,5 @@ class Auth extends Controller
             'message' => 'ok',
             'data' => $userInfo,
         ]);
-
     }
 }

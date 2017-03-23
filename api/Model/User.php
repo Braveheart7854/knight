@@ -23,4 +23,13 @@ class User extends Dao
         'created' => ['column' => 'created', 'type' => 'int'],
         'updated' => ['column' => 'updated', 'type' => 'timestamp'],
     ];
+
+    public function toArray()
+    {
+        $data = $this->attr;
+        unset($data['password']);
+        unset($data['email']);
+        var_dump($data);
+        return $data;
+    }
 }

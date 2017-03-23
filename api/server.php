@@ -24,6 +24,8 @@ Courser::get('/', ['\Knight\Controller\Article' => 'posts']);
 Courser::get('/posts/:id', ['\Knight\Controller\Article' => 'detail']);
 Courser::get('/comments/:id', ['\Knight\Controller\Article' => 'comment']);
 Courser::post('/register', ['\Knight\Controller\Auth' => 'register']);
+Courser::post('/login', ['\Knight\Controller\Auth' => 'login']);
+
 
 //Courser::get('/article/:id', ['Knight\Controller\Article' => 'detail']);
 //Courser::post('/login', ['Knight\Controller\User' => 'login']);

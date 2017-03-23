@@ -60,4 +60,34 @@ class Article
             'data' => $list,
         ]);
     }
+
+    public function article()
+    {
+        $page = abs($this->request->query('page'));
+        $page = $page ?: 1;
+        $pageSize = 20;
+        $offset = ($page - 1) * $pageSize;
+        $session = $this->request->session;
+        $userId = $session->userId;
+        $article = new Post();
+        $where = [
+            'userId' => $userId,
+        ];
+        $option = [
+            'skip' => $offset,
+            'limit' => $pageSize,
+            'order' => ['id' => 'desc'],
+        ];
+        $articles = $article->find($where, $option);
+        $list = [];
+        if(!empty($articles)) {
+            foreach ($articles as $art) {
+                $list[] = $art->attr;
+            }
+        }
+        $this->response->json([
+            'message' => 'ok',
+            'data' => 'article',
+        ]);
+    }
 }
