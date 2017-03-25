@@ -1,2 +1,4 @@
-server/lib/discover/*
-server/lib/alipay/*
+api/*
+courser/*
+node_modules/*
+mews/*

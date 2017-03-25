@@ -12,7 +12,7 @@
     ]
   ],
   "ignore": [
-    "build/",
+    "api/",
     "node_modules/"
   ]
 }

@@ -58,13 +58,20 @@
       <div class="sidewalk"></div>
       <div class="street"></div>
     </div>
+    <div class="walkman">
+      <WalkingDead></WalkingDead>
+    </div>
   </div>
 </template>
 <style>
   @import "star.css";
 </style>
 <script>
+  import WalkingDead from './walkingdead.vue';
   export default {
+    components: {
+      WalkingDead: WalkingDead,
+    },
     mounted() {
       console.log('ffffff')
       createStars();
@@ -106,6 +113,6 @@
           star.style.left = currentPos + 'px';
           });
       }
-    }
+    },
   }
 </script>

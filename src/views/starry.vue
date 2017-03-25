@@ -13,7 +13,7 @@
       }
     },
     components: {
-      Starry: Starry
+      Starry: Starry,
     }
   }
 </script>
