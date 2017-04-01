@@ -2,6 +2,7 @@
   <div class="bg">
     <div class="login-wrap">
       <form novalidate @submit.stop.prevent="submit">
+        <span class="md-error">{{auth.message}}</span>
         <md-input-container class="container">
           <label>username</label>
           <md-input type="text" v-on:input="change('username', $event)"></md-input>
@@ -11,7 +12,7 @@
           <label>password</label>
           <md-input type="password" v-on:input="change('password', $event)"></md-input>
         </md-input-container>
-        <md-button class="md-raised md-primary">Login</md-button>
+        <md-button class="md-raised md-primary" type="submit">Login</md-button>
       </form>
     </div>
   </div>
@@ -35,6 +36,7 @@
     width: 25%;
     margin: 15em auto;
   }
+
   .container {
     width: 100%;
     margin: 10px auto;
@@ -43,21 +45,35 @@
 </style>
 <script>
   import actions from '../store/actions';
+  import {mapGetters, mapState} from 'vuex'
   export default {
     data() {
+      const auth = this.$store.getters.getUserInfo;
       return {
-
+        auth,
       }
     },
     methods: {
       change(field, value) {
         console.log('xxxxxxx', field, value);
-        this.$store.commit('USER_LOGIN_CHANGE', field, value);
-        this.$store.dispatch('login', {username: 'mulberry10', password: 123123});
+        const data = {};
+        data[field] = value;
+        this.$store.commit('USER_LOGIN_CHANGE', data);
       },
       submit() {
-        actions.login({username: 'mulberry10', password: 123123});
+        console.log(this.$store.getters.getUserInfo, this.$store.state.user);
+        const userInfo = this.$store.getters.getUserInfo;
+        if (userInfo) {
+          const { password, username } = userInfo;
+          console.log('&*&*&*&*submit', username, password);
+          this.$store.dispatch('login', { username, password });
+          console.log(this.$store.state.user);
+          this.auth = this.$store.state.user.auth;
+        }
       }
     },
+    beforeUpdate() {
+      console.log('mmmmmmmmmmoutd');
+    }
   }
 </script>

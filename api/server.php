@@ -13,8 +13,11 @@ $config = require APP_ROOT . '/api/config/index.php';
 use Courser\Courser;
 use Courser\Session;
 use Courser\Server\HttpServer;
+use Knight\Middleware\Cors;
+$cors = new Cors();
 $session = new Session\Session($config['session']);
 Courser::used($session);
+Courser::used($cors);
 Courser::notFound(function($req, $res) {
     $res->status(404)->json(['message' => 'Not Found']);
 });

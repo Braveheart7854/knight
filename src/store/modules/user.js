@@ -7,14 +7,17 @@ const USER_LOGIN_CHANGE = 'USER_LOGIN_CHANGE';
 const state = {
   token: null,
   user: {},
+  auth: {},
 };
 
 const mutations = {
-  [USER_LOGIN_SUCCESS](state, action){
-    state.token = action.token;
+  [USER_LOGIN_SUCCESS](state, payload){
+    state.token = payload.token;
+    state.auth = payload;
   },
-  [USER_LOGIN_FAILURE](state, action){
-    state.user = null;
+  [USER_LOGIN_FAILURE](state, payload){
+    console.log('ffffail', payload);
+    state.auth = payload;
   },
   [USER_LOGOUT_SUCCESS](state, action){
     state.token = getCookie('token') || null;
@@ -24,9 +27,8 @@ const mutations = {
   [USER_UPDATE_SUCCESS](state, action){
     state.user = action.user;
   },
-  [USER_LOGIN_CHANGE] (state, field, value) {
-    console.log('this is mutations change');
-    state.user[field] = value;
+  [USER_LOGIN_CHANGE] (state, item) {
+    state.auth = Object.assign(state.auth || {}, item);
   }
 };
 

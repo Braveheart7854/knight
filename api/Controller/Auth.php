@@ -25,6 +25,7 @@ class Auth extends Controller
                 ->status(400)
                 ->json(['message' => 'Param Error', 'code' => 1]);
         }
+        echo "ffffffffffuck\n";
         $user = new User();
         $userInfo = $user->findOne(['username' => $username]);
         if (!$userInfo) {
