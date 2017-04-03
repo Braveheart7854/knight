@@ -1,6 +1,11 @@
 export default {
-  getUserInfo(state) {
-    console.log('______+++__?', state);
+  getAuthorization(state) {
     return state.user.auth;
+  },
+  getUser({ user }) {
+    return user;
+  },
+  getPost({post}) {
+    return post;
   }
 }

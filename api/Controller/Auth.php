@@ -11,6 +11,8 @@ namespace Knight\Controller;
 
 use Knight\Component\Controller;
 use Knight\Model\User;
+use Knight\Middleware\Auth as JWTAuth;
+use Courser\Helper\Config;
 
 class Auth extends Controller
 {
@@ -25,7 +27,6 @@ class Auth extends Controller
                 ->status(400)
                 ->json(['message' => 'Param Error', 'code' => 1]);
         }
-        echo "ffffffffffuck\n";
         $user = new User();
         $userInfo = $user->findOne(['username' => $username]);
         if (!$userInfo) {
@@ -42,13 +43,20 @@ class Auth extends Controller
                 'code' => 3,
             ]);
         }
-        $session = $this->request->session;
-        $session->id = $userInfo->id;
-        $session->username = $userInfo->username;
-        $session->save();
+        $info = [
+            'id' => $userInfo->id,
+            'username' => $userInfo->username,
+            'nickname' => $userInfo->nickname,
+            'email' => $userInfo->email,
+        ];
+        $jwt = new JWTAuth(Config::get('jwt'));
+        $token = $jwt->encode($info);
         $this->response->json([
             'message' => 'ok',
-            'data' => $userInfo->toArray(),
+            'data' => [
+                'user' => $userInfo->toArray(),
+                'token' => $token,
+            ]
         ]);
     }
 
@@ -62,13 +70,13 @@ class Auth extends Controller
         $password = $this->request->body('password');
         $email = $this->request->body('email');
         $confirm = $this->request->body('confirm');
-        if(!$username) {
+        if (!$username) {
             return $this->response->status(404)->json([
                 'message' => 'Illegal Username',
                 'code' => 1,
             ]);
         }
-        if(!$password || strlen($password) < 5 || $password !== $confirm) {
+        if (!$password || strlen($password) < 5 || $password !== $confirm) {
             return $this->response->status(400)->json([
                 'message' => 'Password Incorrect',
                 'code' => 2,

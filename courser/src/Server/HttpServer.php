@@ -39,10 +39,14 @@ class HttpServer
 
     public function mount($req, $res)
     {
-        if ($req->server['request_uri'] !== '/favicon.ico') {
-            $env = $this->config;
-            $app = Courser::run($env);
-            $app($req, $res);
+        try {
+            if ($req->server['request_uri'] !== '/favicon.ico') {
+                $env = $this->config;
+                $app = Courser::run($env);
+                $app($req, $res);
+            }
+        } catch (\Exception $e) {
+            $req->end('');
         }
     }
 

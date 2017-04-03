@@ -1,18 +1,35 @@
+//{
+//  "plugins": [
+//    [
+//      "transform-async-to-module-method",
+//      {
+//        "module": "bluebird",
+//        "method": "coroutine"
+//      }
+//    ],
+//    [
+//      "transform-es2015-modules-commonjs"
+//    ]
+//  ],
+//  "ignore": [
+//    "api/",
+//    "node_modules/"
+//  ]
+//}
 {
-  "plugins": [
-    [
-      "transform-async-to-module-method",
-      {
-        "module": "bluebird",
-        "method": "coroutine"
-      }
-    ],
-    [
-      "transform-es2015-modules-commonjs"
-    ]
+  "presets": [
+    "es2015",
+    "stage-3"
   ],
-  "ignore": [
-    "api/",
-    "node_modules/"
-  ]
+  "plugins": [
+    [ "syntax-async-functions"],
+    [ "transform-decorators-legacy"],
+    ["transform-runtime", {
+      "polyfill": false,
+      "regenerator": true
+    }]
+
+  ],
+  "comments": false,
+  "compact": true
 }

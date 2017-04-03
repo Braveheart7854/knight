@@ -193,6 +193,7 @@ class Router
             }
         }
         $this->compose($md);
+        var_dump($this->response->finish);
         if($this->response->finish) return true;
         $found = $this->mapRoute($method, $uri);
         if (!$found) {

@@ -14,6 +14,9 @@ use Courser\Courser;
 use Courser\Session;
 use Courser\Server\HttpServer;
 use Knight\Middleware\Cors;
+use Knight\Middleware\Auth;
+use Courser\Helper\Config;
+
 $cors = new Cors();
 $session = new Session\Session($config['session']);
 Courser::used($session);
@@ -28,7 +31,11 @@ Courser::get('/posts/:id', ['\Knight\Controller\Article' => 'detail']);
 Courser::get('/comments/:id', ['\Knight\Controller\Article' => 'comment']);
 Courser::post('/register', ['\Knight\Controller\Auth' => 'register']);
 Courser::post('/login', ['\Knight\Controller\Auth' => 'login']);
-
+//Courser::group('/admin', function() {
+//    $auth = new Auth(Config::get('jwt'), 'knight');
+//    $this->used($auth);
+//    $this->get('/article', ['\knight\Controller\Admin']);
+//});
 
 //Courser::get('/article/:id', ['Knight\Controller\Article' => 'detail']);
 //Courser::post('/login', ['Knight\Controller\User' => 'login']);

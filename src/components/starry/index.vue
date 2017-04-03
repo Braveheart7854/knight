@@ -73,46 +73,47 @@
       WalkingDead: WalkingDead,
     },
     mounted() {
-      console.log('ffffff')
-      createStars();
-      setInterval(animateStars, 100);
-      function createStars () {
-        var spawnStars = document.querySelector('.sky, .city'),
-          numStars = 18;
-        for (let i = 0; i < numStars; i++) {
-          var randSize = 5 + Math.random() * 8
-          var star = document.createElement('div');
-          star.className = 'star';
-          star.style.position = 'absolute';
-          star.style.left = Math.random() * 710 + 'px';
-          star.style.top = Math.random() * 310 + 'px';
-          star.style.backgroundColor = '#fff';
-          star.style.height = randSize + 'px';
-          star.style.width = randSize + 'px';
-          star.style.borderRadius = '50%';
-
-          spawnStars.appendChild(star);
-        }
-      }
-
-      function animateStars () {
-        var windowWidth = document.querySelector('.sky').offsetWidth;
-        document.querySelectorAll('.star').forEach((star, i) => {
-          var currentPos = Number(star.style.left.slice(0, -2));
-
-          if (i % 2 === 0)
-            currentPos += i / 50;
-          else
-            currentPos -= i / 50;
-
-          if (currentPos > windowWidth)
-            currentPos = 0;
-          if (currentPos < 0)
-            currentPos = windowWidth;
-
-          star.style.left = currentPos + 'px';
-          });
-      }
+//      console.log('ffffff', this.$el);
+//      var self = this;
+//      createStars();
+//      setInterval(animateStars, 100);
+//      function createStars () {
+//        var spawnStars = self.$el.querySelector('.sky, .city'),
+//          numStars = 18;
+//        for (let i = 0; i < numStars; i++) {
+//          var randSize = 5 + Math.random() * 8;
+//          var star = self.$el.createElement('div');
+//          star.className = 'star';
+//          star.style.position = 'absolute';
+//          star.style.left = Math.random() * 710 + 'px';
+//          star.style.top = Math.random() * 310 + 'px';
+//          star.style.backgroundColor = '#fff';
+//          star.style.height = randSize + 'px';
+//          star.style.width = randSize + 'px';
+//          star.style.borderRadius = '50%';
+//
+//          spawnStars.appendChild(star);
+//        }
+//      }
+//
+//      function animateStars () {
+//        var windowWidth = self.$el.querySelector('.sky').offsetWidth;
+//        self.$el.querySelectorAll('.star').forEach((star, i) => {
+//          var currentPos = Number(star.style.left.slice(0, -2));
+//
+//          if (i % 2 === 0)
+//            currentPos += i / 50;
+//          else
+//            currentPos -= i / 50;
+//
+//          if (currentPos > windowWidth)
+//            currentPos = 0;
+//          if (currentPos < 0)
+//            currentPos = windowWidth;
+//
+//          star.style.left = currentPos + 'px';
+//          });
+//      }
     },
   }
 </script>

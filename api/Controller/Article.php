@@ -25,9 +25,7 @@ class Article
 
     public function posts()
     {
-        $session = $this->request->session;
-        $session->id = 123;
-//        $session->save();
+        var_dump('ffffffc8k');
         $article = new Post();
         $condition = [
             'id' => ['$gt' => 0],
@@ -38,10 +36,15 @@ class Article
             'order' => ['id' => 'desc'],
         ];
         $list = $article->find($condition, $options);
+        $data = [];
+        foreach($list as $art) {
+            if(!$art) continue;
+            $data[] = $art->attr;
+        }
         $this->response->json([
             'message' => 'ok',
             'code' => '0',
-            'data' => $list,
+            'data' => $data,
         ]);
     }
 

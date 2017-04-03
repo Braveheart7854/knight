@@ -2,7 +2,7 @@ import fetch from '../fetch';
 
 export default {
   async login({commit}, data) {
-    const res = await fetch.login(data);
+    const res = await fetch('/login', 'POST', data);
     if(res.ok) {
       commit('USER_LOGIN_SUCCESS', res)
     } else {
@@ -12,7 +12,15 @@ export default {
   register() {
 
   },
-  posts() {
-
+  async posts({commit}, data) {
+    const res = await fetch('/', 'get');
+    if(res.ok) {
+      commit('POST_FETCH_SUCCESS', res)
+    } else {
+      commit('POST_FETCH_FAIL', res)
+    }
   },
+  async post({commit}, data) {
+
+  }
 }

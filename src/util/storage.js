@@ -14,6 +14,13 @@ export default class storage {
     this.key = urls.domain + '#' + tokenName;
   }
 
+  setItem(key, value) {
+    return this.store.setItem(key, value);
+  }
+
+  getItem(key, value) {
+    return this.store.getItem(key, value);
+  }
 
   setUser (user) {
     if (!user) return false;
@@ -34,7 +41,8 @@ export default class storage {
     }
   }
 
-  clearUser () {
-    this.store.removeItem(this.key);
+  clearUser (key) {
+    key = key || this.key;
+    this.store.removeItem(key);
   }
 }

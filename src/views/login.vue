@@ -2,15 +2,15 @@
   <div class="bg">
     <div class="login-wrap">
       <form novalidate @submit.stop.prevent="submit">
-        <span class="md-error">{{auth.message}}</span>
+        <span class="md-error">{{message}}</span>
         <md-input-container class="container">
           <label>username</label>
-          <md-input type="text" v-on:input="change('username', $event)"></md-input>
+          <md-input type="text" v-model="username"></md-input>
         </md-input-container>
 
         <md-input-container md-has-password class="container">
           <label>password</label>
-          <md-input type="password" v-on:input="change('password', $event)"></md-input>
+          <md-input type="password" v-model="password"></md-input>
         </md-input-container>
         <md-button class="md-raised md-primary" type="submit">Login</md-button>
       </form>
@@ -45,35 +45,51 @@
 </style>
 <script>
   import actions from '../store/actions';
-  import {mapGetters, mapState} from 'vuex'
+  import Storage from '../util/storage';
+
+  const storage = new Storage();
   export default {
     data() {
-      const auth = this.$store.getters.getUserInfo;
+      const { message, ok } = this.$store.state.user;
+      console.log('fffffuck', message, ok);
       return {
-        auth,
+        username: '',
+        password: '',
+        message: '',
+        ok: false,
       }
     },
     methods: {
       change(field, value) {
-        console.log('xxxxxxx', field, value);
         const data = {};
         data[field] = value;
         this.$store.commit('USER_LOGIN_CHANGE', data);
       },
-      submit() {
-        console.log(this.$store.getters.getUserInfo, this.$store.state.user);
-        const userInfo = this.$store.getters.getUserInfo;
+      async submit() {
+        const userInfo = {
+          username: this.username,
+          password: this.password,
+        };
         if (userInfo) {
           const { password, username } = userInfo;
-          console.log('&*&*&*&*submit', username, password);
-          this.$store.dispatch('login', { username, password });
-          console.log(this.$store.state.user);
-          this.auth = this.$store.state.user.auth;
+          await this.$store.dispatch('login', { username, password });
+          const { message, ok } = this.$store.getters.getUser;
+          if (ok) {
+            this.$router.push('/post');
+            console.log(this.$router);
+          } else {
+            this.message = message;
+            this.ok = ok;
+          }
         }
       }
     },
-    beforeUpdate() {
-      console.log('mmmmmmmmmmoutd');
+    beforeMount() {
+      console.log('mount before');
+      const token = storage.getItem('token');
+      if (token) {
+//        console.log(token);
+      }
     }
   }
 </script>

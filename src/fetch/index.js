@@ -1,65 +1,52 @@
 import urls from '../config/urls';
-import VueResource from 'vue-resource';
-import Vue from 'vue';
 import Storage from '../util/storage';
 
-// Vue.use(VueResource);
-// Vue.http.options.crossOrigin = true;
-// Vue.http.options.credentials = true;
-// Vue.http.interceptors.push((request, next)=> {
-//   // 这里对请求体进行处理
-//   request.headers = request.headers || {};
-//   if (getCookie('token')) {
-//     request.headers.Authorization = 'Bearer ' + getCookie('token').replace(/(^\")|(\"$)/g, '')
-//   }
-//   next((response) => {
-//     // 这里可以对响应的结果进行处理
-//   });
-// });
-const api = urls.api;
+const domain = urls.api;
 const storage = new Storage();
 const getHeaders = () => {
-  return {
+  const token = storage.getItem('token');
+  let header = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
     // 'Credentials': 'include',
   };
+  if (token) {
+    header.Authorization = 'Bearer ' + token;
+  }
 };
 
-export default {
-  async login(data) {
-    try {
-      console.log('this is login actions request', data);
-      if (!data) return null;
-      if (typeof data === 'object') {
-        data = JSON.stringify(data);
-      }
-      const headers = getHeaders();
-      const res = await fetch(api + '/login', {
-        headers,
-        mode: 'cors',
-        method: 'POST',
-        body: data,
-      });
-      let body = await res.json();
-      body = body && typeof body === 'object' ? body : {};
-      if (res.status === 200) {
-        body.ok = true;
-      } else if (res.status >= 500) {
-        body.message = 'Server Error';
-        body.ok = false;
-      } else {
-        body.ok = false;
-      }
-      return body;
-    } catch (err) {
-      return {
-        message: 'Exception:' + err.message,
-      };
+export default async function api (uri, method, data) {
+  console.log('aaaaaa', uri, method, data);
+  try {
+    if (typeof data === 'object') {
+      data = JSON.stringify(data);
     }
-  },
-  getUser() {
-    return storage.getUser();
-  }
-}
+    const headers = getHeaders();
+    const fetchParams = {
+      headers,
+      mode: 'cors',
+      method: method,
+    };
+    if(data) {
+      fetchParams.body = data;
+    }
+    const res = await fetch(domain + uri, fetchParams);
+    let body = await res.json();
+    body = body && typeof body === 'object' ? body : {};
+    if (res.status === 200) {
+      body.ok = true;
+    } else if (res.status >= 500) {
+      body.message = 'Server Error';
+      body.ok = false;
+    } else {
+      body.ok = false;
+    }
 
+    console.log('response::::::', body);
+    return body;
+  } catch (err) {
+    return {
+      message: 'Exception:' + err.message,
+    };
+  }
+};
