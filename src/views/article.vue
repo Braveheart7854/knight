@@ -12,17 +12,13 @@
       </div>
     </div>
     <div class="post">
-      <Post v-for="(article, key) in posts"
-            v-bind:article="article"
-            v-bind:key="key">
-      </Post>
+      <Detail v-bind:article="article"></Detail>
     </div>
   </div>
-
 </template>
 
 <script>
-  import Post from '../components/post/index.vue';
+  import Detail from '../components/post/post.vue';
   import Jumbotron from '../components/post/jumbotron.vue';
   import SideBar from '../components/nav/sideBar.vue';
 
@@ -30,18 +26,16 @@
   export default {
     data() {
       return {
-        posts: null,
+        article: {},
         ok: false,
         message: '',
       }
     },
-    methods: {
-    },
+    methods: {},
     async beforeMount() {
       await this.$store.dispatch('posts', 'get');
       const res = this.$store.getters.getPost;
-      console.log('--=-=-=-=x-x-=xx-=', res.post);
-      this.posts = res.post;
+      this.article = res.post.pop();
       this.ok = res.ok;
       this.message = res.message;
       console.log(this.posts);
@@ -51,7 +45,7 @@
 
     },
     components: {
-      Post,
+      Detail,
       Jumbotron,
       SideBar,
     }
@@ -62,7 +56,6 @@
     margin: 0;
     padding: 0;
   }
-
 
   .header {
     position: relative;

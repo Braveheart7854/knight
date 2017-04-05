@@ -1,6 +1,10 @@
 import Starry from './views/starry.vue';
-import WalkingDead from './components/starry/walkingdead.vue';
 export default [
+  {
+    path: '/post/:id',
+    name: 'post',
+    component: require('./views/article.vue')
+  },
   {
     path: '/post',
     name: 'post',

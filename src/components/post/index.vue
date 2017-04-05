@@ -1,18 +1,29 @@
 <template>
-  <div class="content">
+  <div>
+    <div class="content">
       <md-card md-with-hover>
         <md-card-header>
-          <div class="md-title">{{article.title}}</div>
+          <router-link v-bind:to="'/post/' + article.id">
+            <div class="md-title" @click="detail(article.id)">
+              {{article.title}}
+            </div>
+          </router-link>
           <div class="md-subhead">{{new Date(article.created).toLocaleDateString()}}</div>
         </md-card-header>
         <md-card-content>{{article.content}}</md-card-content>
-        <md-card-media v-md-ink-ripple>
-          <img src="https://vuematerial.github.io/assets/card-image-1.jpg" alt="People">
-        </md-card-media>
       </md-card>
+    </div>
   </div>
 </template>
+<style lang="sass">
+  @import "index.scss";
 
+  .comment-wrapper {
+    margin: 20px auto;
+    width: 60%;
+  }
+
+</style>
 <script>
   export default {
     props: {
@@ -23,15 +34,18 @@
     },
     data () {
       return {
-        list: [1, 2]
+        article: {},
+        comments: {},
       }
 
     },
     mounted () {
-    console.log(this.props);
+    },
+    methods: {
+      detail(id) {
+        console.log('xxxxxxx', id);
+      }
     }
   }
 </script>
-<style lang="sass">
-  @import "index.scss";
-</style>
+
