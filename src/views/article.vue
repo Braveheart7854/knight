@@ -12,11 +12,10 @@
       </div>
     </div>
     <div class="post">
-      <Detail v-bind:article="article"></Detail>
+      <Detail v-bind:article="post"></Detail>
     </div>
   </div>
 </template>
-
 <script>
   import Detail from '../components/post/post.vue';
   import Jumbotron from '../components/post/jumbotron.vue';
@@ -26,7 +25,7 @@
   export default {
     data() {
       return {
-        article: {},
+        post: {},
         ok: false,
         message: '',
       }
@@ -35,10 +34,10 @@
     async beforeMount() {
       await this.$store.dispatch('posts', 'get');
       const res = this.$store.getters.getPost;
-      this.article = res.post.pop();
+      this.post = res.post.pop();
       this.ok = res.ok;
       this.message = res.message;
-      console.log(this.posts);
+      console.log(this.post);
     },
     mounted () {
       console.log('mmmmmmmmount')

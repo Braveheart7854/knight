@@ -1,8 +1,9 @@
 import Starry from './views/starry.vue';
+import Home from './views/home.vue';
 export default [
   {
     path: '/post/:id',
-    name: 'post',
+    name: '/detail',
     component: require('./views/article.vue')
   },
   {
@@ -37,13 +38,12 @@ export default [
   },
   {
     path: '/admin',
-    name: 'admin',
-    component: require('./components/admin'),
+    component: require('./components/admin/index.vue'),
     meta: {auth: true},
     children:[
       {
-        path: '/article',
-        name: 'article',
+        path: 'home',
+        component: Home
       }
     ]
   }

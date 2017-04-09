@@ -21,49 +21,31 @@
       <div class="phone-viewport">
         <md-list>
           <md-list-item>
-            <md-icon>whatshot</md-icon>
-            <span>News</span>
-            <md-list-expand>
-              <md-list>
-                <md-list-item class="md-inset">World</md-list-item>
-                <md-list-item class="md-inset">Americas</md-list-item>
-                <md-list-item class="md-inset">Europe</md-list-item>
-              </md-list>
-            </md-list-expand>
+            <md-icon>create</md-icon>
+            <span>写文章</span>
           </md-list-item>
           <md-list-item>
-            <md-icon>videogame_asset</md-icon>
-            <span>Games</span>
-            <md-list-expand>
-              <md-list>
-                <md-list-item class="md-inset">Console</md-list-item>
-                <md-list-item class="md-inset">PC</md-list-item>
-                <md-list-item class="md-inset">Phone</md-list-item>
-              </md-list>
-            </md-list-expand>
+            <md-icon>sort</md-icon>
+            <span>文章管理</span>
           </md-list-item>
           <md-list-item>
-            <md-icon>video_library</md-icon>
-            <span>Video</span>
-            <md-list-expand>
-              <md-list>
-                <md-list-item class="md-inset">Humor</md-list-item>
-                <md-list-item class="md-inset">Music</md-list-item>
-                <md-list-item class="md-inset">Movies</md-list-item>
-                <md-list-item class="md-inset">TV Shows</md-list-item>
-              </md-list>
-            </md-list-expand>
+            <md-icon>perm_media</md-icon>
+            <span>图片管理</span>
           </md-list-item>
           <md-list-item>
-            <md-icon>shopping_basket</md-icon>
-            <span>Shop</span>
+            <md-icon>settings</md-icon>
+            <span>设置</span>
           </md-list-item>
         </md-list>
       </div>
     </md-sidenav>
   </div>
 </template>
-
+<style>
+  .side-bg {
+    background: rgba(50,50,0, 0.5);
+  }
+</style>
 <script>
   export default {
     methods: {
@@ -78,7 +60,6 @@
       },
     },
     created() {
-      console.log('~!~!~!~!~!~!~!~!~!~!');
     }
   }
 

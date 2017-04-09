@@ -1,9 +1,6 @@
 <template>
-  <div id="example" v-md-theme="'default'">
-    <!--<NavBar></NavBar>-->
+  <div v-md-theme="'default'">
     <router-view></router-view>
-    <div class="main-content">
-    </div>
   </div>
 </template>
 

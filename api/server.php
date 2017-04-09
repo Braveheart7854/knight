@@ -11,7 +11,7 @@ require APP_ROOT . '/vendor/autoload.php';
 $config = require APP_ROOT . '/api/config/index.php';
 
 use Courser\Courser;
-use Courser\Session;
+use Courser\Session\Session;
 use Courser\Server\HttpServer;
 use Knight\Middleware\Cors;
 use Knight\Middleware\Auth;
@@ -19,41 +19,29 @@ use Courser\Helper\Config;
 
 Config::set($config);
 $app = new Courser('dev');
-$app->get('/', function($req, $res) {
-//   var_dump($req);
-    $res->send('fuck');
-});
-$session = new Session\Session($config['session']);
+$cors = new Cors();
+$session = new Session($config['session']);
 $app->used($session);
-$app->get('/test/:id', function($req, $res) {
-   var_dump($req->params);
-    $res->send('fuck');
+$app->used($cors);
+$app->notFound(function($req, $res) {
+    $res->status(404)->json(['message' => 'Not Found']);
 });
 
+$app->get('/test', function($req, $res) {
+   $res->send('fuck world');
+});
+
+$app->get('/', ['\Knight\Controller\Article' => 'posts']);
+
+$app->get('/posts/:id', ['\Knight\Controller\Article' => 'detail']);
+$app->get('/comments/:id', ['\Knight\Controller\Article' => 'comments']);
+$app->post('/register', ['\Knight\Controller\Auth' => 'register']);
+$app->post('/login', ['\Knight\Controller\Auth' => 'login']);
 $app->group('/admin', function() {
-    $cors = new Cors();
-    $this->used($cors);
-    $this->get('/test', function($req, $res) {
-     $res->send('dddddaddddmin');
-   });
+    $auth = new Auth(Config::get('jwt'), 'knight');
+    $this->used($auth);
+    $this->get('/article', ['\knight\Controller\Admin']);
 });
-//$session = new Session\Session($config['session']);
-//$app->used($session);
-//$app->notFound(function($req, $res) {
-//    $res->status(404)->json(['message' => 'Not Found']);
-//});
-
-//$app->get('/', ['\Knight\Controller\Article' => 'posts']);
-//
-//$app->get('/posts/:id', ['\Knight\Controller\Article' => 'detail']);
-//$app->get('/comments/:id', ['\Knight\Controller\Article' => 'comment']);
-//$app->post('/register', ['\Knight\Controller\Auth' => 'register']);
-//$app->post('/login', ['\Knight\Controller\Auth' => 'login']);
-//$app->group('/admin', function() {
-//    $auth = new Auth(Config::get('jwt'), 'knight');
-//    $this->used($auth);
-//    $this->get('/article', ['\knight\Controller\Admin']);
-//});
 
 //$app->get('/article/:id', ['Knight\Controller\Article' => 'detail']);
 //$app->post('/login', ['Knight\Controller\User' => 'login']);

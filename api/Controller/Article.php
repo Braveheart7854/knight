@@ -8,10 +8,11 @@
  */
 namespace Knight\Controller;
 
-use Knight\Model\User;
+use Knight\Model\Comment;
 use Knight\Model\Post;
+use Knight\Component\Controller;
 
-class Article
+class Article extends Controller
 {
     public $request;
 
@@ -19,13 +20,15 @@ class Article
 
     public function __construct($request, $response)
     {
-        $this->request = $request;
-        $this->response = $response;
+        parent::__construct($request, $response);
     }
 
     public function posts()
     {
-        var_dump('ffffffc8k');
+        $page = abs($this->request->query('page'));
+        $page = $page ?: 1;
+        $pageSize = 20;
+        $offset = ($page - 1) * $pageSize;
         $article = new Post();
         $condition = [
             'id' => ['$gt' => 0],
@@ -37,8 +40,8 @@ class Article
         ];
         $list = $article->find($condition, $options);
         $data = [];
-        foreach($list as $art) {
-            if(!$art) continue;
+        foreach ($list as $art) {
+            if (!$art) continue;
             $data[] = $art->attr;
         }
         $this->response->json([
@@ -83,7 +86,7 @@ class Article
         ];
         $articles = $article->find($where, $option);
         $list = [];
-        if(!empty($articles)) {
+        if (!empty($articles)) {
             foreach ($articles as $art) {
                 $list[] = $art->attr;
             }
@@ -91,6 +94,34 @@ class Article
         $this->response->json([
             'message' => 'ok',
             'data' => 'article',
+        ]);
+    }
+
+    public function comments()
+    {
+        $id = $this->request->params['id'];
+        if (!$id) {
+            return $this->response->status(400)->json([
+                'message' => 'param id required',
+                'code' => 1,
+            ]);
+        }
+        $page = abs($this->request->query('page'));
+        $page = $page ?: 1;
+        $pageSize = 20;
+        $offset = ($page - 1) * $pageSize;
+        $comment = new Comment();
+        $comments = $comment->find([
+            'artId' => $id,
+        ],
+        [
+            'limit' => $pageSize,
+            'skip' => $offset,
+        ]);
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+            'data' => ['list' => $comments],
         ]);
     }
 }

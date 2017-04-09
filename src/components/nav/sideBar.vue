@@ -6,37 +6,27 @@
       </md-button>
     </div>
     <md-sidenav class="md-left" ref="leftSidenav" @open="open('Left')" @close="close('Left')">
-      <md-toolbar>
-        <div class="md-toolbar-container">
-          <h3 class="md-title">Sidenav content</h3>
+      <div class="resume">
+        <div class="avatar">
+          <img src="//pic.yupoo.com/craber_v/FSKpj7L8/SIwxr.jpg">
         </div>
-      </md-toolbar>
+      </div>
       <div class="phone-viewport">
         <md-list>
           <md-list-item>
-            <md-icon>whatshot</md-icon>
-            <span>News</span>
-            <md-list-expand>
-              <md-list>
-                <md-list-item class="md-inset">World</md-list-item>
-                <md-list-item class="md-inset">Americas</md-list-item>
-                <md-list-item class="md-inset">Europe</md-list-item>
-              </md-list>
-            </md-list-expand>
+            <md-icon>toys</md-icon>
+            <span>自言自语</span>
           </md-list-item>
           <md-list-item>
-            <md-icon>videogame_asset</md-icon>
-            <span>Games</span>
-            <md-list-expand>
-              <md-list>
-                <md-list-item class="md-inset">Console</md-list-item>
-                <md-list-item class="md-inset">PC</md-list-item>
-                <md-list-item class="md-inset">Phone</md-list-item>
-              </md-list>
-            </md-list-expand>
+            <md-icon>fingerprint</md-icon>
+            <span>以梦为码</span>
           </md-list-item>
           <md-list-item>
-            <md-icon>video_library</md-icon>
+            <md-icon>gesture</md-icon>
+            <span>桑下语</span>
+          </md-list-item>
+          <md-list-item>
+            <md-icon>date_range</md-icon>
             <span>Video</span>
             <md-list-expand>
               <md-list>
@@ -47,22 +37,33 @@
               </md-list>
             </md-list-expand>
           </md-list-item>
-          <md-list-item>
-            <md-icon>shopping_basket</md-icon>
-            <span>Shop</span>
-          </md-list-item>
         </md-list>
       </div>
     </md-sidenav>
   </div>
 </template>
 
-<style>
+<style type="css">
   .menu {
     position: fixed;
     left: 1em;
     top: 1em;
     z-index: 100;
+  }
+  
+  .resume {
+    padding: 1em;
+    text-align: center;
+    max-height: 20em;
+  }
+  
+  .avatar {
+    margin: 1em auto;
+    border: 1px;
+    border-radius: 50%;
+    height: 10em;
+    width: 10em;
+    overflow: hidden;
   }
 </style>
 
