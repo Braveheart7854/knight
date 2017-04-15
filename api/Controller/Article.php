@@ -124,4 +124,27 @@ class Article extends Controller
             'data' => ['list' => $comments],
         ]);
     }
+
+    public function create() {
+        $request = $this->request;
+        $response = $this->response;
+        $title = $request->body('title');
+        $content = $request->body('content');
+        $tags = $request->body('body');
+        $cateId = $request->body('cateId');
+        if(!$title) {
+            return $response->status(400)->json([
+                'message' => 'title required',
+                'code' => 1,
+            ]);
+        }
+        if(!$content) {
+            return $response->status(400)->json([
+                'message' => 'content can not empty'
+            ]);
+        }
+        $post = [
+
+        ];
+    }
 }

@@ -270,7 +270,6 @@ class Courser
         return function($req, $res) use ($uri) {
             $router = $this->createContext($req, $res);
             $router = $this->mapRoute($router->request->method, $uri, $router);
-            var_dump($router->middleware);
             if (empty($router->callable)) {
                 $router->add($this->notFounds);
             }

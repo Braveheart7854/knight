@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1> ffffffuck world</h1>
-    <Survey></Survey>
   </div>
 </template>
 <style>
