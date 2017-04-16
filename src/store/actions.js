@@ -22,5 +22,13 @@ export default {
   },
   async post({commit}, data) {
 
+  },
+  async article({commit}, data) {
+    const res = await fetch('/admin/article', 'get', data);
+    if(res.ok) {
+      commit('ARTICLE_FETCH_SUCCESS', res)
+    } else {
+      commit('ARTICLE_FETCH_FAILURE', res)
+    }
   }
 }

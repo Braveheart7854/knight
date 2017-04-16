@@ -11,6 +11,7 @@ namespace Knight\Controller;
 
 use Knight\Component\Controller;
 use Knight\Model\Post;
+use Knight\Model\Category;
 
 class Admin extends Controller
 {
@@ -20,14 +21,22 @@ class Admin extends Controller
         $page = $this->request->param('page');
         $page = abs($page) ?: 1;
         $article = new Post();
-        $list = $article->findAll();
+        $posts = $article->findAll();
+        $list = [];
+        foreach ($posts as $key => $art) {
+            $list[] = $art->attr;
+        }
         $ret = [
             'total' => 10, // @fixme
             'page' => $page,
             'pageSize' => $pageSize,
             'list' => $list,
         ];
-        $this->response->json($ret);
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+            'data' => $ret,
+        ]);
     }
 
     public function create()
@@ -60,6 +69,17 @@ class Admin extends Controller
         $this->response->json([
             'code' => 0,
             'message' => 'ok',
+        ]);
+    }
+
+    public function category()
+    {
+        $category = new Category();
+        $cate = $category->findAll();
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+            'list' => $cate,
         ]);
     }
 

@@ -26,7 +26,7 @@
         </md-table-header>
 
         <md-table-body>
-          <md-table-row v-for="(row, rowIndex) in nutrition" :key="rowIndex" :md-item="row" md-auto-select md-selection>
+          <md-table-row v-for="(row, rowIndex) in posts" :key="rowIndex" :md-item="row" md-auto-select md-selection>
             <md-table-cell> {{row.id}} </md-table-cell>
             <md-table-cell> {{row.category }}</md-table-cell>
             <md-table-cell> {{row.permission}}</md-table-cell>
@@ -50,7 +50,10 @@
 <script>
   export default {
     data: () => ({
-      nutrition: [
+      page: 1,
+      pageSize: 0,
+      total: 0,
+      posts: [
         {
           id: '1',
           category: 'ice_cream',
@@ -78,5 +81,19 @@
 
       }
     },
+    async beforeMount() {
+      const params = {
+        page: this.page,
+      };
+      await this.$store.dispatch('article', params);
+      const data = this.$store.state.article;
+      console.log('-=-=-=-=-=-=-=-----', data);
+      const article = data.article || {};
+      const {page, list, total, pageSize} = article;
+      this.posts = list || [];
+      this.page = page || 1;
+      this.pageSize = pageSize || 20;
+      this.total = total || 0;
+    }
   }
 </script>

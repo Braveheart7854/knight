@@ -22,7 +22,7 @@ $app = new Courser('dev');
 $cors = new Cors();
 $session = new Session($config['session']);
 $app->used($session);
-$app->used($cors);
+$app->any('*', $cors);
 $app->notFound(function($req, $res) {
     $res->status(404)->json(['message' => 'Not Found']);
 });
@@ -37,26 +37,17 @@ $app->get('/posts/:id', ['\Knight\Controller\Article' => 'detail']);
 $app->get('/comments/:id', ['\Knight\Controller\Article' => 'comments']);
 $app->post('/register', ['\Knight\Controller\Auth' => 'register']);
 $app->post('/login', ['\Knight\Controller\Auth' => 'login']);
-$app->group('/admin', function() {
-    $auth = new Auth(Config::get('jwt'), 'knight');
-    $this->used($auth);
-    $this->get('/article', ['\knight\Controller\Admin']);
-});
 
-//$app->get('/article/:id', ['Knight\Controller\Article' => 'detail']);
-//$app->post('/login', ['Knight\Controller\User' => 'login']);
-
+$app->get('/admin/article', ['\Knight\Controller\Admin' => 'article']);
 
 //$app->group('/admin', function() {
-//    $this->used(function($req, $res) {
-//       // authorization
-//    });
-//    $this->get('/article', ['Knight\Controller\Article' => 'list']);
-//    $this->post('/article', ['Knight\Controller\Article' => 'create']);
-//    $this->put('/article/:id', ['Knight\Controller\Article' => 'edit']);
-//    $this->delete('/article/id', ['Knight\Controller\Article' => 'remove']);
-//
+//    $auth = new Auth(Config::get('jwt'), 'knight');
+//    $this->used($auth);
+//    $this->get('/article', ['\knight\Controller\Admin']);
 //});
+
+
+
 
 $server = new HttpServer($app);
 $server->start();

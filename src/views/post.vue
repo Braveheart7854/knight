@@ -40,7 +40,6 @@
     async beforeMount() {
       await this.$store.dispatch('posts', 'get');
       const res = this.$store.getters.getPost;
-      console.log('--=-=-=-=x-x-=xx-=', res.post);
       this.posts = res.post;
       this.ok = res.ok;
       this.message = res.message;
