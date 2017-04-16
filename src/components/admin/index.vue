@@ -15,7 +15,6 @@ export default {
     Survey,
   },
   mounted() {
-    console.log(this);
   }
 }
 </script>

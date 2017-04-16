@@ -10,11 +10,57 @@
 namespace Knight\Controller;
 
 use Knight\Component\Controller;
+use Knight\Model\Post;
 
 class Admin extends Controller
 {
     public function article()
     {
-        $this->response->json([]);
+        $pageSize = 20;
+        $page = $this->request->param('page');
+        $page = abs($page) ?: 1;
+        $article = new Post();
+        $list = $article->findAll();
+        $ret = [
+            'total' => 10, // @fixme
+            'page' => $page,
+            'pageSize' => $pageSize,
+            'list' => $list,
+        ];
+        $this->response->json($ret);
     }
+
+    public function create()
+    {
+        $request = $this->request;
+        $response = $this->response;
+        $title = $request->body('title');
+        $content = $request->body('content');
+        $tags = $request->body('body');
+        $cateId = $request->body('cateId');
+        if (!$title) {
+            return $response->status(400)->json([
+                'message' => 'title required',
+                'code' => 1,
+            ]);
+        }
+        if (!$content) {
+            return $response->status(400)->json([
+                'message' => 'content can not empty'
+            ]);
+        }
+        $post = [
+            'title' => $title,
+            'content' => $content,
+            'tags' => implode(',', $tags),
+            'cateId' => $cateId,
+        ];
+        $article = new Post();
+        $article->insert($post);
+        $this->response->json([
+            'code' => 0,
+            'message' => 'ok',
+        ]);
+    }
+
 }

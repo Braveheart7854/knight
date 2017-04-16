@@ -22,7 +22,7 @@ router.beforeEach((to, from, next) => {
 });
 sync(store, router);
 Vue.use(VueMaterial);
-Vue.material.theme.registerAll({
+Vue.material.registerTheme({
   default: {
     primary: 'cyan',
     accent: 'pink'

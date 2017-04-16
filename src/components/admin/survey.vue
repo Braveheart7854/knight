@@ -3,14 +3,13 @@
     <md-table v-once>
       <md-table-header>
         <md-table-row>
-          <md-table-head>Dessert (100g serving)</md-table-head>
-          <md-table-head md-numeric>item</md-table-head>
-          <md-table-head md-numeric>Fat (g)</md-table-head>
-          <md-table-head md-numeric>Carbs (g)</md-table-head>
-          <md-table-head md-numeric>Protein (g)</md-table-head>
+          <md-table-head>id</md-table-head>
+          <md-table-head md-numeric>权限</md-table-head>
+          <md-table-head md-numeric>分类</md-table-head>
+          <md-table-head md-numeric>标题</md-table-head>
+          <md-table-head md-numeric?时间</md-table-head>
         </md-table-row>
       </md-table-header>
-
       <md-table-body>
         <md-table-row v-for="(row, index) in 5" :key="index">
           <md-table-cell>Dessert Name</md-table-cell>
@@ -18,5 +17,14 @@
         </md-table-row>
       </md-table-body>
     </md-table>
+    <md-table-pagination
+      md-size="5"
+      md-total="10"
+      md-page="1"
+      md-label="Rows"
+      md-separator="of"
+      :md-page-options="[5, 10, 25, 50]"
+      @pagination="onPagination"></md-table-pagination>
+    </md-table-card>
   </div>
 </template>

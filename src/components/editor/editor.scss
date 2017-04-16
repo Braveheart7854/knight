@@ -4,8 +4,11 @@
   width: 100%;
   min-height: 100%;
   overflow-x: hidden;
-  padding: 2rem 4rem 0 4rem;
-  border: 1px solid#b2b2b2;
+  padding: 1rem 2rem 2em 2rem;
+}
+.simditor {
+  display: table-cell;
+  text-align: left;
 }
 #markdown{
   display: table-cell;
@@ -18,11 +21,11 @@
 .editor-option{
   display: table-cell;
   vertical-align: top;
-  max-width: 30%;
-  min-width: 20%;
+  width: 20%;
   height: 100%;
-  border: 1px dashed#00a8c6;
   padding: 1rem;
+  border: 1px solid#c2c2f2;
+  border-left-color: #fffffc;
   &:before{
     content: '';
 
@@ -30,4 +33,8 @@
 }
 .md-select-content {
   width: 14rem;
+}
+
+.simditor .simditor-body {
+  min-height: 400px;
 }

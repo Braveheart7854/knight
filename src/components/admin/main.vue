@@ -1,16 +1,14 @@
 <template>
-  <div class="main-wrapper"></div>
+  <div class="main-wrapper">
+    <Survey></Survey>
+  </div>
 </template>
-<style>
-  .main-wrapper {
-    margin: 10em auto;
-    width: 80%;
-    height: 80em;
-    background: #99b2ff;
-}
-</style>
 <script>
-export default {
+  import Survey from './survey.vue';
+  export default {
 
-}
+    components: {
+      Survey
+    }
+  }
 </script>
