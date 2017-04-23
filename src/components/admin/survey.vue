@@ -7,7 +7,7 @@
           <md-table-head md-numeric>权限</md-table-head>
           <md-table-head md-numeric>分类</md-table-head>
           <md-table-head md-numeric>标题</md-table-head>
-          <md-table-head md-numeric?时间</md-table-head>
+          <md-table-head md-numeric>时间</md-table-head>
         </md-table-row>
       </md-table-header>
       <md-table-body>
@@ -28,3 +28,21 @@
     </md-table-card>
   </div>
 </template>
+<script>
+  export default {
+    methods: {
+      data: {
+        article: [],
+        page: 1,
+        pageSize: 20,
+        total: 50,
+      },
+      onPagination() {
+
+      }
+    },
+    beforeMount() {
+      this.$store.dispatch('article');
+    }
+  }
+</script>

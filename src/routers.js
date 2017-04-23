@@ -1,4 +1,3 @@
-
 export default [
   {
     path: '/post/:id',
@@ -44,6 +43,10 @@ export default [
       {
         path: 'article',
         component: require('./components/admin/article.vue'),
+      },
+      {
+        path: 'edit/:id',
+        component: require('./components/admin/edit.vue'),
       }
     ]
   }

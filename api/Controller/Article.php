@@ -8,6 +8,7 @@
  */
 namespace Knight\Controller;
 
+use Knight\Model\Category;
 use Knight\Model\Comment;
 use Knight\Model\Post;
 use Knight\Component\Controller;
@@ -51,6 +52,13 @@ class Article extends Controller
         ]);
     }
 
+    /**
+     * @security [Bearer]
+     * @desc This method loads the homepage
+     * @tags User
+     * @param int $id path required
+     * @return $ref Detail
+     */
     public function detail()
     {
         $id = $this->request->params['id'];
@@ -59,14 +67,19 @@ class Article extends Controller
             'id' => $id,
             'isShow' => 1
         ];
-        $list = $article->findOne($condition);
+        $art = $article->findOne($condition);
         $this->response->json([
             'message' => 'ok',
             'code' => '0',
-            'data' => $list,
+            'data' => $art,
         ]);
     }
 
+    /**
+     * get article list
+     * @query int $page
+     *
+     */
     public function article()
     {
         $page = abs($this->request->query('page'));
@@ -97,6 +110,13 @@ class Article extends Controller
         ]);
     }
 
+    /**
+     * get article comment by article id
+     * @param int $id
+     * @query int $page required
+     * @query int $pageSize required
+     * @return $ref comment
+     */
     public function comments()
     {
         $id = $this->request->params['id'];
@@ -114,10 +134,10 @@ class Article extends Controller
         $comments = $comment->find([
             'artId' => $id,
         ],
-        [
-            'limit' => $pageSize,
-            'skip' => $offset,
-        ]);
+            [
+                'limit' => $pageSize,
+                'skip' => $offset,
+            ]);
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
@@ -125,26 +145,56 @@ class Article extends Controller
         ]);
     }
 
-    public function create() {
+    /**
+     * @description create a new article
+     * @tags article
+     * @security Bearer
+     * @body string $title article title
+     * @body string $content article content
+     * @body int $cateId
+     * @body string $tags
+     * @return mixed
+     */
+    public function create()
+    {
         $request = $this->request;
         $response = $this->response;
         $title = $request->body('title');
         $content = $request->body('content');
         $tags = $request->body('body');
         $cateId = $request->body('cateId');
-        if(!$title) {
+        if (!$title) {
             return $response->status(400)->json([
                 'message' => 'title required',
                 'code' => 1,
             ]);
         }
-        if(!$content) {
+        if (!$content) {
             return $response->status(400)->json([
-                'message' => 'content can not empty'
+                'message' => 'content can not empty',
+                'code' => 4,
+            ]);
+        }
+        if ($cateId) {
+            $category = new Category();
+            $cate = $category->findById($cateId);
+            if (!$cate) return $this->status(400)->json([
+                'message' => 'category not found',
+                'code' => 3,
             ]);
         }
         $post = [
-
+            'tags' => $tags,
+            'cateId' => $cateId,
+            'title' => $title,
+            'content' => $content,
+            'created' => time(),
         ];
+        $article = new Post();
+        $article->insert($post);
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+        ]);
     }
 }
