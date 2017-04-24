@@ -83,4 +83,93 @@ class Admin extends Controller
         ]);
     }
 
+    public function update()
+    {
+        $id = $this->request->param('id');
+        $title = $this->request->param('title');
+        $tags = $this->request->param('tags');
+        $content = $this->request->param('content');
+        $cateId = $this->request->param('cateId');
+        $time = $this->request->param('time');
+        if ($time) {
+            $time = mktime($time);
+        }
+        if (!$title || !$content) {
+            return $this->response
+                ->status(400)
+                ->json([
+                    'message' => 'content && title are required',
+                    'code' => 1,
+                ]);
+        }
+        $post = new Post();
+        $art = $post->findById($id);
+        if(!$art) {
+            return $this->response->status(400)->json([
+                'message' => 'article not found',
+                'code' => 2,
+            ]);
+        }
+        $art->title = $title;
+        $art->content = $content;
+        $art->cateId = $cateId;
+        $art->tags = $tags;
+        $art->update();
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+        ]);
+    }
+
+    public function drop()
+    {
+        $id = $this->request->param('id');
+        if (!intval($id)) {
+            return $this->response
+                ->status(400)
+                ->json([
+                    'message' => 'Illegal ID',
+                    'code' => 1,
+                ]);
+        }
+        $post = new Post();
+        $art = $post->findById($id);
+        if (!$art) {
+            return $this->response->status(400)->json([
+                'message' => 'article not found',
+                'code' => 2,
+            ]);
+        }
+        $art->delete();
+        $this->response->json([
+           'message' => 'ok',
+            'code' => 0,
+        ]);
+    }
+
+    public function detail() {
+        $id = $this->request->param('id');
+        if (!intval($id)) {
+            return $this->response
+                ->status(400)
+                ->json([
+                    'message' => 'Illegal ID',
+                    'code' => 1,
+                ]);
+        }
+        $post = new Post();
+        $art = $post->findById($id);
+        if (!$art) {
+            return $this->response->status(400)->json([
+                'message' => 'article not found',
+                'code' => 2,
+            ]);
+        }
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+            'data' => $art,
+        ]);
+    }
+
 }

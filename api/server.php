@@ -23,12 +23,12 @@ $cors = new Cors();
 $session = new Session($config['session']);
 $app->used($session);
 $app->any('*', $cors);
-$app->notFound(function($req, $res) {
+$app->notFound(function ($req, $res) {
     $res->status(404)->json(['message' => 'Not Found']);
 });
 
-$app->get('/test', function($req, $res) {
-   $res->send('fuck world');
+$app->get('/test', function ($req, $res) {
+    $res->send('fuck world');
 });
 
 $app->get('/', ['\Knight\Controller\Article' => 'posts']);
@@ -40,11 +40,13 @@ $app->post('/login', ['\Knight\Controller\Auth' => 'login']);
 
 $app->get('/admin/article', ['\Knight\Controller\Admin' => 'article']);
 
-$app->group('/admin', function() {
-   $auth = new Auth(Config::get('jwt'), 'knight');
-   $this->used($auth);
-   $this->get('/article', ['\Knight\Controller\Article' => 'article']);
-   $this->get('/article/:id', ['\Knight\Controller\Article' => 'detail']);
+$app->group('/admin', function () {
+    $auth = new Auth(Config::get('jwt'), 'knight');
+    $this->used($auth);
+    $this->get('/article', ['\Knight\Controller\Article' => 'article']);
+    $this->get('/article/:id', ['\Knight\Controller\Admin' => 'detail']);
+    $this->delete('/article/:id', ['Knight\Controller\Admin' => 'drop']);
+    $this->put('/article/:id', ['Knight\Controller\Admin' => 'edit']);
 });
 /*
 $ref = (new ReflectionClass('Knight\Controller\Article'))->getMethod('detail')->getdoccomment();
