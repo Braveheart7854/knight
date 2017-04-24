@@ -11,46 +11,78 @@ require APP_ROOT . '/vendor/autoload.php';
 $config = require APP_ROOT . '/api/config/index.php';
 
 use Courser\Courser;
-use Courser\Session;
+use Courser\Session\Session;
 use Courser\Server\HttpServer;
 use Knight\Middleware\Cors;
 use Knight\Middleware\Auth;
 use Courser\Helper\Config;
 
+Config::set($config);
+$app = new Courser('dev');
 $cors = new Cors();
-$session = new Session\Session($config['session']);
-Courser::used($session);
-Courser::used($cors);
-Courser::notFound(function($req, $res) {
+$session = new Session($config['session']);
+$app->used($session);
+$app->any('*', $cors);
+$app->notFound(function ($req, $res) {
     $res->status(404)->json(['message' => 'Not Found']);
 });
 
-Courser::get('/', ['\Knight\Controller\Article' => 'posts']);
+$app->get('/test', function ($req, $res) {
+    $res->send('fuck world');
+});
 
-Courser::get('/posts/:id', ['\Knight\Controller\Article' => 'detail']);
-Courser::get('/comments/:id', ['\Knight\Controller\Article' => 'comment']);
-Courser::post('/register', ['\Knight\Controller\Auth' => 'register']);
-Courser::post('/login', ['\Knight\Controller\Auth' => 'login']);
-//Courser::group('/admin', function() {
-//    $auth = new Auth(Config::get('jwt'), 'knight');
-//    $this->used($auth);
-//    $this->get('/article', ['\knight\Controller\Admin']);
-//});
+$app->get('/', ['\Knight\Controller\Article' => 'posts']);
 
-//Courser::get('/article/:id', ['Knight\Controller\Article' => 'detail']);
-//Courser::post('/login', ['Knight\Controller\User' => 'login']);
+$app->get('/posts/:id', ['\Knight\Controller\Article' => 'detail']);
+$app->get('/comments/:id', ['\Knight\Controller\Article' => 'comments']);
+$app->post('/register', ['\Knight\Controller\Auth' => 'register']);
+$app->post('/login', ['\Knight\Controller\Auth' => 'login']);
 
+$app->get('/admin/article', ['\Knight\Controller\Admin' => 'article']);
 
-//Courser::group('/admin', function() {
-//    $this->used(function($req, $res) {
-//       // authorization
-//    });
-//    $this->get('/article', ['Knight\Controller\Article' => 'list']);
-//    $this->post('/article', ['Knight\Controller\Article' => 'create']);
-//    $this->put('/article/:id', ['Knight\Controller\Article' => 'edit']);
-//    $this->delete('/article/id', ['Knight\Controller\Article' => 'remove']);
-//
-//});
-
-$server = new HttpServer($config);
+$app->group('/admin', function () {
+    $auth = new Auth(Config::get('jwt'), 'knight');
+    $this->used($auth);
+    $this->get('/article', ['\Knight\Controller\Article' => 'article']);
+    $this->get('/article/:id', ['\Knight\Controller\Admin' => 'detail']);
+    $this->delete('/article/:id', ['Knight\Controller\Admin' => 'drop']);
+    $this->put('/article/:id', ['Knight\Controller\Admin' => 'edit']);
+});
+/*
+$ref = (new ReflectionClass('Knight\Controller\Article'))->getMethod('detail')->getdoccomment();
+$pattern = "#(@[a-zA-Z]+\s*[a-zA-Z0-9, ()_].*)#";
+preg_match_all($pattern, $ref, $matches, PREG_PATTERN_ORDER);
+var_dump($matches);
+$doc = $matches[0];
+$path = '/post/{id}';
+$json = [
+    $path => [],
+];
+foreach ($doc as $item) {
+    $item = explode(' ', $item);
+    var_dump($item);
+    if($item[0] === '@security') {
+        $json[$path]['security'] = [
+            $item[1] => []
+        ];
+    }
+    if($item[0] === '@desc') {
+        $json[$path]['description'] = $item[1];
+    }
+    if($item[0] === '@tags') {
+        $json[$path]['tags'] = [ $item[1] ];
+    }
+    if($item[0] === '@param') {
+        $json[$path]['parameters'][] = [
+            'type' => $item[1],
+            'name' => $item[2],
+            'in' => $item[3],
+            'required' => $item[4],
+            'description' => 'test'
+        ];
+    }
+}
+var_dump($json);
+*/
+$server = new HttpServer($app);
 $server->start();

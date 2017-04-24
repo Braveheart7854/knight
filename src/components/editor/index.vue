@@ -1,48 +1,62 @@
 <template>
-  <div class="editor">
-    <!--<textarea id="markdown">-->
-    <!--</textarea>-->
-    <textarea id="editor" placeholder="Balabala" autofocus></textarea>
-    <div class="editor-option">
-      <form novalidate @submit.stop.prevent="submit">
-        <md-input-container>
-          <label>With label</label>
-          <md-input placeholder="title"></md-input>
-        </md-input-container>
-        <md-input-container>
-          <label for="movie">请选择分类</label>
-          <md-select name="movie" id="movie" v-model="movie">
-            <md-option value="fight_club">Fight Club</md-option>
-            <md-option value="godfather">Godfather</md-option>
-            <md-option value="godfather_ii">Godfather II</md-option>
-            <md-option value="godfather_iii">Godfather III</md-option>
-            <md-option value="godfellas">Godfellas</md-option>
-            <md-option value="pulp_fiction">Pulp Fiction</md-option>
-            <md-option value="scarface">Scarface</md-option>
-          </md-select>
-        </md-input-container>
-        <md-button href="#/components/button" class="md-raised md-primary">submit</md-button>
-      </form>
+  <div class="main-wrapper">
+    <div class="editor">
+      <textarea id="editor" placeholder="Balabala" autofocus rows="10" v-model="article.content"></textarea>
+      <div class="editor-option">
+        <form novalidate @submit.stop.prevent="submit">
+          <md-input-container>
+            <label>title</label>
+            <md-input placeholder="title" v-model=" article.title"></md-input>
+          </md-input-container>
+          <md-input-container>
+            <label for="category">分类</label>
+            <md-select name="category" id="category" v-model="article.category">
+              <md-option value="自言自语">自言自语</md-option>
+              <md-option value="以梦为马">以梦为马</md-option>
+              <md-option value="桑下语">桑下语</md-option>
+            </md-select>
+          </md-input-container>
+          <div>
+            <md-chips v-model="article.tags" :md-max="5" md-input-placeholder="标签..." @change="tag">
+              <template scope="chip">
+                <span>{{ chip.value }}</span>
+              </template>
+            </md-chips>
+          </div>
+          <div>
+            <md-radio v-model="article.permission" id="my-test1" name="my-test-group1" md-value="1">公开</md-radio>
+            <md-radio v-model="article.permission" id="my-test2" name="my-test-group1" md-value="2">隐藏</md-radio>
+            <md-radio v-model="article.permission" id="my-test3" name="my-test-group1" md-value="3">仅自己可见</md-radio>
+          </div>
+          <md-button class="md-raised md-primary"><span @click="commit">提交</span></md-button>
+        </form>
+      </div>
     </div>
   </div>
-
 </template>
 <style lang='sass'>
+  @import './styles/simditor.scss';
   @import './editor.scss';
-  @import "./styles/simditor.scss";
+  @import '../admin/main.css';
 </style>
 <script>
   import Simditor from 'simditor';
   import $ from 'jquery';
+  console.log(Simditor);
   export default {
+    props: {
+      article: {
+        type: Object,
+        required: false
+      }
+    },
     data: function () {
       return {
-        movie: '请选择分类',
+        editor: null,
       }
     },
     mounted () {
-      console.log(document.getElementById("markdown"));
-      var editor = new Simditor({
+      this.editor = new Simditor({
         textarea: $('#editor'),
         upload: {
           url: '',
@@ -51,16 +65,25 @@
           connectionCount: 3,
           leaveConfirm: 'Uploading is in progress, are you sure to leave this page?'
         }
-
         //optional options
       });
     },
-    created() {
-      console.log('created editor');
+    beforeUpdate() {
+      this.editor.setValue(this.article.content)
     },
     methods: {
       setPulpFiction() {
         this.movie = 'pulp_fiction';
+      },
+      tag() {
+        console.log('tttttttt', this.tags);
+      },
+      commit() {
+        const tags = this.tags;
+        const title = this.title;
+        const category = this.category;
+        const content = this.content;
+        console.log(tags, title, category, content);
       }
     }
 

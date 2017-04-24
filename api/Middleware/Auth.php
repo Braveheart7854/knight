@@ -55,15 +55,15 @@ class Auth
 
     public function __invoke($req, $res)
     {
-        $authorization = $req->header('Authorization');
-        if(!$authorization) return null;
-        $authorization = explode(' ', $authorization);
-        if(count($authorization) !== 2) return null;
-        list($bearer, $token) = $authorization;
-        if($bearer !== 'Bearer') return null;
-        $user = $this->decode($token);
-        if(!$user) return null;
-        $req->auth = $user;
+        // $authorization = $req->header('Authorization');
+        // if(!$authorization) return null;
+        // $authorization = explode(' ', $authorization);
+        // if(count($authorization) !== 2) return null;
+        // list($bearer, $token) = $authorization;
+        // if($bearer !== 'Bearer') return null;
+        // $user = $this->decode($token);
+        // if(!$user) return null;
+        // $req->auth = $user;
     }
 
     public function decode($token)

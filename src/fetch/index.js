@@ -1,5 +1,6 @@
 import urls from '../config/urls';
 import Storage from '../util/storage';
+import util from '../util';
 
 const domain = urls.api;
 const storage = new Storage();
@@ -13,6 +14,7 @@ const getHeaders = () => {
   if (token) {
     header.Authorization = 'Bearer ' + token;
   }
+  return header;
 };
 
 export default async function api (uri, method, data) {
@@ -28,7 +30,9 @@ export default async function api (uri, method, data) {
       method: method,
     };
     if(data) {
-      fetchParams.body = data;
+      if(method !== 'get') fetchParams.body = data;
+      else uri += '?' + util.queryString(data);
+      console.log('____', util.queryString(data), data);
     }
     const res = await fetch(domain + uri, fetchParams);
     let body = await res.json();

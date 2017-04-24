@@ -12,18 +12,17 @@ import App from './App';
 window.addEventListener('load', () => {
   FastClick.attach(document.body)
 });
-const router = new VueRouter({
-  routes // （缩写）相当于 routes: routes
-});
-// router.beforeEach((to, from, next) => {
-//   console.log(to, from, next);
-//   next()
-// });
 Vue.use(VueRouter);
-// Vue.use(VueResource);
+const router = new VueRouter({
+  routes,
+});
+router.beforeEach((to, from, next) => {
+  console.log(to, from, next);
+  next()
+});
 sync(store, router);
 Vue.use(VueMaterial);
-Vue.material.theme.registerAll({
+Vue.material.registerTheme({
   default: {
     primary: 'cyan',
     accent: 'pink'
@@ -36,9 +35,8 @@ Vue.material.theme.registerAll({
 new Vue({
   router,
   store,
-  el: '#app',
-  render: h => h(App),
-});
+  render: h => h(App)
+}).$mount('#app');
 
 
 

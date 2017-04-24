@@ -22,5 +22,29 @@ export default {
   },
   async post({commit}, data) {
 
+  },
+  async article({commit}, data) {
+    const res = await fetch('/admin/article', 'get', data);
+    if(res.ok) {
+      commit('ARTICLE_FETCH_SUCCESS', res)
+    } else {
+      commit('ARTICLE_FETCH_FAILURE', res)
+    }
+  },
+  async delArt({commit}, {id}) {
+    const res = await fetch('/admin/article/' +id, 'delete');
+    if(res.ok) {
+      commit('ARTICLE_FETCH_SUCCESS', res)
+    } else {
+      commit('ARTICLE_FETCH_FAILURE', res)
+    }
+  },
+  async getArt({commit}, id) {
+    const res = await fetch('/admin/article/' +id, 'get');
+    if(res.ok) {
+      commit('ARTICLE_DETAIL_SUCCESS', res)
+    } else {
+      commit('ARTICLE_DETAIL_FAILURE', res)
+    }
   }
 }
