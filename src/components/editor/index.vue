@@ -45,19 +45,18 @@
   console.log(Simditor);
   export default {
     props: {
-      post: {
+      article: {
         type: Object,
         required: false
       }
     },
     data: function () {
       return {
-        category: '请选择分类',
-        article: {},
+        editor: null,
       }
     },
     mounted () {
-      var editor = new Simditor({
+      this.editor = new Simditor({
         textarea: $('#editor'),
         upload: {
           url: '',
@@ -66,12 +65,11 @@
           connectionCount: 3,
           leaveConfirm: 'Uploading is in progress, are you sure to leave this page?'
         }
-
         //optional options
       });
     },
-    created() {
-      console.log('created editor');
+    beforeUpdate() {
+      this.editor.setValue(this.article.content)
     },
     methods: {
       setPulpFiction() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Editor v-bind:post="article" name="article"></Editor>
+    <Editor v-bind:article="article" name="article"></Editor>
   </div>
 </template>
 <style lang='sass'>

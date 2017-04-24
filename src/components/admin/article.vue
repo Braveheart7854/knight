@@ -34,7 +34,7 @@
             <md-table-cell> {{row.title}} </md-table-cell>
             <md-table-cell> {{row.created}} </md-table-cell>
             <md-table-cell>
-             <span @click="edit">编辑 &nbsp;</span>|<span @click="remove(row.id)">&nbsp; 删除</span>
+             <span><router-link to="/admin/edit/1">编辑 &nbsp;</router-link></span>|<span @click="remove(row.id)">&nbsp; 删除</span>
             </md-table-cell>
           </md-table-row>
         </md-table-body>
