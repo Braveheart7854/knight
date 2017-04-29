@@ -91,9 +91,7 @@ class Admin extends Controller
         $content = $this->request->param('content');
         $cateId = $this->request->param('cateId');
         $time = $this->request->param('time');
-        if ($time) {
-            $time = mktime($time);
-        }
+        $permission = $this->request->param('permission');
         if (!$title || !$content) {
             return $this->response
                 ->status(400)
@@ -114,6 +112,11 @@ class Admin extends Controller
         $art->content = $content;
         $art->cateId = $cateId;
         $art->tags = $tags;
+        $art->permission = $permission;
+        if ($time) {
+            $time = mktime($time);
+            $art->created = $time;
+        }
         $art->update();
         $this->response->json([
             'message' => 'ok',
