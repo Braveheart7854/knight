@@ -12,33 +12,28 @@
     <div class="comment-wrapper">
       <div class="comments">
         <div class="user">
-          username
+          夏拾桑
         </div>
         <div class="text">
           <p>adfasdfasdfasdfasdfasdfasdfasdfasdfasdadg</p>
         </div>
       </div>
-      <div id="form-main">
-        <div id="form-div">
-          <form class="form" id="form1">
-            <p class="name">
-              <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input"
-                     placeholder="Name" id="name"/>
-            </p>
-            <p class="email">
-              <input name="email" type="text" class="validate[required,custom[email]] feedback-input" id="email"
-                     placeholder="Email"/>
-            </p>
-            <p class="text">
-              <textarea name="text" class="validate[required,length[6,300]] feedback-input" id="comment"
-                        placeholder="Comment"></textarea>
-            </p>
-            <div class="submit">
-              <input type="submit" value="SEND" id="button-blue"/>
-              <div class="ease"></div>
-            </div>
-          </form>
+      <div class="form-outside">
+        <div class="form-inside">
+          <md-input-container>
+            <label>With label</label>
+            <md-input placeholder="your site"></md-input>
+          </md-input-container>
+          <md-input-container md-inline>
+            <label>email</label>
+            <md-input></md-input>
+          </md-input-container>
+          <md-input-container>
+            <label>content</label>
+            <md-textarea></md-textarea>
+          </md-input-container>
         </div>
+        <div class="from-btn"><md-button class="md-raised md-primary">发表评论</md-button></div>
       </div>
     </div>
   </div>
@@ -48,14 +43,18 @@
     props: {
       article: {
         type: Object,
-        required: true
+        required: false,
+        default: function() {
+          return {};
+        }
       }
     },
     data () {
       return {}
     },
-    mounted () {
-      console.log(this.props);
+    async beforeMount() {
+      const id = this.
+      await this.$store.dispatch('getCommentByPostId', )
     }
   }
 </script>
@@ -65,11 +64,19 @@
     margin: 20px auto;
     width: 60%;
     background-color: #ffffff;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    z-index: 1;
+    box-shadow: 0 1px 5px rgba(0,0,0,.2), 0 2px 2px rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.12);
   }
   .comments {
     width: 100%;
     padding: 20px;
-    border: 1px solid#f0ad4e;
+    border-bottom: 1px dashed#f0ad4e;
   }
   .comments .user {
     width: 10em;
@@ -79,13 +86,26 @@
     display: inline;
   }
   .comments .text {
-    border:1px solid#000000;
     margin-left: 1em;
     padding: 2em;
     display: inline-block;
+    font-weight: 300;
+  }
+  .form-outside {
+    width: 100%;
+    padding: 20px;
+  }
+  .form-inside {
+    position: relative;
+    width: 60%;
+    margin: 1em auto;
+    border: 1px solid#b2b2b2;
+    padding: 2em;
+  }
+  .form-outside .from-btn {
+    position: relative;
+    width: 10em;
+    margin: 1em auto;
   }
 
-</style>
-<style>
-  @import "comment.css";
 </style>

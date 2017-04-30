@@ -20,8 +20,13 @@ export default {
       commit('POST_FETCH_FAIL', res)
     }
   },
-  async post({commit}, data) {
-
+  async post({commit}, id) {
+    const res = await fetch('/posts/' + id, 'get');
+    if(res.ok) {
+      commit('POST_DETAIL_SUCCESS', res)
+    } else {
+      commit('POST_FETCH_FAIL', res)
+    }
   },
   async article({commit}, data) {
     const res = await fetch('/admin/article', 'get', data);

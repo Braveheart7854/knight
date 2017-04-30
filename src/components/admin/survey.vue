@@ -1,33 +1,83 @@
 <template>
-  <div>
-    <md-table v-once>
-      <md-table-header>
-        <md-table-row>
-          <md-table-head>id</md-table-head>
-          <md-table-head md-numeric>权限</md-table-head>
-          <md-table-head md-numeric>分类</md-table-head>
-          <md-table-head md-numeric>标题</md-table-head>
-          <md-table-head md-numeric>时间</md-table-head>
-        </md-table-row>
-      </md-table-header>
-      <md-table-body>
-        <md-table-row v-for="(row, index) in 5" :key="index">
-          <md-table-cell>Dessert Name</md-table-cell>
-          <md-table-cell v-for="(col, index) in 4" :key="index" md-numeric>10</md-table-cell>
-        </md-table-row>
-      </md-table-body>
-    </md-table>
-    <md-table-pagination
-      md-size="5"
-      md-total="10"
-      md-page="1"
-      md-label="Rows"
-      md-separator="of"
-      :md-page-options="[5, 10, 25, 50]"
-      @pagination="onPagination"></md-table-pagination>
-    </md-table-card>
+  <div class="sur-wrap">
+    <section>
+      <div class="sur-item">
+        <div class="sur-title">系统概况</div>
+        <div class="sur-li">昨日 pv: todo</div>
+        <div class="sur-li">访问 ip 数: todo</div>
+      </div>
+      <hr>
+      <div class="sur-item">
+        <div class="sur-title">文章概况</div>
+        <div class="sur-li">发表文章: 200</div>
+        <div class="sur-li">评论数: 200</div>
+        <div class="sur-li">
+          <md-button class="md-fab md-clean">
+            <md-icon>create</md-icon>
+          </md-button>
+        </div>
+      </div>
+      <div class="sur-item">
+        <div class="sur-title">图片数</div>
+        <div class="sur-li">相册: 200</div>
+        <div class="sur-li">总共上传图片: 200</div>
+        <div class="sur-li">
+          <md-button class="md-fab md-clean">
+            <md-icon>cloud_upload</md-icon>
+          </md-button>
+        </div>
+      </div>
+      <hr>
+      <div class="sur-item">
+        <div class="sur-title">快捷入口</div>
+        <md-button class="md-fab md-clean">
+          <md-icon>create</md-icon>
+        </md-button>
+        <md-button class="md-fab md-clean">
+          <md-icon>sort</md-icon>
+        </md-button>
+        <md-button class="md-fab md-clean">
+          <md-icon>photo</md-icon>
+        </md-button>
+      </div>
+    </section>
   </div>
 </template>
+<style>
+  .sur-wrap {
+    text-align: left;
+  }
+
+  .sur-item {
+    padding: 1em;
+    position: relative;
+    display: inline-block;
+    text-align: left;
+    margin: 2em;
+  }
+
+  .sur-title {
+    width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 1.8em;
+    font-size: 1.2em;
+    line-height: 1.5em;
+    margin-bottom: 1.2em;
+  }
+
+  .sur-li {
+    display: inline;
+    margin-left: 1em;
+    font-weight: 200;
+  }
+
+  .sur-li .md-button {
+    margin-top: -3em;
+    display: inline;
+  }
+
+</style>
 <script>
   export default {
     methods: {

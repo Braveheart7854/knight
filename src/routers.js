@@ -4,8 +4,8 @@ export default [
     component: require('./views/article.vue')
   },
   {
-    path: '/post',
-    component: require('./views/post')
+    path: '/posts',
+    component: require('./views/posts')
   },
   {
     path: '/editor',

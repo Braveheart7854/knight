@@ -6,7 +6,7 @@
         <form novalidate @submit.stop.prevent="submit">
           <md-input-container>
             <label>title</label>
-            <md-input placeholder="title" v-model=" article.title"></md-input>
+            <md-input placeholder="title" v-model="article.title"></md-input>
           </md-input-container>
           <md-input-container>
             <label for="category">分类</label>
@@ -42,12 +42,14 @@
 <script>
   import Simditor from 'simditor';
   import $ from 'jquery';
-  console.log(Simditor);
   export default {
     props: {
       article: {
         type: Object,
-        required: false
+        required: false,
+        default: function() {
+          return {};
+        },
       }
     },
     data: function () {
@@ -55,7 +57,12 @@
         editor: null,
       }
     },
+//    beforeMount() {
+//      this.article = this.article || {};
+//      console.log(this.article);
+//    },
     mounted () {
+
       this.editor = new Simditor({
         textarea: $('#editor'),
         upload: {

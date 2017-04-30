@@ -20,8 +20,6 @@
   import Detail from '../components/post/post.vue';
   import Jumbotron from '../components/post/jumbotron.vue';
   import SideBar from '../components/nav/sideBar.vue';
-
-
   export default {
     data() {
       return {
@@ -30,18 +28,22 @@
         message: '',
       }
     },
-    methods: {},
+    methods: {
+
+    },
     async beforeMount() {
-      await this.$store.dispatch('posts', 'get');
-      const res = this.$store.getters.getPost;
-      this.post = res.post.pop();
+      const id = this.$route.params.id;
+      await this.$store.dispatch('post', id);
+      const res = this.$store.state.post;
       this.ok = res.ok;
       this.message = res.message;
+      this.post = res.post;
+      await this.$store.dispatch('post', id);
+
       console.log(this.post);
     },
     mounted () {
       console.log('mmmmmmmmount')
-
     },
     components: {
       Detail,

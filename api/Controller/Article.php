@@ -71,7 +71,7 @@ class Article extends Controller
         $this->response->json([
             'message' => 'ok',
             'code' => '0',
-            'data' => $art,
+            'data' => $art->attr,
         ]);
     }
 
