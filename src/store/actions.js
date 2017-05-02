@@ -51,5 +51,13 @@ export default {
     } else {
       commit('ARTICLE_DETAIL_FAILURE', res)
     }
+  },
+  async getCommentsByPostId({commit}, id) {
+    const res = await fetch('/comments/' + id, 'get');
+    if(res.ok) {
+      commit('COMMENT_FETCH_SUCCESS', res);
+    } else {
+      commit('COMMENT_FETCH_FAILURE', res);
+    }
   }
 }

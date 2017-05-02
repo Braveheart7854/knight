@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="post">
-      <Detail v-bind:article="post"></Detail>
+      <Detail v-bind:article="post" v-bind:comments="comments"></Detail>
     </div>
   </div>
 </template>
@@ -26,6 +26,11 @@
         post: {},
         ok: false,
         message: '',
+        comments: {
+          page: 1,
+          pageSize: 20,
+          total: 0,
+        },
       }
     },
     methods: {
@@ -38,12 +43,18 @@
       this.ok = res.ok;
       this.message = res.message;
       this.post = res.post;
-      await this.$store.dispatch('post', id);
-
-      console.log(this.post);
-    },
-    mounted () {
-      console.log('mmmmmmmmount')
+      await this.$store.dispatch('getCommentsByPostId', id);
+      let comments = this.$store.state.comment;
+      if(comments && comments.comment) {
+        const comment = comments.comment;
+        this.comments = {
+          list: comment.list || [],
+          total: comment.total || 0,
+          page: comment.page || 1,
+          pageSize: comment.pageSize || 20,
+        };
+        console.log('ccccccc', this.comments);
+      }
     },
     components: {
       Detail,

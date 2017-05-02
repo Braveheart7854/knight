@@ -138,10 +138,20 @@ class Article extends Controller
                 'limit' => $pageSize,
                 'skip' => $offset,
             ]);
+        $total = 0; // @todo
+        $list = [];
+        foreach($comments as $key => $value) {
+          $list[] = $value->attr;
+        }
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
-            'data' => ['list' => $comments],
+            'data' => [
+              'list' => $list,
+              'page' => $page,
+              'pageSize' => $pageSize,
+              'total' => $total,
+            ],
         ]);
     }
 

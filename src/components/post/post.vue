@@ -10,27 +10,31 @@
       </md-card>
     </div>
     <div class="comment-wrapper">
-      <div class="comments">
-        <div class="user">
-          夏拾桑
-        </div>
-        <div class="text">
-          <p>adfasdfasdfasdfasdfasdfasdfasdfasdfasdadg</p>
+      <div v-for="comment in comments.list">
+        <div class="comments">
+          <div class="user">{{comment.username}}</div>
+          <div class="text">
+            <p>{{comment.content}}</p>
+          </div>
         </div>
       </div>
       <div class="form-outside">
         <div class="form-inside">
+          <md-input-container md-inline>
+            <label>username</label>
+            <md-input placeholder="username" v-model="username"></md-input>
+          </md-input-container>
           <md-input-container>
-            <label>With label</label>
-            <md-input placeholder="your site"></md-input>
+            <label>site</label>
+            <md-input placeholder="your site" v-model="site"></md-input>
           </md-input-container>
           <md-input-container md-inline>
             <label>email</label>
-            <md-input></md-input>
+            <md-input placeholder="email" v-model="email" type="email"></md-input>
           </md-input-container>
           <md-input-container>
             <label>content</label>
-            <md-textarea></md-textarea>
+            <md-textarea v-model="content"></md-textarea>
           </md-input-container>
         </div>
         <div class="from-btn"><md-button class="md-raised md-primary">发表评论</md-button></div>
@@ -47,14 +51,47 @@
         default: function() {
           return {};
         }
+      },
+      comments: {
+        type: Object,
+        required: false,
+        default: function() {
+          return {
+            list: [],
+            page: 1,
+            pageSize: 20,
+            total: 0,
+          }
+        }
       }
     },
     data () {
-      return {}
+      return {
+        username: '',
+        email: '',
+        site: '',
+        content: '',
+      }
     },
-    async beforeMount() {
-      const id = this.
-      await this.$store.dispatch('getCommentByPostId', )
+    beforeUpdate() {
+      console.log('xxxxxxxxxx', this.comments);
+    },
+    methods() {
+      submit() {
+        const username = this.username;
+        if(!username) {
+          this.message = 'user name required';
+          this.ok = false;
+          return;
+        }
+        const data = {
+          content: this.content,
+          site: this.site,
+          email: this.email,
+          username: this.username,
+        };
+        console.log(data);
+      }
     }
   }
 </script>
@@ -77,18 +114,16 @@
     width: 100%;
     padding: 20px;
     border-bottom: 1px dashed#f0ad4e;
+    display: table;
   }
   .comments .user {
-    width: 10em;
-    height: 5em;
     margin-top: -1em;
     color: #99b2ff;
-    display: inline;
+    display: table-cell;
   }
   .comments .text {
-    margin-left: 1em;
     padding: 2em;
-    display: inline-block;
+    display: table-cell;
     font-weight: 300;
   }
   .form-outside {
