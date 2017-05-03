@@ -10,6 +10,7 @@
 namespace Knight\Controller;
 
 use Knight\Component\Controller;
+use Knight\Model\Comment;
 use Knight\Model\Post;
 use Knight\Model\Category;
 
@@ -39,6 +40,13 @@ class Admin extends Controller
         ]);
     }
 
+    /**
+     * @body string title
+     * @body string content
+     * @body integer cateId
+     *
+     *
+     */
     public function create()
     {
         $request = $this->request;
@@ -91,9 +99,7 @@ class Admin extends Controller
         $content = $this->request->param('content');
         $cateId = $this->request->param('cateId');
         $time = $this->request->param('time');
-        if ($time) {
-            $time = mktime($time);
-        }
+        $permission = $this->request->param('permission');
         if (!$title || !$content) {
             return $this->response
                 ->status(400)
@@ -104,7 +110,7 @@ class Admin extends Controller
         }
         $post = new Post();
         $art = $post->findById($id);
-        if(!$art) {
+        if (!$art) {
             return $this->response->status(400)->json([
                 'message' => 'article not found',
                 'code' => 2,
@@ -114,6 +120,11 @@ class Admin extends Controller
         $art->content = $content;
         $art->cateId = $cateId;
         $art->tags = $tags;
+        $art->permission = $permission;
+        if ($time) {
+            $time = mktime($time);
+            $art->created = $time;
+        }
         $art->update();
         $this->response->json([
             'message' => 'ok',
@@ -142,12 +153,13 @@ class Admin extends Controller
         }
         $art->delete();
         $this->response->json([
-           'message' => 'ok',
+            'message' => 'ok',
             'code' => 0,
         ]);
     }
 
-    public function detail() {
+    public function detail()
+    {
         $id = $this->request->param('id');
         if (!intval($id)) {
             return $this->response
@@ -171,5 +183,72 @@ class Admin extends Controller
             'data' => $art,
         ]);
     }
+
+
+    /**
+     * get article comment by article id
+     *
+     * @param int $id
+     * @query int $page required
+     * @query int $pageSize required
+     * @return $ref comment
+     */
+    public function comments()
+    {
+        $id = $this->request->params['id'];
+        if (!$id) {
+            return $this->response->status(400)->json([
+                'message' => 'param id required',
+                'code' => 1,
+            ]);
+        }
+        $page = abs($this->request->query('page'));
+        $page = $page ?: 1;
+        $pageSize = 20;
+        $offset = ($page - 1) * $pageSize;
+        $comment = new Comment();
+        $comments = $comment->find([
+            'artId' => $id,
+        ],
+            [
+                'limit' => $pageSize,
+                'skip' => $offset,
+            ]);
+        $total = 0; // @todo
+        $list = [];
+        foreach ($comments as $key => $value) {
+            $list[] = $value->attr;
+        }
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+            'data' => [
+                'list' => $list,
+                'page' => $page,
+                'pageSize' => $pageSize,
+                'total' => $total,
+            ],
+        ]);
+    }
+
+    public function dropComment()
+    {
+        $ids = $this->request->body('ids');
+        $ids = explode(',', $ids);
+        if (empty(($ids))) {
+            return $this->response->status(400)->json([
+                'message' => '参数错误',
+                'code' => 1,
+            ]);
+        }
+        $comment = new Comment();
+        $where = ['id' => ['$in' => $ids]];
+        $comment->delete($where);
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+        ]);
+    }
+
 
 }

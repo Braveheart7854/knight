@@ -6,6 +6,7 @@ export default {
     return user;
   },
   getPost({post}) {
+    console.log('00000000', post);
     return post;
   }
 }

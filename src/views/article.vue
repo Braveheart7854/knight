@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="post">
-      <Detail v-bind:article="post"></Detail>
+      <Detail v-bind:article="post" v-bind:comments="comments"></Detail>
     </div>
   </div>
 </template>
@@ -20,28 +20,41 @@
   import Detail from '../components/post/post.vue';
   import Jumbotron from '../components/post/jumbotron.vue';
   import SideBar from '../components/nav/sideBar.vue';
-
-
   export default {
     data() {
       return {
         post: {},
         ok: false,
         message: '',
+        comments: {
+          page: 1,
+          pageSize: 20,
+          total: 0,
+        },
       }
     },
-    methods: {},
+    methods: {
+
+    },
     async beforeMount() {
-      await this.$store.dispatch('posts', 'get');
-      const res = this.$store.getters.getPost;
-      this.post = res.post.pop();
+      const id = this.$route.params.id;
+      await this.$store.dispatch('post', id);
+      const res = this.$store.state.post;
       this.ok = res.ok;
       this.message = res.message;
-      console.log(this.post);
-    },
-    mounted () {
-      console.log('mmmmmmmmount')
-
+      this.post = res.post;
+      await this.$store.dispatch('getCommentsByPostId', id);
+      let comments = this.$store.state.comment;
+      if(comments && comments.comment) {
+        const comment = comments.comment;
+        this.comments = {
+          list: comment.list || [],
+          total: comment.total || 0,
+          page: comment.page || 1,
+          pageSize: comment.pageSize || 20,
+        };
+        console.log('ccccccc', this.comments);
+      }
     },
     components: {
       Detail,

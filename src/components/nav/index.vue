@@ -5,17 +5,13 @@
         <md-button class="md-icon-button" @click.native="toggleLeftSidenav">
           <md-icon>menu</md-icon>
         </md-button>
-        <h2 class="md-title" style="flex: 1;">夏拾桑</h2>
-        <input type="text" placeholder="search">
-        <md-button class="md-icon-button">
-          <md-icon>search</md-icon>
-        </md-button>
+        <h2 class="md-title" style="flex: 1;"><router-link to="/admin/home">夏拾桑</router-link></h2>
       </div>
     </md-toolbar>
     <md-sidenav class="md-left" ref="leftSidenav" @open="open('Left')" @close="close('Left')">
       <md-toolbar>
         <div class="md-toolbar-container">
-          <h3 class="md-title">knight 管理后台</h3>
+          <h4 class="md-title">knight 管理后台</h4>
         </div>
       </md-toolbar>
       <div class="phone-viewport">

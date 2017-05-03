@@ -30,7 +30,7 @@
   export default {
     data() {
       return {
-        posts: null,
+        posts: {},
         ok: false,
         message: '',
       }
@@ -47,7 +47,6 @@
     },
     mounted () {
       console.log('mmmmmmmmount')
-
     },
     components: {
       Post,
