@@ -77,6 +77,7 @@ class Article extends Controller
 
     /**
      * get article list
+     *
      * @query int $page
      *
      */
@@ -112,6 +113,7 @@ class Article extends Controller
 
     /**
      * get article comment by article id
+     *
      * @param int $id
      * @query int $page required
      * @query int $pageSize required
@@ -140,17 +142,17 @@ class Article extends Controller
             ]);
         $total = 0; // @todo
         $list = [];
-        foreach($comments as $key => $value) {
-          $list[] = $value->attr;
+        foreach ($comments as $key => $value) {
+            $list[] = $value->attr;
         }
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
             'data' => [
-              'list' => $list,
-              'page' => $page,
-              'pageSize' => $pageSize,
-              'total' => $total,
+                'list' => $list,
+                'page' => $page,
+                'pageSize' => $pageSize,
+                'total' => $total,
             ],
         ]);
     }
@@ -202,6 +204,42 @@ class Article extends Controller
         ];
         $article = new Post();
         $article->insert($post);
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+        ]);
+    }
+
+    public function addComment()
+    {
+        $artId = $this->request->param('artId');
+        $content = $this->request->body('content');
+        $email = $this->request->body('email');
+        $site = $this->request->body('site');
+        $username = $this->request->body('username');
+        if ($username || $content) {
+            return $this->response->status(400)->json([
+                'message' => '参数错误',
+                'code' => 1,
+            ]);
+        }
+        $check = (new Post())->findById($artId);
+        if (!$check) {
+            return $this->request->status(400)->json([
+                'message' => '文章不存在',
+                'code' => 2,
+            ]);
+        }
+        $data = [
+            'artId' => $artId,
+            'email' => $email,
+            'site' => $site,
+            'username' => $username,
+            'content' => $content,
+            'created' => time(),
+        ];
+        $comment = new Comment();
+        $comment->insert($data);
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
