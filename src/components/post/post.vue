@@ -37,8 +37,15 @@
             <md-textarea v-model="content"></md-textarea>
           </md-input-container>
         </div>
-        <div class="from-btn"><md-button class="md-raised md-primary">发表评论</md-button></div>
+        <div class="from-btn">
+          <div v-on:click="submit">
+            <md-button class="md-raised md-primary">发表评论</md-button>
+          </div>
+        </div>
       </div>
+      <md-snackbar md-position="top center" ref="snackbar" :md-duration="2000">
+        <span>{{this.message}}</span>
+      </md-snackbar>
     </div>
   </div>
 </template>
@@ -71,17 +78,20 @@
         email: '',
         site: '',
         content: '',
+        message:'',
+        ok: false,
       }
     },
     beforeUpdate() {
       console.log('xxxxxxxxxx', this.comments);
     },
-    methods() {
+    methods: {
       submit() {
         const username = this.username;
-        if(!username) {
-          this.message = 'user name required';
+        if(!username || !content) {
+          this.message = 'username and content required';
           this.ok = false;
+          this.snackbar();
           return;
         }
         const data = {
@@ -91,6 +101,9 @@
           username: this.username,
         };
         console.log(data);
+      },
+      snackbar() {
+        this.$refs.snackbar.open();
       }
     }
   }
@@ -98,8 +111,7 @@
 <style>
   .comment-wrapper {
     position: relative;
-    margin: 20px auto;
-    width: 60%;
+    width: 100%;
     background-color: #ffffff;
     display: -webkit-box;
     display: flex;
@@ -142,5 +154,4 @@
     width: 10em;
     margin: 1em auto;
   }
-
 </style>

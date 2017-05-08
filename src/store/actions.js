@@ -59,5 +59,13 @@ export default {
     } else {
       commit('COMMENT_FETCH_FAILURE', res);
     }
+  },
+  async survey({commit}) {
+    const res = await fetch('/admin/survey', 'get');
+    if(res.ok) {
+      commit('SURVEY_FETCH_SUCCESS', res);
+    } else {
+      commit('SURVEY_FETCH_FAILURE', res);
+    }
   }
 }

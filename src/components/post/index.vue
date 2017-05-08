@@ -18,11 +18,6 @@
 <style lang="sass">
   @import "index.scss";
 
-  .comment-wrapper {
-    margin: 20px auto;
-    width: 60%;
-  }
-
 </style>
 <script>
   export default {

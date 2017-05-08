@@ -30,5 +30,10 @@ return [
         'audience' => '127.0.0.1',
         'expired' => 3600,
         'key' => 'test',
+    ],
+    'courser' => [
+        'loader' => [
+            'Photo' => 'Knight\Model\Photo',
+        ]
     ]
 ];

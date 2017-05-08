@@ -1,19 +1,6 @@
 <template>
-  <div>
-    <SideBar></SideBar>
-    <div class="header">
-      <ul class="nav">
-        <li>home</li>
-        <li>github</li>
-        <li>archive</li>
-      </ul>
-      <div class="search">
-        <input class="filter" type="text" name="search" placeholder="keyword">
-      </div>
-    </div>
-    <div class="post">
-      <Detail v-bind:article="post" v-bind:comments="comments"></Detail>
-    </div>
+  <div class="post">
+    <Detail v-bind:article="post" v-bind:comments="comments"></Detail>
   </div>
 </template>
 <script>
@@ -33,9 +20,7 @@
         },
       }
     },
-    methods: {
-
-    },
+    methods: {},
     async beforeMount() {
       const id = this.$route.params.id;
       await this.$store.dispatch('post', id);
@@ -45,7 +30,7 @@
       this.post = res.post;
       await this.$store.dispatch('getCommentsByPostId', id);
       let comments = this.$store.state.comment;
-      if(comments && comments.comment) {
+      if (comments && comments.comment) {
         const comment = comments.comment;
         this.comments = {
           list: comment.list || [],
@@ -64,10 +49,6 @@
   }
 </script>
 <style type="text/css">
-  html, body {
-    margin: 0;
-    padding: 0;
-  }
 
   .header {
     position: relative;
@@ -102,7 +83,6 @@
   .header li:hover {
     border-bottom: 2px dashed #0F769F;
   }
-
   .header .search {
     width: 5em;
     height: 2em;
@@ -117,8 +97,6 @@
     line-height: 18px;
   }
 
-  .post {
-    position: relative;
-  }
+
 
 </style>

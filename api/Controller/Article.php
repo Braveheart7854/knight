@@ -27,6 +27,8 @@ class Article extends Controller
     public function posts()
     {
         $page = abs($this->request->query('page'));
+        $order = $this->request->query('order');
+        $order = $order === 'archive' ? 'created' : 'id';
         $page = $page ?: 1;
         $pageSize = 20;
         $offset = ($page - 1) * $pageSize;
@@ -37,7 +39,7 @@ class Article extends Controller
             'isShow' => 1,
         ];
         $options = [
-            'order' => ['id' => 'desc'],
+            'order' => [$order => 'desc'],
         ];
         $list = $article->find($condition, $options);
         $data = [];
@@ -210,39 +212,4 @@ class Article extends Controller
         ]);
     }
 
-    public function addComment()
-    {
-        $artId = $this->request->param('artId');
-        $content = $this->request->body('content');
-        $email = $this->request->body('email');
-        $site = $this->request->body('site');
-        $username = $this->request->body('username');
-        if ($username || $content) {
-            return $this->response->status(400)->json([
-                'message' => '参数错误',
-                'code' => 1,
-            ]);
-        }
-        $check = (new Post())->findById($artId);
-        if (!$check) {
-            return $this->request->status(400)->json([
-                'message' => '文章不存在',
-                'code' => 2,
-            ]);
-        }
-        $data = [
-            'artId' => $artId,
-            'email' => $email,
-            'site' => $site,
-            'username' => $username,
-            'content' => $content,
-            'created' => time(),
-        ];
-        $comment = new Comment();
-        $comment->insert($data);
-        $this->response->json([
-            'message' => 'ok',
-            'code' => 0,
-        ]);
-    }
 }

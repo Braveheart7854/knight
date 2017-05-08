@@ -91,8 +91,10 @@
 
       }
     },
-    beforeMount() {
-      this.$store.dispatch('article');
+    async beforeMount() {
+      await this.$store.dispatch('survey');
+      const admin = this.$store.state;
+      console.log(this.$store.state);
     }
   }
 </script>

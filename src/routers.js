@@ -1,31 +1,42 @@
 export default [
   {
-    path: '/post/:id',
-    component: require('./views/article.vue')
-  },
-  {
-    path: '/posts',
-    component: require('./views/posts')
-  },
-  {
-    path: '/editor',
-    component: require('./views/editor'),
-  },
-  {
-    path: '/list',
-    component: require('./views/table'),
-  },
-  {
     path: '/',
-    component: require('./views/starry.vue')
-  },
-  {
-    path: '/login',
-    component: require('./views/login')
-  },
-  {
-    path: '/register',
-    component: require('./views/register')
+    component: require('./components/post/common'),
+    meta: { auth: false },
+    children: [
+      {
+        path: '/post/:id',
+        component: require('./views/article.vue')
+      },
+      {
+        path: '/posts',
+        component: require('./views/posts')
+      },
+      {
+        path: '/archive',
+        component: require('./views/archive')
+      },
+      {
+        path: '/editor',
+        component: require('./views/editor'),
+      },
+      {
+        path: '/list',
+        component: require('./views/table'),
+      },
+      {
+        path: '/',
+        component: require('./views/starry.vue')
+      },
+      {
+        path: '/login',
+        component: require('./views/login')
+      },
+      {
+        path: '/register',
+        component: require('./views/register')
+      },
+    ]
   },
   {
     path: '/admin',

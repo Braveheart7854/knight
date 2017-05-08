@@ -10,17 +10,19 @@ define('APP_ROOT', dirname(dirname(__FILE__)));
 require APP_ROOT . '/vendor/autoload.php';
 $config = require APP_ROOT . '/api/config/index.php';
 
-use Courser\Courser;
+use Courser\App;
 use Courser\Session\Session;
 use Courser\Server\HttpServer;
 use Knight\Middleware\Cors;
 use Knight\Middleware\Auth;
 use Courser\Helper\Config;
+use Knight\Model\Photo;
 
 Config::set($config);
-$app = new Courser('dev');
+$app = new App('dev');
 $cors = new Cors();
 $session = new Session($config['session']);
+new Photo();
 $app->used($session);
 $app->any('*', $cors);
 $app->notFound(function ($req, $res) {
@@ -47,42 +49,14 @@ $app->group('/admin', function () {
     $this->get('/article/:id', ['\Knight\Controller\Admin' => 'detail']);
     $this->delete('/article/:id', ['Knight\Controller\Admin' => 'drop']);
     $this->put('/article/:id', ['Knight\Controller\Admin' => 'edit']);
+    $this->post('/article', ['Knight\Controller\Admin' => 'create']);
 });
-/*
-$ref = (new ReflectionClass('Knight\Controller\Article'))->getMethod('detail')->getdoccomment();
-$pattern = "#(@[a-zA-Z]+\s*[a-zA-Z0-9, ()_].*)#";
-preg_match_all($pattern, $ref, $matches, PREG_PATTERN_ORDER);
-var_dump($matches);
-$doc = $matches[0];
-$path = '/post/{id}';
-$json = [
-    $path => [],
-];
-foreach ($doc as $item) {
-    $item = explode(' ', $item);
-    var_dump($item);
-    if($item[0] === '@security') {
-        $json[$path]['security'] = [
-            $item[1] => []
-        ];
-    }
-    if($item[0] === '@desc') {
-        $json[$path]['description'] = $item[1];
-    }
-    if($item[0] === '@tags') {
-        $json[$path]['tags'] = [ $item[1] ];
-    }
-    if($item[0] === '@param') {
-        $json[$path]['parameters'][] = [
-            'type' => $item[1],
-            'name' => $item[2],
-            'in' => $item[3],
-            'required' => $item[4],
-            'description' => 'test'
-        ];
-    }
-}
-var_dump($json);
-*/
+$app->exception(function($req, $res, $err) {
+    $res->status(500)->json([
+        'message' => $err->getMessage()
+    ]);
+    throw $err;
+});
+
 $server = new HttpServer($app);
 $server->start();

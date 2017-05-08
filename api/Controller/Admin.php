@@ -6,16 +6,36 @@
  * @date      : 2017/4/2
  * @time      : 下午4:38
  */
-
 namespace Knight\Controller;
 
 use Knight\Component\Controller;
 use Knight\Model\Comment;
 use Knight\Model\Post;
 use Knight\Model\Category;
+use Photo;
 
 class Admin extends Controller
 {
+
+    public function survey()
+    {
+        $article = new Post();
+        $articleNumber = $article->count();
+        $commentNumber = (new Comment())->count();
+        $photoNumber = 0;
+        $albumNumber = 0;
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+            'data' => [
+                'articleNumber' => $articleNumber,
+                'commentNumber' => $commentNumber,
+                'albumNumber' => $albumNumber,
+                'photoNumber' => $photoNumber,
+            ]
+        ]);
+    }
+
     public function article()
     {
         $pageSize = 20;
@@ -67,14 +87,17 @@ class Admin extends Controller
             ]);
         }
         $post = [
+            'userId' => 1,
             'title' => $title,
             'content' => $content,
-            'tags' => implode(',', $tags),
+            'tags' => $tags,
             'cateId' => $cateId,
+            'created' => time(),
         ];
-        $article = new Post();
-        $article->insert($post);
-        $this->response->json([
+        var_dump(Photo::makeInsert($post));
+//        $article = new Post();
+//        $article->insert($post);
+        $response->json([
             'code' => 0,
             'message' => 'ok',
         ]);
