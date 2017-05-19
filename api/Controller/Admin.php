@@ -75,6 +75,13 @@ class Admin extends Controller
         $content = $request->body('content');
         $tags = $request->body('body');
         $cateId = $request->body('cateId');
+        $permission = $request->body('permission');
+        if (!in_array($permission, [0, 1, 2])) {
+            return $this->response->status(400)->json([
+                'message' => 'Illegal param permission',
+                'code' => 1,
+            ]);
+        }
         if (!$title) {
             return $response->status(400)->json([
                 'message' => 'title required',
@@ -91,10 +98,10 @@ class Admin extends Controller
             'title' => $title,
             'content' => $content,
             'tags' => $tags,
+            'permission' => $permission,
             'cateId' => $cateId,
             'created' => time(),
         ];
-        var_dump(Photo::makeInsert($post));
 //        $article = new Post();
 //        $article->insert($post);
         $response->json([

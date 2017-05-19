@@ -42,15 +42,10 @@ class Article extends Controller
             'order' => [$order => 'desc'],
         ];
         $list = $article->find($condition, $options);
-        $data = [];
-        foreach ($list as $art) {
-            if (!$art) continue;
-            $data[] = $art->attr;
-        }
         $this->response->json([
             'message' => 'ok',
             'code' => '0',
-            'data' => $data,
+            'data' => $list,
         ]);
     }
 
@@ -67,13 +62,13 @@ class Article extends Controller
         $article = new Post();
         $condition = [
             'id' => $id,
-            'isShow' => 1
+            'permission' => ['$lte' => 1]
         ];
         $art = $article->findOne($condition);
         $this->response->json([
             'message' => 'ok',
             'code' => '0',
-            'data' => $art->attr,
+            'data' => $art,
         ]);
     }
 

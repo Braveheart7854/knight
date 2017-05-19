@@ -1,6 +1,6 @@
 <?php
 /**
- * @license   https://github.com/Init/licese.md
+ * @license   MIT
  * @copyright Copyright (c) 2017
  * @author    : bugbear
  * @date      : 2017/3/16
@@ -16,32 +16,31 @@ use Courser\Server\HttpServer;
 use Knight\Middleware\Cors;
 use Knight\Middleware\Auth;
 use Courser\Helper\Config;
-use Knight\Model\Photo;
 
 Config::set($config);
 $app = new App('dev');
 $cors = new Cors();
 $session = new Session($config['session']);
-new Photo();
 $app->used($session);
 $app->any('*', $cors);
 $app->notFound(function ($req, $res) {
     $res->status(404)->json(['message' => 'Not Found']);
 });
-
-$app->get('/test', function ($req, $res) {
-    $res->send('fuck world');
+$app->exception(function ($req, $res, Exception $err) {
+   $res->status(500)->json([
+       'message' =>'server error',
+       'code' => $err->getMessage(),
+   ]);
 });
 
-$app->get('/', ['\Knight\Controller\Article' => 'posts']);
 
-$app->get('/posts/:id', ['\Knight\Controller\Article' => 'detail']);
-$app->get('/comments/:id', ['\Knight\Controller\Article' => 'comments']);
-$app->post('/register', ['\Knight\Controller\Auth' => 'register']);
-$app->post('/login', ['\Knight\Controller\Auth' => 'login']);
+$app->get('/posts', [\Knight\Controller\Article::class => 'posts']);
 
-$app->get('/admin/article', ['\Knight\Controller\Admin' => 'article']);
-
+$app->get('/posts/:id', [\Knight\Controller\Article::class => 'detail']);
+$app->get('/comments/:id', [\Knight\Controller\Article::class => 'comments']);
+$app->post('/register', [\Knight\Controller\Auth::class => 'register']);
+$app->post('/login', [\Knight\Controller\Auth::class => 'login']);
+$app->get('/admin/article', [\Knight\Controller\Admin::class => 'article']);
 $app->group('/admin', function () {
     $auth = new Auth(Config::get('jwt'), 'knight');
     $this->used($auth);
@@ -50,12 +49,6 @@ $app->group('/admin', function () {
     $this->delete('/article/:id', ['Knight\Controller\Admin' => 'drop']);
     $this->put('/article/:id', ['Knight\Controller\Admin' => 'edit']);
     $this->post('/article', ['Knight\Controller\Admin' => 'create']);
-});
-$app->exception(function($req, $res, $err) {
-    $res->status(500)->json([
-        'message' => $err->getMessage()
-    ]);
-    throw $err;
 });
 
 $server = new HttpServer($app);
