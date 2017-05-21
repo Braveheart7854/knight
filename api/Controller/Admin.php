@@ -20,18 +20,20 @@ class Admin extends Controller
     public function survey()
     {
         $article = new Post();
-        $articleNumber = $article->count();
-        $commentNumber = (new Comment())->count();
+//        $articleNumber = $article->count();
+//        $commentNumber = (new Comment())->count();
         $photoNumber = 0;
         $albumNumber = 0;
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
             'data' => [
-                'articleNumber' => $articleNumber,
-                'commentNumber' => $commentNumber,
-                'albumNumber' => $albumNumber,
-                'photoNumber' => $photoNumber,
+                'articleNumber' => 4,
+                'commentNumber' => 3,
+                'albumNumber' => 2,
+                'photoNumber' => 1,
+                'pv' => 1,
+                'ip' => 1,
             ]
         ]);
     }
@@ -43,15 +45,11 @@ class Admin extends Controller
         $page = abs($page) ?: 1;
         $article = new Post();
         $posts = $article->findAll();
-        $list = [];
-        foreach ($posts as $key => $art) {
-            $list[] = $art->attr;
-        }
         $ret = [
             'total' => 10, // @fixme
             'page' => $page,
             'pageSize' => $pageSize,
-            'list' => $list,
+            'list' => $posts,
         ];
         $this->response->json([
             'message' => 'ok',
@@ -102,8 +100,8 @@ class Admin extends Controller
             'cateId' => $cateId,
             'created' => time(),
         ];
-//        $article = new Post();
-//        $article->insert($post);
+        $article = new Post();
+        $article->insert($post);
         $response->json([
             'code' => 0,
             'message' => 'ok',
@@ -117,7 +115,7 @@ class Admin extends Controller
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
-            'list' => $cate,
+            'data' => $cate,
         ]);
     }
 
@@ -279,6 +277,7 @@ class Admin extends Controller
             'code' => 0,
         ]);
     }
+
 
 
 }

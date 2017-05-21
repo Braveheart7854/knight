@@ -3,14 +3,14 @@
     <section>
       <div class="sur-item">
         <div class="sur-title">系统概况</div>
-        <div class="sur-li">昨日 pv: todo</div>
-        <div class="sur-li">访问 ip 数: todo</div>
+        <div class="sur-li">昨日 pv: {{survey.pv}}</div>
+        <div class="sur-li">访问 ip 数: {{survey.ip}}</div>
       </div>
       <hr>
       <div class="sur-item">
         <div class="sur-title">文章概况</div>
-        <div class="sur-li">发表文章: 200</div>
-        <div class="sur-li">评论数: 200</div>
+        <div class="sur-li">发表文章: {{survey.articleNumber}}</div>
+        <div class="sur-li">评论数: {{survey.commentNumber}}</div>
         <div class="sur-li">
           <md-button class="md-fab md-clean">
             <md-icon>create</md-icon>
@@ -19,8 +19,8 @@
       </div>
       <div class="sur-item">
         <div class="sur-title">图片数</div>
-        <div class="sur-li">相册: 200</div>
-        <div class="sur-li">总共上传图片: 200</div>
+        <div class="sur-li">相册: {{survey.albumNumber}}</div>
+        <div class="sur-li">总共上传图片: {{survey.photoNumber}}</div>
         <div class="sur-li">
           <md-button class="md-fab md-clean">
             <md-icon>cloud_upload</md-icon>
@@ -80,21 +80,16 @@
 </style>
 <script>
   export default {
-    methods: {
-      data: {
-        article: [],
-        page: 1,
-        pageSize: 20,
-        total: 50,
-      },
-      onPagination() {
-
+    data: function(){
+      return {
+        survey: [],
       }
     },
     async beforeMount() {
       await this.$store.dispatch('survey');
-      const admin = this.$store.state;
-      console.log(this.$store.state);
+      const admin = this.$store.state.admin;
+      this.survey = admin.survey;
+      console.log(this.survey);
     }
   }
 </script>

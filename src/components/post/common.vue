@@ -12,7 +12,9 @@
       </div>
     </div>
     <div class="content-warp">
-      <router-view></router-view>
+      <transition>
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>

@@ -4,9 +4,11 @@
       <md-card md-with-hover>
         <md-card-header>
           <div class="md-title">{{article.title}}</div>
-          <div class="md-subhead">{{new Date(article.created).toLocaleDateString()}}</div>
+          <div class="md-subhead">{{new Date(article.created*1000).toLocaleDateString()}}</div>
         </md-card-header>
-        <md-card-content>{{article.content}}</md-card-content>
+        <md-card-content>
+          <div v-html="article.content"></div>
+        </md-card-content>
       </md-card>
     </div>
     <div class="comment-wrapper">
@@ -38,13 +40,13 @@
           </md-input-container>
         </div>
         <div class="from-btn">
-          <div v-on:click="submit">
+          <div @click="submit">
             <md-button class="md-raised md-primary">发表评论</md-button>
           </div>
         </div>
       </div>
       <md-snackbar md-position="top center" ref="snackbar" :md-duration="2000">
-        <span>{{this.message}}</span>
+        <span>{{message}}</span>
       </md-snackbar>
     </div>
   </div>
@@ -55,14 +57,14 @@
       article: {
         type: Object,
         required: false,
-        default: function() {
+        default: function () {
           return {};
         }
       },
       comments: {
         type: Object,
         required: false,
-        default: function() {
+        default: function () {
           return {
             list: [],
             page: 1,
@@ -78,7 +80,7 @@
         email: '',
         site: '',
         content: '',
-        message:'',
+        message: '',
         ok: false,
       }
     },
@@ -88,7 +90,7 @@
     methods: {
       submit() {
         const username = this.username;
-        if(!username || !content) {
+        if (!username || !content) {
           this.message = 'username and content required';
           this.ok = false;
           this.snackbar();
@@ -109,6 +111,11 @@
   }
 </script>
 <style>
+  .content {
+    position: relative;
+    display: block;
+  }
+
   .comment-wrapper {
     position: relative;
     width: 100%;
@@ -120,35 +127,41 @@
     -webkit-box-direction: normal;
     flex-direction: column;
     z-index: 1;
-    box-shadow: 0 1px 5px rgba(0,0,0,.2), 0 2px 2px rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.12);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, .2), 0 2px 2px rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12);
   }
+
   .comments {
     width: 100%;
     padding: 20px;
-    border-bottom: 1px dashed#f0ad4e;
+    border-bottom: 1px dashed #f0ad4e;
     display: table;
   }
+
   .comments .user {
     margin-top: -1em;
     color: #99b2ff;
     display: table-cell;
   }
+
   .comments .text {
     padding: 2em;
     display: table-cell;
     font-weight: 300;
   }
+
   .form-outside {
     width: 100%;
     padding: 20px;
   }
+
   .form-inside {
     position: relative;
     width: 60%;
     margin: 1em auto;
-    border: 1px solid#b2b2b2;
+    border: 1px solid #b2b2b2;
     padding: 2em;
   }
+
   .form-outside .from-btn {
     position: relative;
     width: 10em;

@@ -2,6 +2,8 @@ const ARTICLE_FETCH_REQUEST = 'ARTICLE_FETCH_REQUEST';
 const ARTICLE_FETCH_SUCCESS = 'ARTICLE_FETCH_SUCCESS';
 const ARTICLE_FETCH_FAILURE = 'ARTICLE_FETCH_FAILURE';
 const ARTICLE_FETCH_CHANGE = 'ARTICLE_FETCH_CHANGE';
+const ARTICLE_ADD_SUCCESS = 'ARTICLE_ADD_SUCCESS';
+const ARTICLE_ADD_FAILURE = 'ARTICLE_ADD_FAILURE';
 
 const state = {
   article: {},
@@ -29,6 +31,16 @@ const mutations = {
   },
   [ARTICLE_FETCH_CHANGE] (state, item) {
     state.auth = Object.assign(state.auth || {}, item);
+  },
+  [ARTICLE_ADD_SUCCESS] (state, payload) {
+    const {message, ok }  = payload;
+    state.message = message;
+    state.ok = ok;
+  },
+  [ARTICLE_ADD_FAILURE] (state, payload) {
+    const {message, ok }  = payload;
+    state.message = message;
+    state.ok = ok;
   }
 };
 

@@ -10,10 +10,10 @@
           </md-input-container>
           <md-input-container>
             <label for="category">分类</label>
-            <md-select name="category" id="category" v-model="article.category">
-              <md-option value="自言自语">自言自语</md-option>
-              <md-option value="以梦为马">以梦为马</md-option>
-              <md-option value="桑下语">桑下语</md-option>
+            <md-select name="category" id="category" v-model="article.cateId" @selected="cate">
+              <div v-for="cate in category">
+                <md-option :value="cate.id">{{cate.name}}</md-option>
+              </div>
             </md-select>
           </md-input-container>
           <div>
@@ -48,21 +48,27 @@
         type: Object,
         required: false,
         default: function() {
-          return {};
+          return {
+            permission: 1,
+            tags: [],
+            title: '',
+            content: '',
+            cateId: 1
+          };
         },
       }
     },
     data: function () {
       return {
         editor: null,
+        category: [],
       }
     },
-//    beforeMount() {
-//      this.article = this.article || {};
-//      console.log(this.article);
-//    },
+    async beforeMount() {
+      await this.$store.dispatch('category');
+      this.category = this.$store.getters.getCategory;
+    },
     mounted () {
-
       this.editor = new Simditor({
         textarea: $('#editor'),
         upload: {
@@ -76,21 +82,25 @@
       });
     },
     beforeUpdate() {
-      this.editor.setValue(this.article.content)
+      const content = this.editor.getValue();
+      if (this.article.content !== content) {
+        this.article.content = content;
+      }
+
+      this.editor.setValue(this.article.content);
     },
     methods: {
-      setPulpFiction() {
-        this.movie = 'pulp_fiction';
-      },
       tag() {
-        console.log('tttttttt', this.tags);
+
+      },
+      cate(cateId) {
+        this.article.cateId = cateId;
       },
       commit() {
-        const tags = this.tags;
-        const title = this.title;
-        const category = this.category;
-        const content = this.content;
-        console.log(tags, title, category, content);
+        const id = this.$route.params.id;
+        if(!id) {
+          this.$store.dispatch('addPost', this.article);
+        }
       }
     }
 

@@ -19,33 +19,34 @@ class Article extends Controller
 
     public $response;
 
-    public function __construct($request, $response)
-    {
-        parent::__construct($request, $response);
-    }
-
     public function posts()
     {
         $page = abs($this->request->query('page'));
         $order = $this->request->query('order');
         $order = $order === 'archive' ? 'created' : 'id';
         $page = $page ?: 1;
-        $pageSize = 20;
+        $pageSize = 10;
         $offset = ($page - 1) * $pageSize;
         $article = new Post();
         $condition = [
-            'id' => ['$gt' => 0],
-            'created' => ['$gt' => 1],
-            'isShow' => 1,
+            'permission' => ['$lte' => 1],
         ];
         $options = [
-            'order' => [$order => 'desc'],
+            'order' => [$order => 'DESC'],
+            'limit' => $pageSize,
+            'skip' => $offset,
         ];
         $list = $article->find($condition, $options);
+        $total = $article->count($condition);
         $this->response->json([
             'message' => 'ok',
             'code' => '0',
-            'data' => $list,
+            'data' => [
+                'list' => $list,
+                'total' => $total,
+                'page' => $page,
+                'pageSize' => $pageSize,
+            ],
         ]);
     }
 
@@ -74,9 +75,6 @@ class Article extends Controller
 
     /**
      * get article list
-     *
-     * @query int $page
-     *
      */
     public function article()
     {
@@ -93,7 +91,7 @@ class Article extends Controller
         $option = [
             'skip' => $offset,
             'limit' => $pageSize,
-            'order' => ['id' => 'desc'],
+            'order' => ['id' => 'DESC'],
         ];
         $articles = $article->find($where, $option);
         $list = [];
@@ -138,15 +136,11 @@ class Article extends Controller
                 'skip' => $offset,
             ]);
         $total = 0; // @todo
-        $list = [];
-        foreach ($comments as $key => $value) {
-            $list[] = $value->attr;
-        }
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
             'data' => [
-                'list' => $list,
+                'list' => $comments,
                 'page' => $page,
                 'pageSize' => $pageSize,
                 'total' => $total,

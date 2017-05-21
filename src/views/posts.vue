@@ -1,41 +1,56 @@
 <template>
-  <div class="post">
-    <Post v-for="(article, key) in posts"
-          v-bind:article="article"
-          v-bind:key="key">
-    </Post>
+  <div>
+    <div class="post">
+      <Post v-for="(article, key) in posts"
+            v-bind:article="article"
+            v-bind:key="key">
+      </Post>
+      <Pagination :page="page" :total="total" :pageSize="pageSize"></Pagination>
+    </div>
   </div>
-  </template>
+</template>
 
 <script>
   import Post from '../components/post/index.vue';
-  import Jumbotron from '../components/post/jumbotron.vue';
-  import SideBar from '../components/nav/sideBar.vue';
+  import Pagination from '../components/pagination/post.vue';
 
   export default {
     data() {
       return {
         posts: {},
+        page: 1,
+        pageSize: 20,
+        total: 0,
         ok: false,
         message: '',
       }
     },
-    methods: {},
-    async beforeMount() {
-      await this.$store.dispatch('posts', 'get');
-      const res = this.$store.getters.getPost;
-      this.posts = res.post;
-      this.ok = res.ok;
-      this.message = res.message;
-      console.log(this.posts);
+    methods: {
+      async change() {
+        const page = this.$route.query.page || 1;
+        await this.$store.dispatch('posts', { page });
+        const res = this.$store.getters.getPost;
+        const { post, ok, message } = res;
+        this.posts = post.list;
+        this.total = post.total || 0;
+        this.page = post.page || 1;
+        this.pageSize = post.pageSize || 0;
+        this.ok = ok;
+        this.message = message;
+      }
     },
-    mounted () {
-      console.log('mmmmmmmmount')
+    async beforeMount() {
+      this.change();
+    },
+    beforeUpdate() {
+      const page = Number(this.$route.query.page);
+      if (page && page !== Number(this.page)) {
+        this.change();
+      }
     },
     components: {
       Post,
-      Jumbotron,
-      SideBar,
+      Pagination,
     }
   }
 </script>
@@ -44,6 +59,10 @@
     margin: 0;
     padding: 0;
   }
-
+  .post {
+    position: relative;
+    padding: 1em;
+    display: block;
+  }
 
 </style>

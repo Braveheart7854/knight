@@ -35,15 +35,16 @@ $app->exception(function ($req, $res, Exception $err) {
 
 
 $app->get('/posts', [\Knight\Controller\Article::class => 'posts']);
-
 $app->get('/posts/:id', [\Knight\Controller\Article::class => 'detail']);
 $app->get('/comments/:id', [\Knight\Controller\Article::class => 'comments']);
+$app->get('category', [\Knight\Controller\Admin::class => 'category']);
 $app->post('/register', [\Knight\Controller\Auth::class => 'register']);
 $app->post('/login', [\Knight\Controller\Auth::class => 'login']);
 $app->get('/admin/article', [\Knight\Controller\Admin::class => 'article']);
 $app->group('/admin', function () {
     $auth = new Auth(Config::get('jwt'), 'knight');
     $this->used($auth);
+    $this->get('/survey', [\Knight\Controller\Admin::class => 'survey']);
     $this->get('/article', ['\Knight\Controller\Article' => 'article']);
     $this->get('/article/:id', ['\Knight\Controller\Admin' => 'detail']);
     $this->delete('/article/:id', ['Knight\Controller\Admin' => 'drop']);

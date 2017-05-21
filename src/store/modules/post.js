@@ -3,6 +3,7 @@ const POST_FETCH_SUCCESS = 'POST_FETCH_SUCCESS';
 const POST_FETCH_FAILURE = 'POST_FETCH_FAILURE';
 const POST_FETCH_CHANGE = 'POST_FETCH_CHANGE';
 const POST_DETAIL_SUCCESS = 'POST_DETAIL_SUCCESS';
+const POST_PAGE_CHANGED = 'POST_PAGE_CHANGED';
 
 const state = {
   post: {},
@@ -36,6 +37,10 @@ const mutations = {
   },
   [POST_FETCH_CHANGE] (state, item) {
     state.auth = Object.assign(state.auth || {}, item);
+  },
+  [POST_PAGE_CHANGED](state, page) {
+    console.log('ccccccchanged', state);
+    state.post.page = page;
   }
 };
 

@@ -7,6 +7,7 @@ import admin from './modules/admin';
 import actions from './actions';
 import getters from './getters';
 import comment from './modules/comment';
+import category from './modules/category';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     article,
     admin,
     comment,
+    category
   },
   strict: true,
   actions,
