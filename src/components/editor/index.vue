@@ -1,7 +1,7 @@
 <template>
   <div class="main-wrapper">
     <div class="editor">
-      <textarea id="editor" placeholder="Balabala" autofocus rows="10" v-model="article.content"></textarea>
+      <textarea id="editor" placeholder="Balabala" autofocus rows="10" v-model="content"></textarea>
       <div class="editor-option">
         <form novalidate @submit.stop.prevent="submit">
           <md-input-container>
@@ -47,7 +47,7 @@
       article: {
         type: Object,
         required: false,
-        default: function() {
+        default: function () {
           return {
             permission: 1,
             tags: [],
@@ -62,6 +62,7 @@
       return {
         editor: null,
         category: [],
+        content: '',
       }
     },
     async beforeMount() {
@@ -78,16 +79,20 @@
           connectionCount: 3,
           leaveConfirm: 'Uploading is in progress, are you sure to leave this page?'
         }
-        //optional options
       });
     },
     beforeUpdate() {
-      const content = this.editor.getValue();
-      if (this.article.content !== content) {
-        this.article.content = content;
+      console.log(this.article.content, this.content);
+      if (this.article.content && !this.content) {
+        this.content = this.article.content;
+        console.log('*******=====')
+      } else {
+        const content = this.editor.getValue();
+        if (this.content !== content) {
+          this.content = content;
+        }
       }
-
-      this.editor.setValue(this.article.content);
+      this.editor.setValue(this.content);
     },
     methods: {
       tag() {
@@ -98,7 +103,7 @@
       },
       commit() {
         const id = this.$route.params.id;
-        if(!id) {
+        if (!id) {
           this.$store.dispatch('addPost', this.article);
         }
       }

@@ -20,9 +20,8 @@
       const id = this.$route.params.id;
       await this.$store.dispatch('getArt', id);
       const state = this.$store.state;
-      const article = state.admin.article.attr;
+      const article = state.admin.article;
       this.article = article;
-      console.log(article);
     },
     components: {
       Editor

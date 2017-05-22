@@ -40,11 +40,13 @@ class Admin extends Controller
 
     public function article()
     {
-        $pageSize = 20;
-        $page = $this->request->param('page');
+        $pageSize = 10;
+        $page = $this->request->query('page');
         $page = abs($page) ?: 1;
+        $offset = ($page - 1) * $pageSize;
         $article = new Post();
-        $posts = $article->findAll();
+        $posts = $article->find(['id' => ['$gt' => 0]],
+         ['limit' => $pageSize, 'skip' => $offset]);
         $ret = [
             'total' => 10, // @fixme
             'page' => $page,

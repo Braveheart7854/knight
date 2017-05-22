@@ -9,7 +9,7 @@
           <md-icon>search</md-icon>
         </md-button>
       </md-toolbar>
-      <md-table @select="onSelect" @sort="onSort">
+      <md-table @sort="onSort">
         <md-table-header>
           <md-table-row>
             <md-table-head md-numeric>id</md-table-head>
@@ -24,7 +24,7 @@
           </md-table-row>
         </md-table-header>
         <md-table-body>
-          <md-table-row v-for="row in posts" :key="row.id" :md-item="{id:row.id}" :md-selection="true">
+          <md-table-row v-for="row in posts" :key="row.id" :md-item="{id:row.id}">
             <md-table-cell md-numeric> {{row.id}} </md-table-cell>
             <md-table-cell md-numeric> {{row.category}}</md-table-cell>
             <md-table-cell md-numeric> {{row.permission|permit}}</md-table-cell>
@@ -69,22 +69,16 @@
       selected: [],
     }),
     methods: {
-      onPagination() {
+      async onPagination() {
         let page = this.page;
         const total = this.total;
         const pageSize = this.pageSize;
         if(!page) page = this.$route.query.page || 1;
         page = page + 1;
-        if (page * pageSize >= total) return null;
-        this.$store.dispatch('article', {page, pageSize, total});
-      },
-      onSelect(choose) {
-        console.log('sssssssssss', choose);
-        for(const index in choose) {
-          console.log('ccccccccc', choose[index]);
-//          if(!choose[index] || !choose[index].id) continue;
-//          this.selected.push(choose[index].id);
-        }
+//        if (page * pageSize >= total) return null;
+        await this.$store.dispatch('article', {page, pageSize, total});
+        this.loadArticle();
+        console.log(this.list);
       },
       onSort() {
 
@@ -94,6 +88,15 @@
       },
       del(id) {
         this.$store.dispatch('delArt', {id});
+      },
+      loadArticle() {
+        const data = this.$store.state.article;
+        const article = data.article || {};
+        const {page, list, total, pageSize} = article;
+        this.list = list || [];
+        this.page = page || 1;
+        this.pageSize = pageSize || 20;
+        this.total = total || 0;
       }
     },
     async beforeMount() {
@@ -105,15 +108,8 @@
         .then(() => {
           return this.$store.dispatch('category')
         });
-
       this.category = this.$store.getters.getCategory;
-      const data = this.$store.state.article;
-      const article = data.article || {};
-      const {page, list, total, pageSize} = article;
-      this.list = list || [];
-      this.page = page || 1;
-      this.pageSize = pageSize || 20;
-      this.total = total || 0;
+      this.loadArticle();
     },
     computed: {
       posts() {
