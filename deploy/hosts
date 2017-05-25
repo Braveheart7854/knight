@@ -1,0 +1,2 @@
+[web]
+knight ansible_ssh_host=104.224.134.235

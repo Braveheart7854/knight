@@ -1,0 +1,4 @@
+---
+  webroot_src: "/workspace/myself/{{ role }}"
+  webroot_dest: "/usr/webapp"
+  app_home: "{{ webroot_dest }}/{{ role }}"

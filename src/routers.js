@@ -16,10 +16,6 @@ export default [
         path: '/archive',
         component: require('./views/archive')
       },
-      // {
-      //   path: '/',
-      //   component: require('./views/starry.vue')
-      // },
     ]
   },
   {
@@ -52,5 +48,9 @@ export default [
   {
     path: '/register',
     component: require('./views/register')
+  },
+  {
+    path: '*',
+    component: require('./views/starry.vue')
   },
 ]
