@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "gharry -c gharry.json",
+    "deploy": "sh bin/deploy.sh",
     "compile": "NODE_ENV=production webpack --config=webpack.config.js",
     "dev": "NODE_ENV=development webpack-dashboard -- webpack-dev-server --config=webpack.config.js --content-base ./dist/"
   },
