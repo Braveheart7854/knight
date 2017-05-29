@@ -46,7 +46,7 @@ class Admin extends Controller
         $offset = ($page - 1) * $pageSize;
         $article = new Post();
         $posts = $article->find(['id' => ['$gt' => 0]],
-         ['limit' => $pageSize, 'skip' => $offset]);
+         ['limit' => $pageSize, 'offset' => $offset]);
         $ret = [
             'total' => 10, // @fixme
             'page' => $page,
@@ -242,7 +242,7 @@ class Admin extends Controller
         ],
             [
                 'limit' => $pageSize,
-                'skip' => $offset,
+                'offset' => $offset,
             ]);
         $total = 0; // @todo
         $list = [];

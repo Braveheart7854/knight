@@ -23,6 +23,7 @@ class Article extends Controller
     {
         $page = abs($this->request->query('page'));
         $order = $this->request->query('order');
+        $keyword = $this->request->query('q');
         $order = $order === 'archive' ? 'created' : 'id';
         $page = $page ?: 1;
         $pageSize = 10;
@@ -34,8 +35,15 @@ class Article extends Controller
         $options = [
             'order' => [$order => 'DESC'],
             'limit' => $pageSize,
-            'skip' => $offset,
+            'offset' => $offset,
         ];
+//        if ($keyword) {
+//            $like = ''
+//            $condition['$or'] =  [
+//                'title' => $keyword,
+//                'tags' => $keyword,
+//            ]];
+//        }
         $list = $article->find($condition, $options);
         $total = $article->count($condition);
         $this->response->json([
@@ -89,7 +97,7 @@ class Article extends Controller
             'userId' => $userId,
         ];
         $option = [
-            'skip' => $offset,
+            'offset' => $offset,
             'limit' => $pageSize,
             'order' => ['id' => 'DESC'],
         ];
@@ -133,7 +141,7 @@ class Article extends Controller
         ],
             [
                 'limit' => $pageSize,
-                'skip' => $offset,
+                'offset' => $offset,
             ]);
         $total = 0; // @todo
         $this->response->json([
