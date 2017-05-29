@@ -6,32 +6,52 @@
  * @date      : 2017/4/2
  * @time      : 下午4:38
  */
-
 namespace Knight\Controller;
 
 use Knight\Component\Controller;
 use Knight\Model\Comment;
 use Knight\Model\Post;
 use Knight\Model\Category;
+use Photo;
 
 class Admin extends Controller
 {
+
+    public function survey()
+    {
+        $article = new Post();
+//        $articleNumber = $article->count();
+//        $commentNumber = (new Comment())->count();
+        $photoNumber = 0;
+        $albumNumber = 0;
+        $this->response->json([
+            'message' => 'ok',
+            'code' => 0,
+            'data' => [
+                'articleNumber' => 4,
+                'commentNumber' => 3,
+                'albumNumber' => 2,
+                'photoNumber' => 1,
+                'pv' => 1,
+                'ip' => 1,
+            ]
+        ]);
+    }
+
     public function article()
     {
-        $pageSize = 20;
-        $page = $this->request->param('page');
+        $pageSize = 10;
+        $page = $this->request->query('page');
         $page = abs($page) ?: 1;
+        $offset = ($page - 1) * $pageSize;
         $article = new Post();
-        $posts = $article->findAll();
-        $list = [];
-        foreach ($posts as $key => $art) {
-            $list[] = $art->attr;
-        }
+        $posts = $article->find(['id' => ['$gt' => 0]],
+         ['limit' => $pageSize, 'offset' => $offset]);
         $ret = [
             'total' => 10, // @fixme
             'page' => $page,
             'pageSize' => $pageSize,
-            'list' => $list,
+            'list' => $posts,
         ];
         $this->response->json([
             'message' => 'ok',
@@ -55,6 +75,13 @@ class Admin extends Controller
         $content = $request->body('content');
         $tags = $request->body('body');
         $cateId = $request->body('cateId');
+        $permission = $request->body('permission');
+        if (!in_array($permission, [0, 1, 2])) {
+            return $this->response->status(400)->json([
+                'message' => 'Illegal param permission',
+                'code' => 1,
+            ]);
+        }
         if (!$title) {
             return $response->status(400)->json([
                 'message' => 'title required',
@@ -67,14 +94,17 @@ class Admin extends Controller
             ]);
         }
         $post = [
+            'userId' => 1,
             'title' => $title,
             'content' => $content,
-            'tags' => implode(',', $tags),
+            'tags' => $tags,
+            'permission' => $permission,
             'cateId' => $cateId,
+            'created' => time(),
         ];
         $article = new Post();
         $article->insert($post);
-        $this->response->json([
+        $response->json([
             'code' => 0,
             'message' => 'ok',
         ]);
@@ -87,7 +117,7 @@ class Admin extends Controller
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
-            'list' => $cate,
+            'data' => $cate,
         ]);
     }
 
@@ -212,7 +242,7 @@ class Admin extends Controller
         ],
             [
                 'limit' => $pageSize,
-                'skip' => $offset,
+                'offset' => $offset,
             ]);
         $total = 0; // @todo
         $list = [];
@@ -249,6 +279,7 @@ class Admin extends Controller
             'code' => 0,
         ]);
     }
+
 
 
 }

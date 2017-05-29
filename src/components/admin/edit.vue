@@ -20,27 +20,8 @@
       const id = this.$route.params.id;
       await this.$store.dispatch('getArt', id);
       const state = this.$store.state;
-      const article = state.admin.article.attr;
+      const article = state.admin.article;
       this.article = article;
-      console.log(article);
-    },
-    created() {
-      console.log('created editor');
-    },
-    methods: {
-      setPulpFiction() {
-        this.movie = 'pulp_fiction';
-      },
-      tag() {
-        console.log('tttttttt', this.tags);
-      },
-      commit() {
-        const tags = this.tags;
-        const title = this.title;
-        const category = this.category;
-        const content = this.content;
-        console.log(tags, title, category, content);
-      }
     },
     components: {
       Editor

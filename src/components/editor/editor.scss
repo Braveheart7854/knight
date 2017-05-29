@@ -2,13 +2,31 @@
   display: table;
   background: #fff;
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   overflow-x: hidden;
   padding: 1rem 2rem 2em 2rem;
-}
-.simditor {
-  display: table-cell;
-  text-align: left;
+  .row {
+    display: table-row;
+  }
+  .editor-option{
+    display: table-cell;
+    vertical-align: top;
+    width: 20%;
+    height: 120%;
+    padding: 1rem;
+    border: 1px solid#c2c2f2;
+    border-left-color: #fffffc;
+    &:before{
+      content: '';
+
+    }
+  }
+  .quillWrapper {
+    display: table-cell;
+    .ql-container {
+      height: 90%;
+    }
+  }
 }
 #markdown{
   display: table-cell;
@@ -18,19 +36,7 @@
   border: #00d95a;
 }
 
-.editor-option{
-  display: table-cell;
-  vertical-align: top;
-  width: 20%;
-  height: 100%;
-  padding: 1rem;
-  border: 1px solid#c2c2f2;
-  border-left-color: #fffffc;
-  &:before{
-    content: '';
 
-  }
-}
 .md-select-content {
   width: 14rem;
 }

@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
-function getEntrySources(sources) {
+function getEntrySources (sources) {
   if (process.env.NODE_ENV !== 'production') {
     sources.push('webpack-dev-server/client?http://localhost:8080/');
   }
@@ -29,14 +29,14 @@ const basePlugins = [
 ];
 
 const devPlugins = [
-  // new DashboardPlugin(),
+  new DashboardPlugin(),
   new webpack.NoErrorsPlugin(),
   new webpack.optimize.OccurenceOrderPlugin(),
   new webpack.HotModuleReplacementPlugin(),
 ];
 
 const prodPlugins = [
-  new webpack.optimize.OccurenceOrderPlugin(), // @todo 开发阶段不开启代码混淆
+  new webpack.optimize.OccurenceOrderPlugin(),
   new webpack.optimize.UglifyJsPlugin({
     compressor: {
       warnings: false
@@ -49,7 +49,6 @@ const plugins = basePlugins
   .concat(process.env.NODE_ENV === 'development' ? devPlugins : []);
 
 // css local
-// https://medium.com/seek-ui-engineering/the-end-of-global-css-90d2a4a06284#.c2jl6jmb8
 const localIdentName = process.env.NODE_ENV === 'development' ? '[name]__[local]' : '[hash:base64:5]';
 
 module.exports = {
@@ -75,7 +74,7 @@ module.exports = {
       },
       { test: /\.vue$/, loader: 'vue' },
       // { test: /\.html$/, loader: 'vue-html' },
-      { test: /\.js$/, loader: 'babel', exclude: /node_modules/ },
+      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
       { test: /\.css$/i, loader: 'style-loader!css-loader!postcss-loader' },
       { test: /\.(png|jpg|jpeg|gif|svg)$/i, loader: 'url-loader?prefix=img/&limit=5000', exclude: /icons/ },
       { test: /\.(woff|woff2|ttf|eot)$/i, loader: 'url-loader?prefix=font/&limit=5000' }

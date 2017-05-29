@@ -19,36 +19,42 @@ class Article extends Controller
 
     public $response;
 
-    public function __construct($request, $response)
-    {
-        parent::__construct($request, $response);
-    }
-
     public function posts()
     {
         $page = abs($this->request->query('page'));
+        $order = $this->request->query('order');
+        $keyword = $this->request->query('q');
+        $order = $order === 'archive' ? 'created' : 'id';
         $page = $page ?: 1;
-        $pageSize = 20;
+        $pageSize = 10;
         $offset = ($page - 1) * $pageSize;
         $article = new Post();
         $condition = [
-            'id' => ['$gt' => 0],
-            'created' => ['$gt' => 1],
-            'isShow' => 1,
+            'permission' => ['$lte' => 1],
         ];
         $options = [
-            'order' => ['id' => 'desc'],
+            'order' => [$order => 'DESC'],
+            'limit' => $pageSize,
+            'offset' => $offset,
         ];
+//        if ($keyword) {
+//            $like = ''
+//            $condition['$or'] =  [
+//                'title' => $keyword,
+//                'tags' => $keyword,
+//            ]];
+//        }
         $list = $article->find($condition, $options);
-        $data = [];
-        foreach ($list as $art) {
-            if (!$art) continue;
-            $data[] = $art->attr;
-        }
+        $total = $article->count($condition);
         $this->response->json([
             'message' => 'ok',
             'code' => '0',
-            'data' => $data,
+            'data' => [
+                'list' => $list,
+                'total' => $total,
+                'page' => $page,
+                'pageSize' => $pageSize,
+            ],
         ]);
     }
 
@@ -65,21 +71,18 @@ class Article extends Controller
         $article = new Post();
         $condition = [
             'id' => $id,
-            'isShow' => 1
+            'permission' => ['$lte' => 1]
         ];
         $art = $article->findOne($condition);
         $this->response->json([
             'message' => 'ok',
             'code' => '0',
-            'data' => $art->attr,
+            'data' => $art,
         ]);
     }
 
     /**
      * get article list
-     *
-     * @query int $page
-     *
      */
     public function article()
     {
@@ -94,9 +97,9 @@ class Article extends Controller
             'userId' => $userId,
         ];
         $option = [
-            'skip' => $offset,
+            'offset' => $offset,
             'limit' => $pageSize,
-            'order' => ['id' => 'desc'],
+            'order' => ['id' => 'DESC'],
         ];
         $articles = $article->find($where, $option);
         $list = [];
@@ -138,18 +141,14 @@ class Article extends Controller
         ],
             [
                 'limit' => $pageSize,
-                'skip' => $offset,
+                'offset' => $offset,
             ]);
         $total = 0; // @todo
-        $list = [];
-        foreach ($comments as $key => $value) {
-            $list[] = $value->attr;
-        }
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
             'data' => [
-                'list' => $list,
+                'list' => $comments,
                 'page' => $page,
                 'pageSize' => $pageSize,
                 'total' => $total,
@@ -210,39 +209,4 @@ class Article extends Controller
         ]);
     }
 
-    public function addComment()
-    {
-        $artId = $this->request->param('artId');
-        $content = $this->request->body('content');
-        $email = $this->request->body('email');
-        $site = $this->request->body('site');
-        $username = $this->request->body('username');
-        if ($username || $content) {
-            return $this->response->status(400)->json([
-                'message' => '参数错误',
-                'code' => 1,
-            ]);
-        }
-        $check = (new Post())->findById($artId);
-        if (!$check) {
-            return $this->request->status(400)->json([
-                'message' => '文章不存在',
-                'code' => 2,
-            ]);
-        }
-        $data = [
-            'artId' => $artId,
-            'email' => $email,
-            'site' => $site,
-            'username' => $username,
-            'content' => $content,
-            'created' => time(),
-        ];
-        $comment = new Comment();
-        $comment->insert($data);
-        $this->response->json([
-            'message' => 'ok',
-            'code' => 0,
-        ]);
-    }
 }

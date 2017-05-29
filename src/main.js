@@ -14,12 +14,13 @@ window.addEventListener('load', () => {
 });
 Vue.use(VueRouter);
 const router = new VueRouter({
+  mode: 'hash',
   routes,
 });
-router.beforeEach((to, from, next) => {
-  console.log(to, from, next);
-  next()
-});
+// router.beforeEach((to, from, next) => {
+//   console.log(to, from, next);
+//   next()
+// });
 sync(store, router);
 Vue.use(VueMaterial);
 Vue.material.registerTheme({

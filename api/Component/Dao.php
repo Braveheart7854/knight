@@ -13,9 +13,7 @@ use Courser\Helper\Config;
 
 class Dao extends Model
 {
-    public $table = 'users';
-
-
+    protected $table = '';
 
     public function __construct()
     {

@@ -9,41 +9,40 @@
           <md-icon>search</md-icon>
         </md-button>
       </md-toolbar>
-
-      <md-table @select="onSelect" @sort="onSort">
+      <md-table @sort="onSort">
         <md-table-header>
           <md-table-row>
-            <md-table-head>id</md-table-head>
-            <md-table-head><span>权限</span></md-table-head>
-            <md-table-head><span>分类</span></md-table-head>
-            <md-table-head>
+            <md-table-head md-numeric>id</md-table-head>
+            <md-table-head md-numeric><span>category</span></md-table-head>
+            <md-table-head md-numeric><span>permission</span></md-table-head>
+            <md-table-head md-numeric>
               <md-icon>message</md-icon>
-              <span>标题</span>
+              <span>title</span>
             </md-table-head>
-            <md-table-head><span>时间</span></md-table-head>
-            <md-table-head><span>操作</span></md-table-head>
+            <md-table-head md-numeric><span>created at</span></md-table-head>
+            <md-table-head><span>action</span></md-table-head>
           </md-table-row>
         </md-table-header>
-
         <md-table-body>
-          <md-table-row v-for="(row, rowIndex) in posts" :key="rowIndex" :md-item="row" md-selection>
-            <md-table-cell> {{row.id}} </md-table-cell>
-            <md-table-cell> {{row.category }}</md-table-cell>
-            <md-table-cell> {{row.permission}}</md-table-cell>
-            <md-table-cell> {{row.title}} </md-table-cell>
-            <md-table-cell> {{row.created}} </md-table-cell>
-            <md-table-cell>
-             <span><router-link to="/admin/edit/1">编辑 &nbsp;</router-link></span>|<span @click="remove(row.id)">&nbsp; 删除</span>
+          <md-table-row v-for="row in posts" :key="row.id" :md-item="{id:row.id}">
+            <md-table-cell md-numeric> {{row.id}} </md-table-cell>
+            <md-table-cell md-numeric> {{row.category}}</md-table-cell>
+            <md-table-cell md-numeric> {{row.permission|permit}}</md-table-cell>
+            <md-table-cell md-numeric> {{row.title}} </md-table-cell>
+            <md-table-cell md-numeric> {{row.created}} </md-table-cell>
+            <md-table-cell md-numeric>
+             <div class="action"><router-link to="/admin/edit/1">edit &nbsp;</router-link>|
+               <span @click="del(row.id)">&nbsp; delete</span></div>
             </md-table-cell>
           </md-table-row>
         </md-table-body>
       </md-table>
 
       <md-table-pagination
-        md-size="5"
-        md-total="10"
-        md-page="1"
-        md-label="Rows"
+        :md-size="pageSize"
+        :md-total="total"
+        :md-page="page"
+        md-label="records"
         md-separator="of"
         :md-page-options="[5, 10, 25, 50]"
         @pagination="onPagination"></md-table-pagination>
@@ -54,21 +53,32 @@
   .md-table .md-table-head {
     text-align: center;
   }
+  .action {
+    width: 8em;
+  }
+
 </style>
 <script>
   export default {
     data: () => ({
       page: 1,
       pageSize: 0,
-      total: 0,
-      posts: [],
+      total: 20,
+      list: [],
+      category: [],
+      selected: [],
     }),
     methods: {
-      onPagination() {
-
-      },
-      onSelect() {
-
+      async onPagination() {
+        let page = this.page;
+        const total = this.total;
+        const pageSize = this.pageSize;
+        if(!page) page = this.$route.query.page || 1;
+        page = page + 1;
+//        if (page * pageSize >= total) return null;
+        await this.$store.dispatch('article', {page, pageSize, total});
+        this.loadArticle();
+        console.log(this.list);
       },
       onSort() {
 
@@ -76,23 +86,54 @@
       edit() {
         console.log(1111)
       },
-      remove(id) {
-        console.log('.....', id);
+      del(id) {
         this.$store.dispatch('delArt', {id});
+      },
+      loadArticle() {
+        const data = this.$store.state.article;
+        const article = data.article || {};
+        const {page, list, total, pageSize} = article;
+        this.list = list || [];
+        this.page = page || 1;
+        this.pageSize = pageSize || 20;
+        this.total = total || 0;
       }
     },
     async beforeMount() {
       const params = {
         page: this.page,
       };
-      await this.$store.dispatch('article', params);
-      const data = this.$store.state.article;
-      const article = data.article || {};
-      const {page, list, total, pageSize} = article;
-      this.posts = list || [];
-      this.page = page || 1;
-      this.pageSize = pageSize || 20;
-      this.total = total || 0;
+      await this.$store
+        .dispatch('article', params)
+        .then(() => {
+          return this.$store.dispatch('category')
+        });
+      this.category = this.$store.getters.getCategory;
+      this.loadArticle();
+    },
+    computed: {
+      posts() {
+        const category = this.category;
+        return this.list.map(function (post) {
+          post.category = '';
+          category.map(function (cate) {
+            if(cate.id === post.cateId) {
+              post.category = cate.name;
+            }
+          });
+          return post;
+        });
+      }
+    },
+    filters: {
+      permit(level) {
+        const data = {
+          0: 'public',
+          1: 'hidden',
+          2: 'private',
+        };
+        return data[level] ? data[level] : 'unknown';
+      }
     }
   }
 </script>
