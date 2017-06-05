@@ -4,6 +4,6 @@ node_modules/
 *.log
 mews/
 courser/
-deploy/hosts
+static/
 deploy/group_vars/all
 dist/

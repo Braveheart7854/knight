@@ -22,7 +22,6 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     }),
-    // new UglifyJSPlugin(),
     // new webpack.optimize.UglifyJsPlugin(),
     new ExtractTextPlugin({
       filename: "css/style.css?[contenthash:8]"
@@ -36,6 +35,11 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
     }),
     new HtmlWebpackPlugin({
       filename: 'src/index.html',

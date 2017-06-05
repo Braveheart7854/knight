@@ -7,6 +7,5 @@
       rsync_opts:
         - "--exclude=.git"
         - "--exclude=node_modules"
-
 #  - name: code build
 #    shell: "cd {{ app_home }}; npm run build"
