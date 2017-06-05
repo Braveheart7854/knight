@@ -1,6 +1,11 @@
 ---
   - name: sync code
-    synchronize: src={{ webroot_src }} dest={{ webroot_dest }} rsync_opts="--exclude=.git,--exclude=node_modules" delete=yes
-
+    synchronize:
+      src: "{{ webroot_src }}"
+      dest: "{{ webroot_dest }}"
+      delete: yes
+      rsync_opts:
+        - "--exclude=.git"
+        - "--exclude=node_modules"
 #  - name: code build
 #    shell: "cd {{ app_home }}; npm run build"

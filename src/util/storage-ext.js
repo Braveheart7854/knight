@@ -1,6 +1,6 @@
 import urls from '../config/urls';
 import cookie from 'js-cookie';
-export default class storage {
+export default class test {
 
   constructor (tokenName = 'knight') {
     if (!window.localStorage) {
@@ -39,10 +39,5 @@ export default class storage {
       console.log(err);
       return false;
     }
-  }
-
-  clearUser (key) {
-    key = key || this.key;
-    this.store.removeItem(key);
   }
 }

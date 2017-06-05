@@ -50,7 +50,6 @@
         let uri = this.$route.path;
         let query = Object.assign({}, this.$route.query, {page});
         query = querystring.stringify(query);
-        console.log('mmmmmmm', uri + '?' + query);
         uri = uri + '?' + query;
         this.$router.push(uri);
 

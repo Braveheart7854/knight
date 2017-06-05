@@ -84,9 +84,6 @@
         ok: false,
       }
     },
-    beforeUpdate() {
-      console.log('xxxxxxxxxx', this.comments);
-    },
     methods: {
       submit() {
         const username = this.username;

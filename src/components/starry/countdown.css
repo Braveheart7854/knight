@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'Frijole';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Frijole'), url(Frijole.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+.cell{
+    width: 1em;
+    height: 1em;
+    font-size:120px;
+    font-family:Frijole;
+    overflow: hidden;
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin:-0.5em 0 0  -0.5em;
+    opacity:0;
+    animation:go 6s;
+    transform-origin:left bottom;
+}
+.num{
+    position:absolute;
+    width: 1em;
+    color:#E53F39;
+    line-height: 1em;
+    text-align: center;
+    text-shadow:1px 1px 2px rgba(255,255,255,.3);
+    animation:run 6s steps(6);
+}
+@keyframes run{
+    0%{top:0;}
+    100%{top:-6em;}
+}
+@keyframes go{
+    0%   {opacity:1;}
+    84%  {opacity:1;transform:rotate(0deg) scale(1);}
+    100% {opacity:0;transform:rotate(360deg) scale(.01);}
+}

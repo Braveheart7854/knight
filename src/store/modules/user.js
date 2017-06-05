@@ -5,7 +5,7 @@ const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS';
 const USER_UPDATE_SUCCESS = 'USER_UPDATE_SUCCESS';
 const USER_LOGIN_CHANGE = 'USER_LOGIN_CHANGE';
 
-import storage from '../../util/storage';
+import storage from '../../util/storage-ext';
 
 const $storage = new storage();
 const state = {
