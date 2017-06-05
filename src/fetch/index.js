@@ -1,5 +1,5 @@
 import urls from '../config/urls';
-import Storage from '../util/storage';
+import Storage from '../util/storage-ext';
 import util from '../util';
 
 const domain = urls.api;

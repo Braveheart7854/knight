@@ -8,7 +8,7 @@ import FastClick from 'fastclick';
 import { sync } from 'vuex-router-sync'
 import mdIcon from './assets/md-icon.css'
 
-import App from './App';
+import App from './App.vue';
 window.addEventListener('load', () => {
   FastClick.attach(document.body)
 });

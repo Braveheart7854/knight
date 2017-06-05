@@ -6,3 +6,4 @@ mews/
 courser/
 deploy/hosts
 deploy/group_vars/all
+dist/

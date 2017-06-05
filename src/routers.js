@@ -10,11 +10,11 @@ export default [
       },
       {
         path: '/posts',
-        component: require('./views/posts')
+        component: require('./views/posts.vue')
       },
       {
         path: '/archive',
-        component: require('./views/archive')
+        component: require('./views/archive.vue')
       },
     ]
   },
@@ -36,6 +36,10 @@ export default [
         component: require('./components/admin/article.vue'),
       },
       {
+        path: 'comment',
+        component: require('./components/admin/comment.vue'),
+      },
+      {
         path: 'edit/:id',
         component: require('./components/admin/edit.vue'),
       }
@@ -43,11 +47,11 @@ export default [
   },
   {
     path: '/login',
-    component: require('./views/login')
+    component: require('./views/login.vue')
   },
   {
     path: '/register',
-    component: require('./views/register')
+    component: require('./views/register.vue')
   },
   {
     path: '*',

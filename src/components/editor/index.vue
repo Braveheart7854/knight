@@ -38,7 +38,6 @@
   </div>
 </template>
 <style lang='sass'>
-  @import './styles/simditor.scss';
   @import './editor.scss';
   @import '../admin/main.css';
 

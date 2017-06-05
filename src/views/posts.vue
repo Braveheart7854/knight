@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="post">
-      <Post v-for="(article, key) in posts"
-            v-bind:article="article"
-            v-bind:key="key">
+      <Post v-for="post in posts"
+            :article="post"
+            :key="post.id">
       </Post>
       <Pagination :page="page" :total="total" :pageSize="pageSize"></Pagination>
     </div>
@@ -32,9 +32,9 @@
         const res = this.$store.getters.getPost;
         const { post, ok, message } = res;
         this.posts = post.list;
-        this.total = post.total || 0;
-        this.page = post.page || 1;
-        this.pageSize = post.pageSize || 0;
+        this.total = Number(post.total) || 0;
+        this.page = Number(post.page) || 1;
+        this.pageSize = Number(post.pageSize) || 0;
         this.ok = ok;
         this.message = message;
       }

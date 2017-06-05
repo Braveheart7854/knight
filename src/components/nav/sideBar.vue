@@ -15,25 +15,18 @@
         <md-list>
           <md-list-item>
             <md-icon>toys</md-icon>
-            <span>自言自语</span>
+            <span>在他乡</span>
           </md-list-item>
-          <md-list-item>
-            <md-icon>fingerprint</md-icon>
-            <span>以梦为码</span>
-          </md-list-item>
-          <md-list-item>
+          <md-list-item @click.native="whisper">
             <md-icon>gesture</md-icon>
             <span>桑下语</span>
           </md-list-item>
           <md-list-item>
             <md-icon>date_range</md-icon>
-            <span>Video</span>
+            <span>分类</span>
             <md-list-expand>
-              <md-list>
-                <md-list-item class="md-inset">Humor</md-list-item>
-                <md-list-item class="md-inset">Music</md-list-item>
-                <md-list-item class="md-inset">Movies</md-list-item>
-                <md-list-item class="md-inset">TV Shows</md-list-item>
+              <md-list v-for="cate in category">
+                <md-list-item class="md-inset">{{cate.name}}</md-list-item>
               </md-list>
             </md-list-expand>
           </md-list-item>
@@ -69,15 +62,30 @@
 
 <script>
   export default {
+    data: function () {
+      return {
+        category: [],
+      };
+    },
+    async beforeMount() {
+
+    },
     methods: {
       toggleLeftSidenav() {
         this.$refs.leftSidenav.toggle();
       },
-      open(ref) {
+      async open(ref) {
         console.log('Opened: ' + ref);
+        if(!this.category.length) {
+          await this.$store.dispatch('category');
+          this.category = this.$store.getters.getCategory;
+        }
       },
       close(ref) {
         console.log('Closed: ' + ref);
+      },
+      whisper() {
+        this.$router.push('/posts?cate=whisper'); // @todo microblog
       }
     },
   }

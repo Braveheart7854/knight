@@ -2,3 +2,5 @@ api/*
 courser/*
 node_modules/*
 mews/*
+postcss.config.js
+webpack.config.js

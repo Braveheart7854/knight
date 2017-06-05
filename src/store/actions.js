@@ -94,5 +94,13 @@ export default {
   },
   nextPost({commit}, page) {
     commit('POST_PAGE_CHANGED', page);
+  },
+  async comments({commit}, query) {
+    const res = await fetch('/admin/comments', 'get', query);
+    if (res.ok) {
+      commit('COMMENT_FETCH_SUCCESS', res)
+    } else {
+      commit('COMMENT_FETCH_FAILURE', res)
+    }
   }
 }
