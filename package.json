@@ -6,11 +6,10 @@
   "scripts": {
     "server": "gharry -c gharry.json",
     "deploy": "sh bin/deploy.sh",
-    "dev": "node build/dev.js",
-    "build": "node build/prod.js"
+    "dev": "NODE_ENV=develop webpack-dashboard -- node build/dev.js",
+    "build": "webpack --config build/webpack.prod.config.js --env=production"
   },
   "dependencies": {
-    "chokidar": "^1.6.1",
     "cli-color": "^1.1.0",
     "eslint-plugin-vue": "^2.0.1",
     "js-cookie": "^2.1.3",

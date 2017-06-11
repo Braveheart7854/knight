@@ -1,6 +1,6 @@
-import urls from '../config/urls';
+import config from '../config';
 import cookie from 'js-cookie';
-export default class test {
+export default class storage {
 
   constructor (tokenName = 'knight') {
     if (!window.localStorage) {
@@ -11,7 +11,7 @@ export default class test {
     } else {
       this.store = window.localStorage;
     }
-    this.key = urls.domain + '#' + tokenName;
+    this.key = config.domain + '#' + tokenName;
   }
 
   setItem(key, value) {

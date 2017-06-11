@@ -1,7 +1,7 @@
 <template>
   <div class="pagination">
-    <div class="prev" @click="prev"><b>&larr;&nbsp;</b>prev</div>
-    <div class="next" @click="next">next<b>&nbsp; &rarr; </b></div>
+    <div class="prev" @click="prev"><b>&larr;&nbsp;</b></div>
+    <div class="next" @click="next"><b>&nbsp; &rarr; </b></div>
   </div>
 </template>
 <style>
@@ -46,7 +46,7 @@
         const pageSize = this.pageSize;
         if(!page) page = this.$route.query.page || 1;
         page = Number(page) + 1;
-//        if (page * pageSize >= total) return null;
+        if (page * pageSize >= total) return null;
         let uri = this.$route.path;
         let query = Object.assign({}, this.$route.query, {page});
         query = querystring.stringify(query);

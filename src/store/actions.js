@@ -15,17 +15,15 @@ export default {
   },
   async posts({ commit }, data) {
     let uri = '/posts';
-    console.log('=------------*', data);
     if (data) {
       data = typeof data === 'object' ? querystring.stringify(data) : data;
       uri += '?' + data;
     }
-    console.log('--------', uri);
     const res = await fetch(uri, 'get');
     if (res.ok) {
       commit('POST_FETCH_SUCCESS', res)
     } else {
-      commit('POST_FETCH_FAIL', res)
+      commit('POST_FETCH_FAILURE', res)
     }
   },
   async post({ commit }, id) {
@@ -33,7 +31,7 @@ export default {
     if (res.ok) {
       commit('POST_DETAIL_SUCCESS', res)
     } else {
-      commit('POST_FETCH_FAIL', res)
+      commit('POST_FETCH_FAILURE', res)
     }
   },
   async article({ commit }, data) {

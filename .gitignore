@@ -4,6 +4,7 @@ node_modules/
 *.log
 mews/
 courser/
-static/
+public/
 deploy/group_vars/all
 dist/
+*.lock

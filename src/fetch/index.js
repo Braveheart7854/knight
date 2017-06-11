@@ -1,8 +1,7 @@
-import urls from '../config/urls';
-import Storage from '../util/storage-ext';
+import Storage from '../util/storage';
 import util from '../util';
+import config from '../config';
 
-const domain = urls.api;
 const storage = new Storage();
 const getHeaders = () => {
   const token = storage.getItem('token');
@@ -18,8 +17,8 @@ const getHeaders = () => {
 };
 
 export default async function api (uri, method, data) {
-  console.log('aaaaaa', uri, method, data);
   try {
+    console.log(uri, method);
     if (typeof data === 'object') {
       data = JSON.stringify(data);
     }
@@ -29,12 +28,12 @@ export default async function api (uri, method, data) {
       mode: 'cors',
       method: method,
     };
-    if(data) {
-      if(method !== 'get') fetchParams.body = data;
+    if (data) {
+      if (method !== 'get') fetchParams.body = data;
       else uri += '?' + util.queryString(data);
-      console.log('____', util.queryString(data), data);
     }
-    const res = await fetch(domain + uri, fetchParams);
+    const url = 'http://' + config.api + uri;
+    const res = await fetch(url, fetchParams);
     let body = await res.json();
     body = body && typeof body === 'object' ? body : {};
     if (res.status === 200) {
@@ -46,7 +45,6 @@ export default async function api (uri, method, data) {
       body.ok = false;
     }
 
-    console.log('response::::::', body);
     return body;
   } catch (err) {
     return {
