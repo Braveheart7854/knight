@@ -4,7 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var baseWebpackConfig = require('./webpack.base.config');
 var utils = require('./utils');
 var config = require('./config');
-var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+// var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 const DashboardPlugin = require('webpack-dashboard/plugin');
 // 热替换
@@ -33,7 +33,7 @@ module.exports = merge(baseWebpackConfig, {
     // }),
     // new FriendlyErrorsPlugin()
     new DashboardPlugin(),
-    new webpack.NoErrorsPlugin(),
+    // new webpack.NoErrorsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({

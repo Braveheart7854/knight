@@ -1,12 +1,12 @@
 var path = require('path');
 module.exports = {
   dev: {
-    outputPath: path.resolve(__dirname, '../static'),
+    outputPath: path.resolve(__dirname, '../public'),
     outputPublicPath: '/',
-    port: 8000
+    port: 8080
   },
   prod: {
-    outputPath: path.resolve(__dirname, '../static'),
-    outputPublicPath: '/static/'
+    outputPath: path.resolve(__dirname, '../public'),
+    outputPublicPath: '/'
   }
 };

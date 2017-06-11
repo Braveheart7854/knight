@@ -45,7 +45,7 @@
 </style>
 <script>
   import actions from '../store/actions';
-  import Storage from '../util/storage-ext';
+  import Storage from '../util/storage';
 
   const storage = new Storage();
   export default {
