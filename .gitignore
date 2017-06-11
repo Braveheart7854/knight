@@ -6,5 +6,6 @@ mews/
 courser/
 public/
 deploy/group_vars/all
+deploy/hosts
 dist/
 *.lock
