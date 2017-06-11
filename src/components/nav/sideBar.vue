@@ -25,7 +25,7 @@
             <md-icon>date_range</md-icon>
             <span>分类</span>
             <md-list-expand>
-              <md-list v-for="cate in category">
+              <md-list v-for="cate in category" key="{{cate.id}}">
                 <md-list-item class="md-inset">{{cate.name}}</md-list-item>
               </md-list>
             </md-list-expand>

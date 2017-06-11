@@ -17,5 +17,9 @@
         "lcobucci/jwt": "^3.2",
         "illuminate/support": "^5.4",
         "pimple/pimple": "^3.0"
+    },
+    "require-dev": {
+        "racecourse/courser": "dev-master",
+        "racecourse/mews": "^0.0.1"
     }
 }
