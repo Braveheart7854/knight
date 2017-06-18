@@ -18,6 +18,7 @@ return [
         'user' => 'root',
         'password' => '123123',
         'database' => 'knight',
+        'charset' => 'UTF8',
     ],
     'session' => [
         'issuer' => 'localhost',
@@ -31,9 +32,4 @@ return [
         'expired' => 3600,
         'key' => 'test',
     ],
-    'courser' => [
-        'loader' => [
-            'Photo' => 'Knight\Model\Photo',
-        ]
-    ]
 ];

@@ -18,7 +18,6 @@
       Survey,
     },
     mounted() {
-      console.log('ddddddddd--d-d-dd--')
     }
   }
 </script>

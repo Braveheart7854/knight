@@ -66,12 +66,12 @@ export default {
       commit('COMMENT_FETCH_FAILURE', res);
     }
   },
-  async survey({ commit }) {
+  async survey({ commit, dispatch }) {
     const res = await fetch('/admin/survey', 'get');
     if (res.ok) {
       commit('SURVEY_FETCH_SUCCESS', res);
     } else {
-      commit('SURVEY_FETCH_FAILURE', res);
+      commit('FETCH_FAILURE', res);
     }
   },
   async addPost({ commit }, data) {
@@ -96,9 +96,12 @@ export default {
   async comments({commit}, query) {
     const res = await fetch('/admin/comments', 'get', query);
     if (res.ok) {
-      commit('COMMENT_FETCH_SUCCESS', res)
+      commit('COMMENT_FETCH_SUCCESS', res);
     } else {
-      commit('COMMENT_FETCH_FAILURE', res)
+      commit('COMMENT_FETCH_FAILURE', res);
     }
+  },
+  logout({commit}) {
+    commit('LOGOUT_REQUEST');
   }
 }

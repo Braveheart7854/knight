@@ -77,7 +77,6 @@
 //        if (page * pageSize >= total) return null;
         await this.$store.dispatch('comments', {page, pageSize, total});
         this.loadArticle();
-        console.log(this.list);
       },
       onSort() {
 

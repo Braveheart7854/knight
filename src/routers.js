@@ -21,26 +21,30 @@ export default [
   {
     path: '/admin',
     component: require('./components/admin/index.vue'),
-    meta: { auth: true },
     children: [
       {
         path: 'home',
+        meta: { auth: true },
         component: require('./components/admin/main.vue')
       },
       {
         path: 'create',
+        meta: { auth: true },
         component: require('./components/editor/index.vue')
       },
       {
         path: 'article',
+        meta: { auth: true },
         component: require('./components/admin/article.vue'),
       },
       {
         path: 'comment',
+        meta: { auth: true },
         component: require('./components/admin/comment.vue'),
       },
       {
         path: 'edit/:id',
+        meta: { auth: true },
         component: require('./components/admin/edit.vue'),
       }
     ]

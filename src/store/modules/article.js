@@ -14,7 +14,6 @@ const state = {
 const mutations = {
   [ARTICLE_FETCH_SUCCESS](state, payload){
     const {data, message, ok }  = payload;
-    console.log('=====>', data, message, ok);
     state.article = data;
     state.message = message;
     state.ok = ok;

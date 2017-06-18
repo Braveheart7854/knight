@@ -32,7 +32,6 @@
     },
     methods: {
       detail(id) {
-        console.log('xxxxxxx', id);
       }
     }
   }

@@ -6,9 +6,7 @@
  * @date      : 2017/3/16
  * @time      : 下午1:16
  */
-define('APP_ROOT', dirname(dirname(__FILE__)));
-require APP_ROOT . '/vendor/autoload.php';
-$config = require APP_ROOT . '/api/config/index.php';
+
 
 use Courser\App;
 use Courser\Session\Session;
@@ -17,20 +15,21 @@ use Knight\Middleware\Cors;
 use Knight\Middleware\Auth;
 use Courser\Helper\Config;
 
-Config::set($config);
 $app = new App('dev');
 $cors = new Cors();
-$session = new Session($config['session']);
-$app->used($session);
-$app->any('*', $cors);
+//$session = new Session(Config::get('session'));
+//$app->used($session);
+$app->used($cors);
+$auth = new Auth(Config::get('jwt'), 'knight');
+$app->used($auth);
 $app->notFound(function ($req, $res) {
     $res->status(404)->json(['message' => 'Not Found']);
 });
-$app->exception(function ($req, $res, Exception $err) {
-   $res->status(500)->json([
-       'message' =>'server error',
-       'code' => $err->getMessage(),
-   ]);
+$app->error(function ($req, $res, Exception $err) {
+    $res->status(500)->json([
+        'message' => 'server error',
+        'code' => $err->getMessage(),
+    ]);
 });
 
 

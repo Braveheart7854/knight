@@ -19,7 +19,7 @@
         "pimple/pimple": "^3.0"
     },
     "require-dev": {
-        "racecourse/courser": "dev-master",
+        "racecourse/courser": "dev-develop",
         "racecourse/mews": "^0.0.1"
     }
 }

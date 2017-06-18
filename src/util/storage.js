@@ -1,7 +1,6 @@
 import config from '../config';
 import cookie from 'js-cookie';
 export default class storage {
-
   constructor (tokenName = 'knight') {
     if (!window.localStorage) {
       cookie.setItem = cookie.set;
@@ -39,5 +38,10 @@ export default class storage {
       console.log(err);
       return false;
     }
+  }
+
+  clear() {
+    this.store.removeItem(this.key);
+    this.store.removeItem('token');
   }
 }

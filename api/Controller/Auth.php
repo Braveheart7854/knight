@@ -25,21 +25,21 @@ class Auth extends Controller
         if (!$username || !$password) {
             return $this->response
                 ->status(400)
-                ->json(['message' => 'Param Error', 'code' => 1]);
+                ->json(['message' => 'param error', 'code' => 1]);
         }
         $user = new User();
         $userInfo = $user->findOne(['username' => $username]);
         if (!$userInfo) {
             return $this->response->status(404)->json([
-                'message' => 'User Not Found',
+                'message' => 'user not found',
                 'code' => 2,
             ]);
         }
-
-        $verify = password_verify($password, $userInfo->password);
+        echo $password;
+        $verify = password_verify($password, $userInfo['password']);
         if (!$verify) {
             return $this->response->status(401)->json([
-                'message' => 'Password Incorrect',
+                'message' => 'password incorrect',
                 'code' => 3,
             ]);
         }
@@ -51,10 +51,11 @@ class Auth extends Controller
         ];
         $jwt = new JWTAuth(Config::get('jwt'));
         $token = $jwt->encode($info);
+        unset($userInfo['password']);
         $this->response->json([
             'message' => 'ok',
             'data' => [
-                'user' => $userInfo->toArray(),
+                'user' => $userInfo,
                 'token' => $token,
             ]
         ]);

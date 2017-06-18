@@ -38,7 +38,6 @@
           page: comment.page || 1,
           pageSize: comment.pageSize || 20,
         };
-        console.log('ccccccc', this.comments);
       }
     },
     components: {

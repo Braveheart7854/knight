@@ -82,14 +82,13 @@
   export default {
     data: function(){
       return {
-        survey: [],
+        survey: {},
       }
     },
     async beforeMount() {
       await this.$store.dispatch('survey');
       const admin = this.$store.state.admin;
-      this.survey = admin.survey;
-      console.log(this.survey);
+      this.survey = admin.survey || {};
     }
   }
 </script>

@@ -14,14 +14,12 @@ const state = {
 const mutations = {
   [POST_FETCH_SUCCESS](state, payload){
     const { data, message, ok }  = payload;
-    console.log('*******', data, message, ok)
     state.post = data;
     state.message = message;
     state.ok = ok;
   },
   [POST_DETAIL_SUCCESS](state, payload) {
     const { data, message, ok }  = payload;
-    console.log('*******||||', data, message, ok);
     state.post = data;
     state.message = message;
     state.ok = ok;
@@ -39,7 +37,6 @@ const mutations = {
     state.auth = Object.assign(state.auth || {}, item);
   },
   [POST_PAGE_CHANGED](state, page) {
-    console.log('ccccccchanged', state);
     state.post.page = page;
   }
 };

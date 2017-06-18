@@ -99,7 +99,6 @@
           email: this.email,
           username: this.username,
         };
-        console.log(data);
       },
       snackbar() {
         this.$refs.snackbar.open();

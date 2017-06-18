@@ -78,7 +78,6 @@
 //        if (page * pageSize >= total) return null;
         await this.$store.dispatch('article', {page, pageSize, total});
         this.loadArticle();
-        console.log(this.list);
       },
       onSort() {
 

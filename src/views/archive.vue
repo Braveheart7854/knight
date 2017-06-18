@@ -33,7 +33,6 @@
     },
     beforeUpdate() {
       const page = Number(this.$route.query.page);
-      console.log('ppppppppp', this.page , page);
       if(page && page !== Number(this.page)) {
         this.load();
       }
@@ -60,7 +59,6 @@
       async load() {
         const query = Object.assign({}, this.$route.query);
         await this.$store.dispatch('posts', query);
-        console.log(this.$store.state);
         const res = this.$store.state.post;
         const data = res.post;
         const { list, page, pageSize, total } = data;

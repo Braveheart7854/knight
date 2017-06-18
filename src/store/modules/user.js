@@ -1,6 +1,7 @@
 const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
 const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
 const USER_LOGIN_FAILURE = 'USER_LOGIN_FAILURE';
+const USER_LOGOUT_REQUEST = 'USER_LOGOUT_REQUEST';
 const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS';
 const USER_UPDATE_SUCCESS = 'USER_UPDATE_SUCCESS';
 const USER_LOGIN_CHANGE = 'USER_LOGIN_CHANGE';
@@ -32,6 +33,10 @@ const mutations = {
     const {message, ok }  = payload;
     state.message = message;
     state.ok = ok;
+  },
+  [USER_LOGOUT_REQUEST] (state){
+    state.route.path = '/login';
+    $storage.clear();
   },
   [USER_LOGOUT_SUCCESS](state, action){
     state.token = getCookie('token') || null;
