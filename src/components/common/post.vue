@@ -3,9 +3,10 @@
     <SideBar></SideBar>
     <div class="header">
       <ul class="nav">
-        <li><router-link to="/posts">home</router-link></li>
+        <li><router-link to="/">home</router-link></li>
         <li><router-link to="/archive">archive</router-link></li>
         <li><a href="//github.com/racecourse/knight">github</a></li>
+        <li><router-link to="/">about</router-link></li>
       </ul>
       <div class="search">
         <input class="filter" id="keyword" type="text" name="search" placeholder="keyword">

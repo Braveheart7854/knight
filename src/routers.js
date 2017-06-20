@@ -1,16 +1,16 @@
 export default [
   {
     path: '/',
-    component: require('./views/posts.vue'),
+    component: require('./components/common/post.vue'),
     meta: { auth: false },
     children: [
       {
-        path: '/posts/:id',
-        component: require('./views/detail.vue')
+        path: '/',
+        component: require('./views/posts.vue')
       },
       {
-        path: '/posts',
-        component: require('./views/posts.vue')
+        path: '/posts/:id',
+        component: require('./views/detail.vue')
       },
       {
         path: '/archive',
