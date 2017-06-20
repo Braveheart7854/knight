@@ -4,6 +4,7 @@
   "description": "knight base on courser",
   "main": "index.js",
   "scripts": {
+    "start" : "pm2 start api/production.php",
     "server": "gharry -c gharry.json",
     "deploy": "sh bin/deploy.sh",
     "dev": "NODE_ENV=develop webpack-dashboard -- node build/dev.js",

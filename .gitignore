@@ -9,3 +9,4 @@ deploy/group_vars/all
 deploy/hosts
 dist/
 *.lock
+*.retry

@@ -22,7 +22,7 @@ class Auth
 
     private $id = '';
 
-    /*
+    /**
      * @param array $config jwt config
      * */
     public function __construct($config)
@@ -33,7 +33,6 @@ class Auth
 
     public function format($config)
     {
-        var_dump('xxxxxxxxxx-----xxxxxxx', $config);
         if (!isset($config['issuer'])) {
             $config['issuer'] = 'https://github.com/racecourse';
         }

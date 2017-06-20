@@ -91,6 +91,7 @@
       commit() {
         const id = this.$route.params.id;
         if (!id) {
+          this.article.content = this.content;
           this.$store.dispatch('addPost', this.article);
         }
       }
