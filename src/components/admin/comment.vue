@@ -13,22 +13,24 @@
         <md-table-header>
           <md-table-row>
             <md-table-head md-numeric>id</md-table-head>
-            <md-table-head md-numeric><span>category</span></md-table-head>
-            <md-table-head md-numeric><span>permission</span></md-table-head>
+            <md-table-head md-numeric><span>username</span></md-table-head>
+            <md-table-head md-numeric><span>email</span></md-table-head>
+            <md-table-head md-numeric><span>site</span></md-table-head>
             <md-table-head md-numeric>
               <md-icon>message</md-icon>
-              <span>title</span>
+              <span>content</span>
             </md-table-head>
             <md-table-head md-numeric><span>created at</span></md-table-head>
             <md-table-head><span>action</span></md-table-head>
           </md-table-row>
         </md-table-header>
         <md-table-body>
-          <md-table-row v-for="row in posts" :key="row.id" :md-item="{id:row.id}">
+          <md-table-row v-for="row in list" :key="row.id" :md-item="{id:row.id}">
             <md-table-cell md-numeric> {{row.id}} </md-table-cell>
-            <md-table-cell md-numeric> {{row.category}}</md-table-cell>
-            <md-table-cell md-numeric> {{row.permission|permit}}</md-table-cell>
-            <md-table-cell md-numeric> {{row.title}} </md-table-cell>
+            <md-table-cell md-numeric> {{row.username}}</md-table-cell>
+            <md-table-cell md-numeric> {{row.email}}</md-table-cell>
+            <md-table-cell md-numeric> {{row.site}} </md-table-cell>
+            <md-table-cell md-numeric> {{row.content}} </md-table-cell>
             <md-table-cell md-numeric> {{row.created}} </md-table-cell>
             <md-table-cell md-numeric>
              <div class="action"><router-link to="/admin/edit/1">edit &nbsp;</router-link>|
@@ -56,7 +58,6 @@
   .action {
     width: 8em;
   }
-
 </style>
 <script>
   export default {
@@ -76,7 +77,7 @@
         page = page + 1;
 //        if (page * pageSize >= total) return null;
         await this.$store.dispatch('comments', {page, pageSize, total});
-        this.loadArticle();
+        this.load();
       },
       onSort() {
 
@@ -89,6 +90,7 @@
       },
       load() {
         const data = this.$store.state.comment;
+        console.log(data);
         const comments = data.comment || {};
         const {page, list, total, pageSize} = comments;
         this.list = list || [];

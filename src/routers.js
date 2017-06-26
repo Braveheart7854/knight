@@ -38,15 +38,21 @@ export default [
         component: require('./components/admin/article.vue'),
       },
       {
+        path: 'article/:id/edit',
+        meta: { auth: true },
+        component: require('./components/admin/edit.vue'),
+      },
+      {
         path: 'comment',
         meta: { auth: true },
         component: require('./components/admin/comment.vue'),
       },
       {
-        path: 'edit/:id',
-        meta: { auth: true },
-        component: require('./components/admin/edit.vue'),
-      }
+        path: 'upload',
+        // meta: { auth: true },
+        component: require('./components/admin/upload.vue'),
+      },
+
     ]
   },
   {

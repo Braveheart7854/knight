@@ -1,12 +1,10 @@
 <template>
   <div class="post">
-    <Detail v-bind:article="post" v-bind:comments="comments"></Detail>
+    <Detail v-bind:article="post"></Detail>
   </div>
 </template>
 <script>
   import Detail from '../components/post/post.vue';
-  import Jumbotron from '../components/post/jumbotron.vue';
-  import SideBar from '../components/nav/sideBar.vue';
   export default {
     data() {
       return {
@@ -42,8 +40,6 @@
     },
     components: {
       Detail,
-      Jumbotron,
-      SideBar,
     }
   }
 </script>

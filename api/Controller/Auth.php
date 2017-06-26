@@ -35,7 +35,6 @@ class Auth extends Controller
                 'code' => 2,
             ]);
         }
-        echo $password;
         $verify = password_verify($password, $userInfo['password']);
         if (!$verify) {
             return $this->response->status(401)->json([

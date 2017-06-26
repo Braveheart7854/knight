@@ -61,18 +61,6 @@
           return {};
         }
       },
-      comments: {
-        type: Object,
-        required: false,
-        default: function () {
-          return {
-            list: [],
-            page: 1,
-            pageSize: 20,
-            total: 0,
-          }
-        }
-      }
     },
     data () {
       return {
@@ -82,23 +70,46 @@
         content: '',
         message: '',
         ok: false,
+        comments: {},
+      }
+    },
+    async beforeMount() {
+      const id = this.$route.params.id;
+      await this.$store.dispatch('getCommentsByPostId', id);
+      let comments = this.$store.state.comment;
+      if (comments && comments.comment) {
+        const comment = comments.comment;
+        this.comments = {
+          list: comment.list || [],
+          total: comment.total || 0,
+          page: comment.page || 1,
+          pageSize: comment.pageSize || 20,
+        };
       }
     },
     methods: {
-      submit() {
+      async submit() {
         const username = this.username;
-        if (!username || !content) {
+        if (!username || !this.content) {
           this.message = 'username and content required';
           this.ok = false;
           this.snackbar();
           return;
         }
+        if (!this.article.id) {
+          this.message = 'artile id required';
+          this.ok = false;
+          this.snackbar();
+        }
         const data = {
+          id: this.article.id,
           content: this.content,
           site: this.site,
           email: this.email,
           username: this.username,
         };
+        await this.$store.dispatch('addComment', data);
+        this.comments = this.$store.state.comment;
       },
       snackbar() {
         this.$refs.snackbar.open();

@@ -4,6 +4,7 @@ const POST_FETCH_FAILURE = 'POST_FETCH_FAILURE';
 const POST_FETCH_CHANGE = 'POST_FETCH_CHANGE';
 const POST_DETAIL_SUCCESS = 'POST_DETAIL_SUCCESS';
 const POST_PAGE_CHANGED = 'POST_PAGE_CHANGED';
+const FETCH_FAILUER = 'FETCH_FAILUER';
 
 const state = {
   post: {},
@@ -38,7 +39,12 @@ const mutations = {
   },
   [POST_PAGE_CHANGED](state, page) {
     state.post.page = page;
-  }
+  },
+  [FETCH_FAILUER](state, payload){
+    const { message, ok }  = payload;
+    state.message = message;
+    state.ok = ok;
+  },
 };
 
 export default {

@@ -59,9 +59,18 @@ export default {
     }
   },
   async getCommentsByPostId({ commit }, id) {
-    const res = await fetch('/comments/' + id, 'get');
+    const res = await fetch('/posts/' + id + '/comments', 'get');
     if (res.ok) {
       commit('COMMENT_FETCH_SUCCESS', res);
+    } else {
+      commit('COMMENT_FETCH_FAILURE', res);
+    }
+  },
+  async addComment({commit, dispatch}, data) {
+    const res = await fetch('/posts/' + data.id + '/comments', 'post', data);
+    if (res.ok) {
+      commit('COMMENT_FETCH_SUCCESS', res);
+      await dispatch('getCommentsByPostId', data.id);
     } else {
       commit('COMMENT_FETCH_FAILURE', res);
     }
@@ -74,8 +83,16 @@ export default {
       commit('FETCH_FAILURE', res);
     }
   },
-  async addPost({ commit }, data) {
+  async addArticle ({ commit }, data) {
     const res = await fetch('/admin/article', 'post', data);
+    if (res.ok) {
+      commit('ARTICLE_ADD_SUCCESS', res);
+    } else {
+      commit('ARTICLE_ADD_FAILURE', res);
+    }
+  },
+  async editArticle ({commit}, data) {
+    const res = await fetch('/admin/article/' + data.id, 'put', data);
     if (res.ok) {
       commit('ARTICLE_ADD_SUCCESS', res);
     } else {

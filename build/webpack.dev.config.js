@@ -20,6 +20,11 @@ module.exports = merge(baseWebpackConfig, {
     path: config.dev.outputPath,
     publicPath: config.dev.outputPublicPath
   },
+  resolve: {
+    alias: {
+      'vue': 'vue/dist/vue.js'
+    }
+  },
   module: {
     rules: utils.styleLoaders()
   },

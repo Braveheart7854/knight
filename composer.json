@@ -20,6 +20,6 @@
     },
     "require-dev": {
         "racecourse/courser": "dev-develop",
-        "racecourse/mews": "^0.0.1"
+        "racecourse/mews": "dev-master"
     }
 }

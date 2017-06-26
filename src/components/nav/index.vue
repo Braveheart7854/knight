@@ -24,9 +24,18 @@
             <md-icon>sort</md-icon>
             <span><router-link to="/admin/article">文章管理</router-link></span>
           </md-list-item>
+            <md-list-item>
+            <md-icon>sort</md-icon>
+            <span><router-link to="/admin/comment">评论管理</router-link></span>
+          </md-list-item>
           <md-list-item>
             <md-icon>perm_media</md-icon>
             <span>图片管理</span>
+          </md-list-item>
+          </md-list-item>
+            <md-list-item>
+            <md-icon>photo</md-icon>
+            <span><router-link to="/admin/upload">上传图片</router-link></span>
           </md-list-item>
           <md-list-item>
             <md-icon>settings</md-icon>

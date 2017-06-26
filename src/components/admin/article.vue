@@ -31,8 +31,10 @@
             <md-table-cell md-numeric> {{row.title}} </md-table-cell>
             <md-table-cell md-numeric> {{row.created}} </md-table-cell>
             <md-table-cell md-numeric>
-             <div class="action"><router-link to="/admin/edit/1">edit &nbsp;</router-link>|
-               <span @click="del(row.id)">&nbsp; delete</span></div>
+              <div class="action">
+                <button class="action-btn" @click="edit(row.id)">编辑</button>
+                <button class="action-btn" @click="del(row.id)">删除</button>
+              </div>
             </md-table-cell>
           </md-table-row>
         </md-table-body>
@@ -54,7 +56,12 @@
     text-align: center;
   }
   .action {
-    width: 8em;
+    text-align: center;
+  }
+  .action .action-btn {
+    background-color: #b2b2bb;
+    margin-left: 0.1em;
+    border: 0;
   }
 
 </style>
@@ -82,10 +89,10 @@
       onSort() {
 
       },
-      edit() {
-        console.log(1111)
+      edit (id) {
+        this.$router.push('/admin/article/' + id + '/edit');
       },
-      del(id) {
+      del (id) {
         this.$store.dispatch('delArt', {id});
       },
       loadArticle() {

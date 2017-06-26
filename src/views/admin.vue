@@ -4,7 +4,7 @@
     <div class="main-wrapper">
       <Survey></Survey>
     </div>
-    </div>
+  </div>
 </template>
 <style>
   .main-wrapper {

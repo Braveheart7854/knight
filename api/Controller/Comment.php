@@ -56,22 +56,25 @@ class Comment extends Controller
     /**
      * @throws \Exception
      */
-    public function created()
+    public function add()
     {
-        $artId = $this->request->param('artId');
+        $artId = $this->request->param('id');
         $content = $this->request->body('content');
         $email = $this->request->body('email');
         $site = $this->request->body('site');
         $username = $this->request->body('username');
-        if ($username || $content) {
+        $username = preg_replace('/\s/', '', $username);
+        $content = preg_replace('/\s/', '', $content);
+        if (!$username || !$content) {
             return $this->response->status(400)->json([
-                'message' => '参数错误',
+                'message' => '参数错误了',
                 'code' => 1,
             ]);
         }
         $check = (new Post())->findById($artId);
+        var_dump($check);
         if (!$check) {
-            return $this->request->status(400)->json([
+            return $this->response->status(400)->json([
                 'message' => '文章不存在',
                 'code' => 2,
             ]);
@@ -86,6 +89,7 @@ class Comment extends Controller
         ];
         $comment = new Discuss();
         $comment->insert($data);
+        var_dump($this->response);
         $this->response->json([
             'message' => 'ok',
             'code' => 0,

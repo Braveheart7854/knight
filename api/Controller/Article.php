@@ -45,6 +45,7 @@ class Article extends Controller
 //            ]];
 //        }
         $list = $article->find($condition, $options);
+        $list = $article->toArray($list);
         $total = $article->count($condition);
         $this->response->json([
             'message' => 'ok',
@@ -74,6 +75,7 @@ class Article extends Controller
             'permission' => ['$lte' => 1]
         ];
         $art = $article->findOne($condition);
+        $art = $art->toArray();
         $this->response->json([
             'message' => 'ok',
             'code' => '0',
