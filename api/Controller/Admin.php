@@ -47,6 +47,7 @@ class Admin extends Controller
         $article = new Post();
         $posts = $article->find(['id' => ['$gt' => 0]],
          ['limit' => $pageSize, 'offset' => $offset]);
+        $posts = $article->toArray($posts);
         $ret = [
             'total' => 10, // @fixme
             'page' => $page,
@@ -114,22 +115,23 @@ class Admin extends Controller
     {
         $category = new Category();
         $cate = $category->findAll();
+        $list = $category->toArray($cate);
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
-            'data' => $cate,
+            'data' => $list,
         ]);
     }
 
-    public function update()
+    public function edit()
     {
         $id = $this->request->param('id');
-        $title = $this->request->param('title');
-        $tags = $this->request->param('tags');
-        $content = $this->request->param('content');
-        $cateId = $this->request->param('cateId');
-        $time = $this->request->param('time');
-        $permission = $this->request->param('permission');
+        $title = $this->request->body('title');
+        $tags = $this->request->body('tags');
+        $content = $this->request->body('content');
+        $cateId = $this->request->body('cateId');
+        $time = $this->request->body('time');
+        $permission = $this->request->body('permission');
         if (!$title || !$content) {
             return $this->response
                 ->status(400)
@@ -146,14 +148,14 @@ class Admin extends Controller
                 'code' => 2,
             ]);
         }
-        $art->title = $title;
-        $art->content = $content;
-        $art->cateId = $cateId;
-        $art->tags = $tags;
-        $art->permission = $permission;
+        $art['title'] = $title;
+        $art['content'] = $content;
+        $art['cateId'] = $cateId;
+        $art['tags'] = $tags;
+        $art['permission'] = $permission;
         if ($time) {
             $time = mktime($time);
-            $art->created = $time;
+            $art['created'] = $time;
         }
         $art->update();
         $this->response->json([
@@ -207,6 +209,7 @@ class Admin extends Controller
                 'code' => 2,
             ]);
         }
+        $art = $art->toArray();
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
@@ -225,35 +228,26 @@ class Admin extends Controller
      */
     public function comments()
     {
-        $id = $this->request->params['id'];
-        if (!$id) {
-            return $this->response->status(400)->json([
-                'message' => 'param id required',
-                'code' => 1,
-            ]);
-        }
         $page = abs($this->request->query('page'));
         $page = $page ?: 1;
         $pageSize = 20;
         $offset = ($page - 1) * $pageSize;
         $comment = new Comment();
         $comments = $comment->find([
-            'artId' => $id,
-        ],
+                'id' => ['$gt' => 1],
+            ],
             [
+                'order' => ['id' => 'desc'],
                 'limit' => $pageSize,
                 'offset' => $offset,
             ]);
         $total = 0; // @todo
-        $list = [];
-        foreach ($comments as $key => $value) {
-            $list[] = $value->attr;
-        }
+        $comments = $comment->toArray($comments);
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
             'data' => [
-                'list' => $list,
+                'list' => $comments,
                 'page' => $page,
                 'pageSize' => $pageSize,
                 'total' => $total,
@@ -279,7 +273,4 @@ class Admin extends Controller
             'code' => 0,
         ]);
     }
-
-
-
 }

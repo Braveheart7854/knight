@@ -9,7 +9,6 @@
 
 namespace Knight\Middleware;
 
-use Courser\Interfaces\StoreInterface;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Parser;
@@ -23,7 +22,7 @@ class Auth
 
     private $id = '';
 
-    /*
+    /**
      * @param array $config jwt config
      * */
     public function __construct($config)
@@ -55,15 +54,35 @@ class Auth
 
     public function __invoke($req, $res)
     {
-        // $authorization = $req->header('Authorization');
-        // if(!$authorization) return null;
-        // $authorization = explode(' ', $authorization);
-        // if(count($authorization) !== 2) return null;
-        // list($bearer, $token) = $authorization;
-        // if($bearer !== 'Bearer') return null;
-        // $user = $this->decode($token);
-        // if(!$user) return null;
-        // $req->auth = $user;
+        $authorization = $req->header('authorization');
+        if (!$authorization) {
+            return $res->status(401)->json([
+                'message' => 'unauthorization',
+                'code' => 10401,
+            ]);
+        }
+        $authorization = explode(' ', $authorization);
+        if (count($authorization) !== 2) {
+            return $res->status(401)->json([
+                'message' => 'unauthorization',
+                'code' => 10401,
+            ]);
+        }
+        list($bearer, $token) = $authorization;
+        if ($bearer !== 'Bearer') {
+            return $res->status(401)->json([
+                'message' => 'unauthorization',
+                'code' => 10401,
+            ]);
+        }
+        $user = $this->decode($token);
+        if (!$user) {
+            return $res->status(401)->json([
+                'message' => 'unauthorization',
+                'code' => 10401,
+            ]);
+        }
+        $req->auth = $user;
     }
 
     public function decode($token)

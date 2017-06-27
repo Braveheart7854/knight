@@ -8,18 +8,18 @@
           <form novalidate @submit.stop.prevent="submit">
             <md-input-container>
               <label>title</label>
-              <md-input placeholder="title" v-model="article.title"></md-input>
+              <md-input placeholder="title" v-model="title"></md-input>
             </md-input-container>
             <md-input-container>
               <label for="category">分类</label>
-              <md-select name="category" id="category" v-model="article.cateId" @selected="cate">
+              <md-select name="category" id="category" v-model="cateId" @selected="cate">
                 <div v-for="cate in category">
                   <md-option :value="cate.id">{{cate.name}}</md-option>
                 </div>
               </md-select>
             </md-input-container>
             <div>
-              <md-chips v-model="article.tags" :md-max="5" md-input-placeholder="标签..." @change="tag">
+              <md-chips v-model="tags" :md-max="5" md-input-placeholder="标签..." @change="tag">
                 <template scope="chip">
                   <span>{{ chip.value }}</span>
                 </template>
@@ -30,7 +30,9 @@
               <md-radio v-model="article.permission" id="my-test2" name="my-test-group1" md-value="2">隐藏</md-radio>
               <md-radio v-model="article.permission" id="my-test3" name="my-test-group1" md-value="3">仅自己可见</md-radio>
             </div>
-            <md-button class="md-raised md-primary"><span @click="commit">提交</span></md-button>
+            <md-button class="md-raised md-primary">
+              <span @click="commit">提交</span>
+            </md-button>
           </form>
         </div>
       </div>
@@ -43,62 +45,82 @@
 
 </style>
 <script>
-  import {VueEditor} from 'vue2-editor';
-  export default {
-    props: {
-      article: {
-        type: Object,
-        required: false,
-        default: function () {
-          return {
-            permission: 1,
-            tags: [],
-            title: '',
-            content: '',
-            cateId: 1
-          };
-        },
-      }
-    },
-    data: function () {
-      return {
-        editor: null,
-        category: [],
-        content: '',
-        toolbar: [
-          ['bold', 'italic', 'strike'],
-          ['blockquote', 'code-block', 'image'],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-          [{ 'indent': '-1' }, { 'indent': '+1' }],
-          [{ 'color': [] }, { 'background': [] }],
-          [{ 'font': [] }],
-          [{ 'align': [] }],
-          ['clean']
-        ]
-      }
-    },
-    async beforeMount() {
-      await this.$store.dispatch('category');
-      this.category = this.$store.getters.getCategory;
-    },
-    methods: {
-      tag() {
-
+import { VueEditor } from 'vue2-editor';
+export default {
+  props: {
+    article: {
+      type: Object,
+      required: false,
+      default: function () {
+        return {
+          permission: 1,
+          tags: [],
+          title: '',
+          content: '',
+          cateId: 1
+        };
       },
-      cate(cateId) {
-        this.article.cateId = cateId;
-      },
-      commit() {
-        const id = this.$route.params.id;
-        if (!id) {
-          this.$store.dispatch('addPost', this.article);
-        }
-      }
-    },
-    components: {
-      VueEditor
-    },
+    }
+  },
+  data: function () {
+    return {
+      editor: null,
+      category: [],
+      content: '',
+      title: '',
+      tags: [],
+      cateId: 1,
+      permission: 1,
+      toolbar: [
+        ['bold', 'italic', 'strike'],
+        ['blockquote', 'code-block', 'image'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'indent': '-1' }, { 'indent': '+1' }],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+        ['clean']
+      ]
+    }
+  },
+  async beforeMount() {
+    await this.$store.dispatch('category');
+    this.category = this.$store.getters.getCategory;
+    this.content = this.article.content;
+    this.title = this.article.title || '';
+    this.cateId = this.article.cateId;
+    this.tags = this.article.tags;
+    this.permission = this.article.permission;
+  },
+  methods: {
+    tag() {
 
-  }
+    },
+    cate(cateId) {
+      this.article.cateId = cateId;
+    },
+    commit() {
+      const id = this.$route.params.id;
+      this.article.content = this.content;
+      const data = {
+        title: this.title,
+        cateId: this.cateId,
+        permission: this.permission,
+        content: this.content,
+        tags: this.tags,
+      }
+      if (!id) {
+        this.$store.dispatch('addArticle', data);
+      } else {
+        data.id = id;
+        this.$store.dispatch('editArticle', data);
+      }
+    }
+  },
+  components: {
+    VueEditor
+  },
+
+}
 
 </script>

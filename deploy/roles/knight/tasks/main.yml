@@ -6,7 +6,7 @@
     tags: [deploy, config]
 
   - name: "reload {{ role }}" 
-    shell: "cd {{ app_home }}; npm run reload"
+    shell: "cd {{ app_home }}; npm run start"
     tags: [deploy, reload]
 
   - name: "restart {{ role }}" 

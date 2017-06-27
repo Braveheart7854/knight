@@ -59,23 +59,40 @@ export default {
     }
   },
   async getCommentsByPostId({ commit }, id) {
-    const res = await fetch('/comments/' + id, 'get');
+    const res = await fetch('/posts/' + id + '/comments', 'get');
     if (res.ok) {
       commit('COMMENT_FETCH_SUCCESS', res);
     } else {
       commit('COMMENT_FETCH_FAILURE', res);
     }
   },
-  async survey({ commit }) {
+  async addComment({commit, dispatch}, data) {
+    const res = await fetch('/posts/' + data.id + '/comments', 'post', data);
+    if (res.ok) {
+      commit('COMMENT_FETCH_SUCCESS', res);
+      await dispatch('getCommentsByPostId', data.id);
+    } else {
+      commit('COMMENT_FETCH_FAILURE', res);
+    }
+  },
+  async survey({ commit, dispatch }) {
     const res = await fetch('/admin/survey', 'get');
     if (res.ok) {
       commit('SURVEY_FETCH_SUCCESS', res);
     } else {
-      commit('SURVEY_FETCH_FAILURE', res);
+      commit('FETCH_FAILURE', res);
     }
   },
-  async addPost({ commit }, data) {
+  async addArticle ({ commit }, data) {
     const res = await fetch('/admin/article', 'post', data);
+    if (res.ok) {
+      commit('ARTICLE_ADD_SUCCESS', res);
+    } else {
+      commit('ARTICLE_ADD_FAILURE', res);
+    }
+  },
+  async editArticle ({commit}, data) {
+    const res = await fetch('/admin/article/' + data.id, 'put', data);
     if (res.ok) {
       commit('ARTICLE_ADD_SUCCESS', res);
     } else {
@@ -96,9 +113,12 @@ export default {
   async comments({commit}, query) {
     const res = await fetch('/admin/comments', 'get', query);
     if (res.ok) {
-      commit('COMMENT_FETCH_SUCCESS', res)
+      commit('COMMENT_FETCH_SUCCESS', res);
     } else {
-      commit('COMMENT_FETCH_FAILURE', res)
+      commit('COMMENT_FETCH_FAILURE', res);
     }
+  },
+  logout({commit}) {
+    commit('LOGOUT_REQUEST');
   }
 }

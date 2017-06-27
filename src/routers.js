@@ -5,12 +5,12 @@ export default [
     meta: { auth: false },
     children: [
       {
-        path: '/posts/:id',
-        component: require('./views/detail.vue')
+        path: '/',
+        component: require('./views/posts.vue')
       },
       {
-        path: '/posts',
-        component: require('./views/posts.vue')
+        path: '/posts/:id',
+        component: require('./views/detail.vue')
       },
       {
         path: '/archive',
@@ -21,28 +21,38 @@ export default [
   {
     path: '/admin',
     component: require('./components/admin/index.vue'),
-    meta: { auth: true },
     children: [
       {
         path: 'home',
+        meta: { auth: true },
         component: require('./components/admin/main.vue')
       },
       {
         path: 'create',
+        meta: { auth: true },
         component: require('./components/editor/index.vue')
       },
       {
         path: 'article',
+        meta: { auth: true },
         component: require('./components/admin/article.vue'),
       },
       {
+        path: 'article/:id/edit',
+        meta: { auth: true },
+        component: require('./components/admin/edit.vue'),
+      },
+      {
         path: 'comment',
+        meta: { auth: true },
         component: require('./components/admin/comment.vue'),
       },
       {
-        path: 'edit/:id',
-        component: require('./components/admin/edit.vue'),
-      }
+        path: 'upload',
+        // meta: { auth: true },
+        component: require('./components/admin/upload.vue'),
+      },
+
     ]
   },
   {

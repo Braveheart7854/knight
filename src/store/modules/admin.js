@@ -1,3 +1,4 @@
+import Cellar from '../../util/storage';
 const ARTICLE_FETCH_REQUEST = 'ARTICLE_FETCH_REQUEST';
 const ARTICLE_FETCH_SUCCESS = 'ARTICLE_FETCH_SUCCESS';
 const ARTICLE_FETCH_FAILURE = 'ARTICLE_FETCH_FAILURE';
@@ -51,7 +52,8 @@ const mutations = {
     state.ok = ok;
   },
   [FETCH_FAILURE](state, payload){
-    const { message, ok }  = payload;
+
+    const { message, ok, certification }  = payload;
     state.message = message;
     state.ok = ok;
   },

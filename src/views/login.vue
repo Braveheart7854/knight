@@ -51,7 +51,6 @@
   export default {
     data() {
       const { message, ok } = this.$store.state.user;
-      console.log('fffffuck', message, ok);
       return {
         username: '',
         password: '',
@@ -75,8 +74,7 @@
           await this.$store.dispatch('login', { username, password });
           const { message, ok } = this.$store.getters.getUser;
           if (ok) {
-            this.$router.push('/post');
-            console.log(this.$router);
+            this.$router.push('/admin/home');
           } else {
             this.message = message;
             this.ok = ok;
