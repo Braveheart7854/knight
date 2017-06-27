@@ -41,6 +41,7 @@ class Comment extends Controller
             'orderBy' => ['created' => 'desc'],
         ];
         $list = $comment->find($where, $options);
+        $list = $comment->toArray($list);
         $this->response->json([
             'message' => 'ok',
             'code' => 0,

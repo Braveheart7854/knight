@@ -104,15 +104,14 @@ class Article extends Controller
             'order' => ['id' => 'DESC'],
         ];
         $articles = $article->find($where, $option);
-        $list = [];
-        if (!empty($articles)) {
-            foreach ($articles as $art) {
-                $list[] = $art->attr;
-            }
-        }
+        $list = $article->toArray($articles);
         $this->response->json([
             'message' => 'ok',
-            'data' => 'article',
+            'data' => [
+                'page' => $page,
+                'pageSize' => $pageSize,
+                'list' => $list,
+            ],
         ]);
     }
 
@@ -146,6 +145,7 @@ class Article extends Controller
                 'offset' => $offset,
             ]);
         $total = 0; // @todo
+        $comments = $comment->toArray($comments);
         $this->response->json([
             'message' => 'ok',
             'code' => 0,
