@@ -7,18 +7,19 @@
  * @time      : 下午1:16
  */
 
-
+define('APP_ROOT', dirname(dirname(__FILE__)));
+require APP_ROOT . '/vendor/autoload.php';
 use Courser\App;
-use Courser\Session\Session;
 use Courser\Server\HttpServer;
 use Knight\Middleware\Cors;
 use Knight\Middleware\Auth;
 use Courser\Helper\Config;
+use Courser\Helper\Env;
 
-$app = new App('dev');
+Env::getEnv();
+Config::load(APP_ROOT . '/api/config');
+$app = new App();
 $cors = new Cors();
-//$session = new Session(Config::get('session'));
-//$app->used($session);
 $app->used($cors);
 $app->notFound(function ($req, $res) {
     $res->status(404)->json(['message' => 'Not Found']);
@@ -30,6 +31,10 @@ $app->error(function ($req, $res, Exception $err) {
     ]);
 });
 
+$app->post('/test', function ($req, $res) {
+    echo "123123123";
+
+});
 
 $app->get('/posts', [Knight\Controller\Article::class => 'posts']);
 $app->get('/posts/:id', [Knight\Controller\Article::class => 'detail']);
