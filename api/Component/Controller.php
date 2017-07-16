@@ -19,9 +19,16 @@ class Controller
 
     public $response;
 
+    public $body  = [];
+
     public function __construct(Request $req, Response $res)
     {
         $this->request = $req;
         $this->response = $res;
+        $this->body = $this->request->getParsedBody();
+    }
+
+    public function body($key, $default = null) {
+        return $this->body[$key] ?? $default;
     }
 }

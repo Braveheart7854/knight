@@ -10,3 +10,4 @@ deploy/hosts
 dist/
 *.lock
 *.retry
+package-lock.json

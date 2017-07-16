@@ -13,16 +13,15 @@ use Courser\App;
 use Courser\Server\HttpServer;
 use Knight\Middleware\Cors;
 use Knight\Middleware\Auth;
-use Courser\Helper\Config;
-use Courser\Helper\Env;
+use Ben\Config;
 
-Env::getEnv();
 Config::load(APP_ROOT . '/api/config');
+
 $app = new App();
 $cors = new Cors();
 $app->used($cors);
 $app->notFound(function ($req, $res) {
-    $res->status(404)->json(['message' => 'Not Found']);
+    $res->withStatus(404)->json(['message' => 'Not Found']);
 });
 $app->error(function ($req, $res, Exception $err) {
     $res->status(500)->json([
@@ -57,4 +56,6 @@ $app->group('/admin', function () {
 });
 
 $server = new HttpServer($app);
+$setting = Config::get('server');
+$server->bind($setting['host'], $setting['port']);
 $server->start();

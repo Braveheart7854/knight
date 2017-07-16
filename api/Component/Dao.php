@@ -9,7 +9,7 @@
 namespace Knight\Component;
 
 use Mews\Model;
-use Courser\Helper\Config;
+use Ben\Config;
 
 class Dao extends Model
 {
