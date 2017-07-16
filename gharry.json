@@ -1,7 +1,10 @@
 {
-  "watch": ["api", "mews", "courser"],
-  "script": "php",
-  "execute": "api/dev.php",
+  "watch": ["api"],
+  "language": "php",
+  "script": "api/server.php",
   "ignore": ["node_modules", "vendor", ".idea"],
-  "safe": false
+  "safe": false,
+  "args": {
+    "--env": "develop"
+  }
 }

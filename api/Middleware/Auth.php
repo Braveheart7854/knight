@@ -56,28 +56,28 @@ class Auth
     {
         $authorization = $req->header('authorization');
         if (!$authorization) {
-            return $res->status(401)->json([
+            return $res->withStatus(401)->json([
                 'message' => 'unauthorization',
                 'code' => 10401,
             ]);
         }
         $authorization = explode(' ', $authorization);
         if (count($authorization) !== 2) {
-            return $res->status(401)->json([
+            return $res->withStatus(401)->json([
                 'message' => 'unauthorization',
                 'code' => 10401,
             ]);
         }
         list($bearer, $token) = $authorization;
         if ($bearer !== 'Bearer') {
-            return $res->status(401)->json([
+            return $res->withStatus(401)->json([
                 'message' => 'unauthorization',
                 'code' => 10401,
             ]);
         }
         $user = $this->decode($token);
         if (!$user) {
-            return $res->status(401)->json([
+            return $res->withStatus(401)->json([
                 'message' => 'unauthorization',
                 'code' => 10401,
             ]);

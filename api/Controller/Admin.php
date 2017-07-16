@@ -41,12 +41,12 @@ class Admin extends Controller
     public function article()
     {
         $pageSize = 10;
-        $page = $this->request->query('page');
+        $page = $this->request->getQuery('page');
         $page = abs($page) ?: 1;
         $offset = ($page - 1) * $pageSize;
         $article = new Post();
         $posts = $article->find(['id' => ['$gt' => 0]],
-         ['limit' => $pageSize, 'offset' => $offset]);
+            ['limit' => $pageSize, 'offset' => $offset]);
         $posts = $article->toArray($posts);
         $ret = [
             'total' => 10, // @fixme
@@ -72,27 +72,33 @@ class Admin extends Controller
     {
         $request = $this->request;
         $response = $this->response;
-        $title = $request->body('title');
-        $content = $request->body('content');
-        $tags = $request->body('body');
-        $cateId = $request->body('cateId');
-        $permission = $request->body('permission');
+        $title = $this->body('title');
+        $content = $this->body('content');
+        $tags = $this->body('body');
+        $cateId = $this->body('cateId');
+        $permission = $this->body('permission');
         if (!in_array($permission, [0, 1, 2])) {
-            return $this->response->status(400)->json([
-                'message' => 'Illegal param permission',
-                'code' => 1,
-            ]);
+            return $this->response
+                ->withStatus(400)
+                ->json([
+                    'message' => 'Illegal param permission',
+                    'code' => 1,
+                ]);
         }
         if (!$title) {
-            return $response->status(400)->json([
-                'message' => 'title required',
-                'code' => 1,
-            ]);
+            return $response
+                ->withStatus(400)
+                ->json([
+                    'message' => 'title required',
+                    'code' => 1,
+                ]);
         }
         if (!$content) {
-            return $response->status(400)->json([
-                'message' => 'content can not empty'
-            ]);
+            return $response
+                ->withStatus(400)
+                ->json([
+                    'message' => 'content can not empty'
+                ]);
         }
         $post = [
             'userId' => 1,
@@ -125,16 +131,16 @@ class Admin extends Controller
 
     public function edit()
     {
-        $id = $this->request->param('id');
-        $title = $this->request->body('title');
-        $tags = $this->request->body('tags');
-        $content = $this->request->body('content');
-        $cateId = $this->request->body('cateId');
-        $time = $this->request->body('time');
-        $permission = $this->request->body('permission');
+        $id = $this->request->getParam('id');
+        $title = $this->body('title');
+        $tags = $this->body('tags');
+        $content = $this->body('content');
+        $cateId = $this->body('cateId');
+        $time = $this->body('time');
+        $permission = $this->body('permission');
         if (!$title || !$content) {
             return $this->response
-                ->status(400)
+                ->withStatus(400)
                 ->json([
                     'message' => 'content && title are required',
                     'code' => 1,
@@ -143,7 +149,7 @@ class Admin extends Controller
         $post = new Post();
         $art = $post->findById($id);
         if (!$art) {
-            return $this->response->status(400)->json([
+            return $this->response->withStatus(400)->json([
                 'message' => 'article not found',
                 'code' => 2,
             ]);
@@ -166,10 +172,10 @@ class Admin extends Controller
 
     public function drop()
     {
-        $id = $this->request->param('id');
+        $id = $this->request->getParam('id');
         if (!intval($id)) {
             return $this->response
-                ->status(400)
+                ->withStatus(400)
                 ->json([
                     'message' => 'Illegal ID',
                     'code' => 1,
@@ -178,7 +184,7 @@ class Admin extends Controller
         $post = new Post();
         $art = $post->findById($id);
         if (!$art) {
-            return $this->response->status(400)->json([
+            return $this->response->withStatus(400)->json([
                 'message' => 'article not found',
                 'code' => 2,
             ]);
@@ -192,10 +198,10 @@ class Admin extends Controller
 
     public function detail()
     {
-        $id = $this->request->param('id');
+        $id = $this->request->getParam('id');
         if (!intval($id)) {
             return $this->response
-                ->status(400)
+                ->withStatus(400)
                 ->json([
                     'message' => 'Illegal ID',
                     'code' => 1,
@@ -204,7 +210,7 @@ class Admin extends Controller
         $post = new Post();
         $art = $post->findById($id);
         if (!$art) {
-            return $this->response->status(400)->json([
+            return $this->response->withStatus(400)->json([
                 'message' => 'article not found',
                 'code' => 2,
             ]);
@@ -228,14 +234,14 @@ class Admin extends Controller
      */
     public function comments()
     {
-        $page = abs($this->request->query('page'));
+        $page = abs($this->request->getQuery('page'));
         $page = $page ?: 1;
         $pageSize = 20;
         $offset = ($page - 1) * $pageSize;
         $comment = new Comment();
         $comments = $comment->find([
-                'id' => ['$gt' => 1],
-            ],
+            'id' => ['$gt' => 1],
+        ],
             [
                 'order' => ['id' => 'desc'],
                 'limit' => $pageSize,
@@ -257,10 +263,10 @@ class Admin extends Controller
 
     public function dropComment()
     {
-        $ids = $this->request->body('ids');
+        $ids = $this->body('ids');
         $ids = explode(',', $ids);
         if (empty(($ids))) {
-            return $this->response->status(400)->json([
+            return $this->response->withStatus(400)->json([
                 'message' => '参数错误',
                 'code' => 1,
             ]);

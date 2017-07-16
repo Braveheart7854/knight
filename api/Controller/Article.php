@@ -21,9 +21,9 @@ class Article extends Controller
 
     public function posts()
     {
-        $page = abs($this->request->query('page'));
-        $order = $this->request->query('order');
-        $keyword = $this->request->query('q');
+        $page = abs($this->request->getQuery('page'));
+        $order = $this->request->getQuery('order');
+        $keyword = $this->request->getQuery('q');
         $order = $order === 'archive' ? 'created' : 'id';
         $page = $page ?: 1;
         $pageSize = 10;
@@ -68,7 +68,7 @@ class Article extends Controller
      */
     public function detail()
     {
-        $id = $this->request->params['id'];
+        $id = $this->request->getParams('id');
         $article = new Post();
         $condition = [
             'id' => $id,
@@ -88,7 +88,7 @@ class Article extends Controller
      */
     public function article()
     {
-        $page = abs($this->request->query('page'));
+        $page = abs($this->request->getQuery('page'));
         $page = $page ?: 1;
         $pageSize = 20;
         $offset = ($page - 1) * $pageSize;
@@ -125,14 +125,14 @@ class Article extends Controller
      */
     public function comments()
     {
-        $id = $this->request->params['id'];
+        $id = $this->request->getParams('id');
         if (!$id) {
-            return $this->response->status(400)->json([
+            return $this->response->withStatus(400)->json([
                 'message' => 'param id required',
                 'code' => 1,
             ]);
         }
-        $page = abs($this->request->query('page'));
+        $page = abs($this->request->getQuery('page'));
         $page = $page ?: 1;
         $pageSize = 20;
         $offset = ($page - 1) * $pageSize;
@@ -172,26 +172,28 @@ class Article extends Controller
     {
         $request = $this->request;
         $response = $this->response;
-        $title = $request->body('title');
-        $content = $request->body('content');
-        $tags = $request->body('body');
-        $cateId = $request->body('cateId');
+        $title = $this->body('title');
+        $content = $this->body('content');
+        $tags = $this->body('body');
+        $cateId = $this->body('cateId');
         if (!$title) {
-            return $response->status(400)->json([
+            return $response->withStatus(400)->json([
                 'message' => 'title required',
                 'code' => 1,
             ]);
         }
         if (!$content) {
-            return $response->status(400)->json([
-                'message' => 'content can not empty',
-                'code' => 4,
-            ]);
+            return $response
+                ->withStatus(400)
+                ->json([
+                    'message' => 'content can not empty',
+                    'code' => 4,
+                ]);
         }
         if ($cateId) {
             $category = new Category();
             $cate = $category->findById($cateId);
-            if (!$cate) return $this->status(400)->json([
+            if (!$cate) return $response->withStatus(400)->json([
                 'message' => 'category not found',
                 'code' => 3,
             ]);

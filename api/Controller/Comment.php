@@ -19,18 +19,21 @@ class Comment extends Controller
     /**
      * @throws \Exception
      */
-    public function comments() {
-        $artId = $this->request->param('artId');
-        $page = $this->request->query('page');
+    public function comments()
+    {
+        $artId = $this->request->getParam('artId');
+        $page = $this->request->getQuery('page');
         $page = abs(intval($page)) ?: 1;
         $pageSize = 20;
         $comment = new Discuss();
         $article = (new Post())->findById($artId);
-        if(!$article || $article->permission >1) {
-            return $this->response->status(400)->json([
-                'message' => 'Article not found',
-                'code' => 1,
-            ]);
+        if (!$article || $article->permission > 1) {
+            return $this->response
+                ->withStatus(400)
+                ->json([
+                    'message' => 'Article not found',
+                    'code' => 1,
+                ]);
         }
         $where = [
             'artId' => $artId,
@@ -59,26 +62,30 @@ class Comment extends Controller
      */
     public function add()
     {
-        $artId = $this->request->param('id');
-        $content = $this->request->body('content');
-        $email = $this->request->body('email');
-        $site = $this->request->body('site');
-        $username = $this->request->body('username');
+        $artId = $this->request->getParam('id');
+        $content = $this->body('content');
+        $email = $this->body('email');
+        $site = $this->body('site');
+        $username = $this->body('username');
         $username = preg_replace('/\s/', '', $username);
         $content = preg_replace('/\s/', '', $content);
         if (!$username || !$content) {
-            return $this->response->status(400)->json([
-                'message' => '参数错误了',
-                'code' => 1,
-            ]);
+            return $this->response
+                ->withStatus(400)
+                ->json([
+                    'message' => '参数错误了',
+                    'code' => 1,
+                ]);
         }
         $check = (new Post())->findById($artId);
         var_dump($check);
         if (!$check) {
-            return $this->response->status(400)->json([
-                'message' => '文章不存在',
-                'code' => 2,
-            ]);
+            return $this->response
+                ->withStatus(400)
+                ->json([
+                    'message' => '文章不存在',
+                    'code' => 2,
+                ]);
         }
         $data = [
             'artId' => $artId,
