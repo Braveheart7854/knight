@@ -17,9 +17,9 @@ class Dao extends Model
 
     public function __construct()
     {
-        parent::__construct();
+
         $config = Config::get('db');
-        $this->init($config);
+        parent::__construct($config);
     }
 
 }

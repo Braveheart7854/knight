@@ -15,9 +15,6 @@ use Knight\Component\Controller;
 
 class Article extends Controller
 {
-    public $request;
-
-    public $response;
 
     public function posts()
     {
@@ -68,7 +65,7 @@ class Article extends Controller
      */
     public function detail()
     {
-        $id = $this->request->getParams('id');
+        $id = $this->request->getParam('id');
         $article = new Post();
         $condition = [
             'id' => $id,
@@ -125,7 +122,7 @@ class Article extends Controller
      */
     public function comments()
     {
-        $id = $this->request->getParams('id');
+        $id = $this->request->getParam('id');
         if (!$id) {
             return $this->response->withStatus(400)->json([
                 'message' => 'param id required',
@@ -170,17 +167,18 @@ class Article extends Controller
      */
     public function create()
     {
-        $request = $this->request;
         $response = $this->response;
         $title = $this->body('title');
         $content = $this->body('content');
         $tags = $this->body('body');
         $cateId = $this->body('cateId');
         if (!$title) {
-            return $response->withStatus(400)->json([
-                'message' => 'title required',
-                'code' => 1,
-            ]);
+            return $response
+                ->withStatus(400)
+                ->json([
+                    'message' => 'title required',
+                    'code' => 1,
+                ]);
         }
         if (!$content) {
             return $response
@@ -193,10 +191,14 @@ class Article extends Controller
         if ($cateId) {
             $category = new Category();
             $cate = $category->findById($cateId);
-            if (!$cate) return $response->withStatus(400)->json([
-                'message' => 'category not found',
-                'code' => 3,
-            ]);
+            if (!$cate) {
+                return $response
+                    ->withStatus(400)
+                    ->json([
+                        'message' => 'category not found',
+                        'code' => 3,
+                    ]);
+            }
         }
         $post = [
             'tags' => $tags,
