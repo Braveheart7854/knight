@@ -1,6 +1,6 @@
 <?php
 /**
- * @license   https://github.com/Init/licese.md
+ * @license   MIT
  * @copyright Copyright (c) 2017
  * @author    : bugbear
  * @date      : 2017/3/22
@@ -12,6 +12,8 @@ namespace Knight\Middleware;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Parser;
+use Courser\Http\Request;
+use Courser\Http\Response;
 
 class Auth
 {
@@ -37,7 +39,7 @@ class Auth
             $config['issuer'] = 'https://github.com/racecourse';
         }
         if (!isset($config['audience'])) {
-            $config['issuer'] = 'https://github.com/racecourse/crane';
+            $config['issuer'] = 'https://github.com/racecourse/knight';
         }
         if (!isset($config['expired'])) {
             $config['expired'] = 1800;
@@ -52,9 +54,9 @@ class Auth
         return $config;
     }
 
-    public function __invoke($req, $res)
+    public function __invoke(Request $req, Response $res)
     {
-        $authorization = $req->header('authorization');
+        $authorization = $req->getHeader('authorization');
         if (!$authorization) {
             return $res->withStatus(401)->json([
                 'message' => 'unauthorization',

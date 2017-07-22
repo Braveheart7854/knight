@@ -15,13 +15,13 @@ const $storage = new Cellar();
 const auth = store => {
   // 当 store 初始化后调用
   store.subscribe((mutation, state) => {
-    store.path = '/login';
+    console.log('-------', mutation, state, store);
     if (
       mutation.type === 'FETCH_FAILURE' &&
       mutation.payload.certification === false
     ) {
       $storage.clear();
-      // window.location = '/#/login';
+      state.user.auth = null;
     }
   });
 };

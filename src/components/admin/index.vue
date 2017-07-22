@@ -14,6 +14,13 @@ import Cellar from '../../util/storage';
 
 export default {
 
+  beforeMount() {
+    const user = this.$store.state.user;
+    if (!user.auth) {
+      this.$router.push('/login');
+    }
+  },
+
   components: {
     SideNav,
     Survey,
