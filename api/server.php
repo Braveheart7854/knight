@@ -13,18 +13,19 @@ use Courser\App;
 use Courser\Server\HttpServer;
 use Knight\Middleware\Cors;
 use Knight\Middleware\Auth;
+use Courser\Http\Request;
+use Courser\Http\Response;
 use Ben\Config;
 
 Config::load(APP_ROOT . '/api/config');
-
 $app = new App();
 $cors = new Cors();
 $app->used($cors);
-$app->notFound(function ($req, $res) {
+$app->notFound(function (Request $req, Response $res) {
     $res->withStatus(404)->json(['message' => 'Not Found']);
 });
-$app->error(function ($req, $res, Exception $err) {
-    $res->status(500)->json([
+$app->error(function (Request $req, Response $res, Exception $err) {
+    $res->withStatus(500)->json([
         'message' => 'server error',
         'code' => $err->getMessage(),
     ]);

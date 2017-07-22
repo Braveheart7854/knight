@@ -12,7 +12,7 @@ const $storage = new storage();
 const state = {
   token: null,
   user: {},
-  auth: {},
+  auth: null,
 };
 
 const mutations = {
