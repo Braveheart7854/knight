@@ -8,7 +8,7 @@
     <md-sidenav class="md-left" ref="leftSidenav" @open="open('Left')" @close="close('Left')">
       <div class="resume">
         <div class="avatar">
-          <img src="//pic.yupoo.com/craber_v/FSKpj7L8/SIwxr.jpg">
+          <img src="../../assets/icon.jpg">
         </div>
       </div>
       <div class="phone-viewport">
