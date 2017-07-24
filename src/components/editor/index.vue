@@ -36,6 +36,10 @@
         </div>
       </div>
     </div>
+    <md-snackbar md-position="top center" ref="snackbar" md-duration="4000">
+      <span>{{snackbar.message}}</span>
+      <md-button class="md-accent" md-theme="light-blue" @click="$refs.snackbar.close()">close</md-button>
+    </md-snackbar>
   </div>
 </template>
 <style lang='sass'>
@@ -45,6 +49,12 @@
 <script>
 import hljs from 'highlightjs';
 import {quillEditor} from 'vue-quill-editor';
+hljs.configure({
+  tabReplace: '    ', // 4 spaces
+  classPrefix: ''     // don't append class prefix
+                      // … other options aren't changed
+});
+hljs.initHighlighting();
 export default {
   props: {
     article: {
@@ -63,6 +73,9 @@ export default {
   },
   data: function () {
     return {
+      snackbar: {
+        message: '',
+      },
       editor: null,
       category: [],
       content: '',
@@ -73,7 +86,7 @@ export default {
       editorOptions: {
         modules: {
           syntax: {
-            highlight: text => window.hljs.highlightAuto(text).value
+            highlight: text => hljs.highlightAuto(text).value
           },              // Include syntax module
           toolbar: [
             ['bold', 'italic', 'strike'],
@@ -105,9 +118,16 @@ export default {
     cate(cateId) {
       this.article.cateId = cateId;
     },
-    commit() {
+    async commit() {
       const id = this.$route.params.id;
       this.article.content = this.content;
+      if (!this.title) {
+        const message = 'title required~!';
+        return this.tip(message);
+      }
+      if (!this.content) {
+        return this.tip('content can not be empty~!');
+      }
       const data = {
         title: this.title,
         cateId: this.cateId,
@@ -116,11 +136,16 @@ export default {
         tags: this.tags,
       }
       if (!id) {
-        this.$store.dispatch('addArticle', data);
+        await this.$store.dispatch('addArticle', data);
       } else {
         data.id = id;
-        this.$store.dispatch('editArticle', data);
+        await his.$store.dispatch('editArticle', data);
       }
+      this.tip('success~!');
+    },
+    tip(message) {
+      this.snackbar.message = message;
+      this.$refs.snackbar.open();
     }
   },
   components: {
