@@ -2,8 +2,7 @@
   <div class="main-wrapper">
     <div class="editor">
       <div class="row">
-        <vue-editor id="editor" v-model="content" :editor-toolbar="toolbar">
-        </vue-editor>
+        <quillEditor id="editor" v-model="content" :options="editorOptions"></quillEditor>
         <div class="editor-option">
           <form novalidate @submit.stop.prevent="submit">
             <md-input-container>
@@ -42,10 +41,10 @@
 <style lang='sass'>
   @import './editor.scss';
   @import '../admin/main.css';
-
 </style>
 <script>
-import { VueEditor } from 'vue2-editor';
+import hljs from 'highlightjs';
+import {quillEditor} from 'vue-quill-editor';
 export default {
   props: {
     article: {
@@ -71,16 +70,23 @@ export default {
       tags: [],
       cateId: 1,
       permission: 1,
-      toolbar: [
-        ['bold', 'italic', 'strike'],
-        ['blockquote', 'code-block', 'image'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'indent': '-1' }, { 'indent': '+1' }],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'font': [] }],
-        [{ 'align': [] }],
-        ['clean']
-      ]
+      editorOptions: {
+        modules: {
+          syntax: {
+            highlight: text => window.hljs.highlightAuto(text).value
+          },              // Include syntax module
+          toolbar: [
+            ['bold', 'italic', 'strike'],
+            ['blockquote', 'code-block', 'image'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'indent': '-1' }, { 'indent': '+1' }],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            ['clean']
+          ]
+        },
+      },
     }
   },
   async beforeMount() {
@@ -118,9 +124,15 @@ export default {
     }
   },
   components: {
-    VueEditor
+    quillEditor
   },
-
 }
-
 </script>
+<style>
+  .ql-container .ql-editor {
+    min-height: 30em;
+    padding-bottom: 1em;
+    max-height: 50em;
+  }
+</style>
+
