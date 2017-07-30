@@ -41,6 +41,7 @@ class Article extends Controller
 //                'tags' => $keyword,
 //            ]];
 //        }
+        echo "-------------------- \n";
         $list = $article->find($condition, $options);
         $list = $article->toArray($list);
         $total = $article->count($condition);

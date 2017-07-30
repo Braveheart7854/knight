@@ -20,6 +20,7 @@ return [
         'password' => '123123',
         'dbname' => 'knight',
         'charset' => 'UTF8',
+        'poolSize' => 50,
     ],
     'session' => [
         'issuer' => 'localhost',
