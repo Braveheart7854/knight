@@ -12,6 +12,7 @@ use Knight\Model\Category;
 use Knight\Model\Comment;
 use Knight\Model\Post;
 use Knight\Component\Controller;
+use Knight\Model\User;
 
 class Article extends Controller
 {
@@ -34,6 +35,8 @@ class Article extends Controller
             'limit' => $pageSize,
             'offset' => $offset,
         ];
+        $user = new User();
+        $user->findById(9);
 //        if ($keyword) {
 //            $like = ''
 //            $condition['$or'] =  [
@@ -42,6 +45,7 @@ class Article extends Controller
 //            ]];
 //        }
         echo "-------------------- \n";
+        $i = 1;
         $list = $article->find($condition, $options);
         $list = $article->toArray($list);
         $total = $article->count($condition);
