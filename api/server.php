@@ -59,4 +59,5 @@ $app->group('/admin', function () {
 $server = new HttpServer($app);
 $setting = Config::get('server');
 $server->bind($setting['host'], $setting['port']);
+$server->set($setting);
 $server->start();
