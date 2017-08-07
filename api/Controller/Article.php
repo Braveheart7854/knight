@@ -35,8 +35,6 @@ class Article extends Controller
             'limit' => $pageSize,
             'offset' => $offset,
         ];
-        $user = new User();
-        $user->findById(9);
 //        if ($keyword) {
 //            $like = ''
 //            $condition['$or'] =  [
@@ -44,8 +42,6 @@ class Article extends Controller
 //                'tags' => $keyword,
 //            ]];
 //        }
-        echo "-------------------- \n";
-        $i = 1;
         $list = $article->find($condition, $options);
         $list = $article->toArray($list);
         $total = $article->count($condition);

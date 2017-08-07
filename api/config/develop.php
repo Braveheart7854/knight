@@ -12,7 +12,7 @@ return [
         'host' => '127.0.0.1',
         'port' => '5001',
         'daemonize' => false,
-        'worker_num' => 1,
+        'worker_num' => 4,
     ],
     'db' => [
         'host' => '127.0.0.1',
