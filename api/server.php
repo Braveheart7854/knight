@@ -20,22 +20,8 @@ use Ben\Config;
 Config::load(APP_ROOT . '/api/config');
 $app = new App();
 $cors = new Cors();
+
 $app->used($cors);
-$app->notFound(function (Request $req, Response $res) {
-    $res->withStatus(404)->json(['message' => 'Not Found']);
-});
-$app->error(function (Request $req, Response $res, Exception $err) {
-    $res->withStatus(500)->json([
-        'message' => 'server error',
-        'code' => $err->getMessage(),
-    ]);
-});
-
-$app->post('/test', function ($req, $res) {
-    echo "123123123";
-
-});
-
 $app->get('/posts', [Knight\Controller\Article::class => 'posts']);
 $app->get('/posts/:id', [Knight\Controller\Article::class => 'detail']);
 $app->get('/posts/:id/comments', [Knight\Controller\Article::class => 'comments']);
@@ -54,6 +40,15 @@ $app->group('/admin', function () {
     $this->put('/article/:id', [Knight\Controller\Admin::class => 'edit']);
     $this->post('/article', [Knight\Controller\Admin::class => 'create']);
     $this->get('/comments', [Knight\Controller\Admin::class => 'comments']);
+});
+$app->notFound(function (Request $req, Response $res) {
+    $res->withStatus(404)->json(['message' => 'Not Found']);
+});
+$app->error(function (Request $req, Response $res, Exception $err) {
+    $res->withStatus(500)->json([
+        'message' => 'server error',
+        'code' => $err->getMessage(),
+    ]);
 });
 
 $server = new HttpServer($app);

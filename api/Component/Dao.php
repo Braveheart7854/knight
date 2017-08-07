@@ -15,10 +15,12 @@ class Dao extends Model
 {
     protected $table = '';
 
-    public function __construct()
+    public function __construct($config = [])
     {
+        if (empty($config)) {
+            $config = Config::get('db');
+        }
 
-        $config = Config::get('db');
         parent::__construct($config);
     }
 
