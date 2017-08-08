@@ -1,0 +1,5 @@
+---
+  - name: configure
+    template: src={{ item }} dest={{ app_home }}/{{ item }}
+    with_items:
+      - "app/config/index.php"

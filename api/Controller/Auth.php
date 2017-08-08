@@ -37,6 +37,7 @@ class Auth extends Controller
                     'code' => 2,
                 ]);
         }
+        $userInfo = $userInfo->toArray();
         $verify = password_verify($password, $userInfo['password']);
         if (!$verify) {
             return $this->response

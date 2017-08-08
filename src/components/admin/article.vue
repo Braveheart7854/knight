@@ -44,7 +44,7 @@
         :md-size="pageSize"
         :md-total="total"
         :md-page="page"
-        md-label="records"
+        md-label="Rows"
         md-separator="of"
         :md-page-options="[5, 10, 25, 50]"
         @pagination="onPagination"></md-table-pagination>
