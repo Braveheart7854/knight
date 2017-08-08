@@ -136,7 +136,6 @@ export default {
         tags: this.tags,
       }
       if (!id) {
-        await this.$store.dispatch('addArticle', data);
       } else {
         data.id = id;
         await his.$store.dispatch('editArticle', data);
