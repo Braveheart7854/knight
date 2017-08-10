@@ -5,8 +5,8 @@
        v-on:vdropzone-success="showSuccess">
     </Uploader>
     <div class="upload-header">
-      <md-button class="md-raised md-primary">上传</md-button>
-      <md-button class="md-raised">取消</md-button>
+      <mu-flat-button label="upload" primary/>
+      <mu-flat-button label="cancel" primary/>
     </div>
   </div>
 </template>

@@ -10,7 +10,7 @@
       </ul>
       <div class="search">
         <input class="filter" id="keyword" type="text" name="search" placeholder="keyword">
-        <md-icon @click.native="search" class="search-btn">search</md-icon>
+        <mu-icon-button icon="search" @click="search"/>
       </div>
     </div>
     <div class="content-warp">

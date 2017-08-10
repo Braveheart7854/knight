@@ -5,41 +5,23 @@
         <quillEditor id="editor" v-model="content" :options="editorOptions"></quillEditor>
         <div class="editor-option">
           <form novalidate @submit.stop.prevent="submit">
-            <md-input-container>
-              <label>title</label>
-              <md-input placeholder="title" v-model="title"></md-input>
-            </md-input-container>
-            <md-input-container>
-              <label for="category">分类</label>
-              <md-select name="category" id="category" v-model="cateId" @selected="cate">
-                <div v-for="cate in category">
-                  <md-option :value="cate.id">{{cate.name}}</md-option>
-                </div>
-              </md-select>
-            </md-input-container>
+            <mu-text-field placeholder="title" v-model="title">
+            <mu-select-field v-model="cateId" multiple label="选择多个">
+              <div v-for="cate in category" v-bind:key="cate.id">
+                <mu-menu-item :value="cate.id" :title="cate.name"/>
+              </div>
+            </mu-select-field>
             <div>
-              <md-chips v-model="tags" :md-max="5" md-input-placeholder="标签..." @change="tag">
-                <template scope="chip">
-                  <span>{{ chip.value }}</span>
-                </template>
-              </md-chips>
+              <mu-radio v-model="article.permission" nativeValue="1" label="public"/>
+              <mu-radio v-model="article.permission" nativeValue="2" label="hidden"/>
+              <mu-radio v-model="article.permission" nativeValue="3" label="private"/>
             </div>
-            <div>
-              <md-radio v-model="article.permission" id="my-test1" name="my-test-group1" md-value="1">公开</md-radio>
-              <md-radio v-model="article.permission" id="my-test2" name="my-test-group1" md-value="2">隐藏</md-radio>
-              <md-radio v-model="article.permission" id="my-test3" name="my-test-group1" md-value="3">仅自己可见</md-radio>
-            </div>
-            <md-button class="md-raised md-primary">
-              <span @click="commit">提交</span>
-            </md-button>
+            <mu-raised-button label="submit" class="demo-raised-button" @click="commit"/>
           </form>
         </div>
       </div>
     </div>
-    <md-snackbar md-position="top center" ref="snackbar" md-duration="4000">
-      <span>{{snackbar.message}}</span>
-      <md-button class="md-accent" md-theme="light-blue" @click="$refs.snackbar.close()">close</md-button>
-    </md-snackbar>
+    <mu-snackbar v-if="snackbar.show" :message="snackbar.message" action="close" @actionClick="hideSnackbar" @close="hideSnackbar"/>
   </div>
 </template>
 <style lang='sass'>
@@ -143,9 +125,18 @@ export default {
       this.tip('success~!');
     },
     tip(message) {
-      this.snackbar.message = message;
       this.$refs.snackbar.open();
-    }
+    },
+    showSnackbar () {
+      this.snackbar.show = true
+      this.snackbar.message = message;
+      if (this.snackTimer) clearTimeout(this.snackTimer)
+      this.snackTimer = setTimeout(() => { this.snackbar = false }, 2000)
+    },
+    hideSnackbar () {
+      this.snackbar = false
+      if (this.snackTimer) clearTimeout(this.snackTimer)
+    },
   },
   components: {
     quillEditor
