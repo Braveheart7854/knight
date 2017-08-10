@@ -14,7 +14,7 @@
             </mu-th>
             <mu-th><span>created</span></mu-th>
             <mu-th><span>action</span></mu-th>
-          </mu-table-row>
+          </mu-tr>
         </mu-thead>
         <mu-body>
           <mu-tr v-for="row in list" :key="row.id" :mu-item="{id:row.id}">
@@ -29,7 +29,7 @@
                <span @click="del(row.id)">&nbsp; delete</span></div>
             </mu-td>
           </mu-tr>
-        </mu-table-body>
+        </mu-body>
       </mu-table>
   </div>
 </template>

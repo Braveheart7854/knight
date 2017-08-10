@@ -14,7 +14,7 @@
           <h4 class="mu-title">knight 管理后台</h4>
         </div>
       </mu-toolbar>
-      <div class="phone-viewport">
+      <div>
         <mu-list>
           <mu-list-item>
             <mu-icon>create</mu-icon>

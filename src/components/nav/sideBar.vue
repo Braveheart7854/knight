@@ -1,38 +1,25 @@
 <template>
   <div>
     <div class="menu">
-      <mu-button class="mu-icon-button" @click="toggle()">
-        <mu-icon>menu</mu-icon>
-      </mu-button>
+      <mu-icon-button icon="menu" @click="toggle()"/>
     </div>
-    <mu-drawer right :open="open" @close="toggle()">
+    <mu-drawer left :open="open" @close="toggle()">
       <div class="resume">
         <div class="avatar">
-          <img src="../../assets/icon.jpg">
+          <img src="../../assets/avatar.png">
         </div>
       </div>
-      <div class="phone-viewport">
+      <div>
         <mu-list>
-          <mu-list-item>
-            <mu-icon>toys</mu-icon>
-            <span>在他乡</span>
+          <mu-list-item title="桑下语">
+            <mu-icon value="gesture" slot="left"/>
           </mu-list-item>
-          <mu-list-item @click.native="whisper">
-            <mu-icon>gesture</mu-icon>
-            <span>桑下语</span>
-          </mu-list-item>
-          <mu-list-item>
-            <mu-icon>date_range</mu-icon>
-            <span>分类</span>
-            <mu-list-expand>
-              <mu-list v-for="cate in category" key="{{cate.id}}">
-                <mu-list-item class="mu-inset">{{cate.name}}</mu-list-item>
-              </mu-list>
-            </mu-list-expand>
+          <mu-list-item title="如是我闻">
+            <mu-icon value="toys" slot="left"/>
           </mu-list-item>
         </mu-list>
       </div>
-    </mu-sidenav>
+    </mu-drawer>
   </div>
 </template>
 
@@ -72,11 +59,8 @@
 
     },
     methods: {
-      toggle() {
-        this.$refs.leftSidenav.toggle();
-      },
-      async open(ref) {
-        console.log('Opened: ' + ref);
+      async toggle() {
+        console.log('Opened: ');
         if(!this.category.length) {
           await this.$store.dispatch('category');
           this.category = this.$store.getters.getCategory;
