@@ -1,58 +1,40 @@
 <template>
   <div class="main-wrapper">
-    <md-table-card>
-      <md-toolbar>
-        <md-button class="md-icon-button">
-          <md-icon>filter_list</md-icon>
-        </md-button>
-        <md-button class="md-icon-button">
-          <md-icon>search</md-icon>
-        </md-button>
-      </md-toolbar>
-      <md-table @sort="onSort">
-        <md-table-header>
-          <md-table-row>
-            <md-table-head md-numeric>id</md-table-head>
-            <md-table-head md-numeric><span>username</span></md-table-head>
-            <md-table-head md-numeric><span>email</span></md-table-head>
-            <md-table-head md-numeric><span>site</span></md-table-head>
-            <md-table-head md-numeric>
-              <md-icon>message</md-icon>
-              <span>content</span>
-            </md-table-head>
-            <md-table-head md-numeric><span>created at</span></md-table-head>
-            <md-table-head><span>action</span></md-table-head>
-          </md-table-row>
-        </md-table-header>
-        <md-table-body>
-          <md-table-row v-for="row in list" :key="row.id" :md-item="{id:row.id}">
-            <md-table-cell md-numeric> {{row.id}} </md-table-cell>
-            <md-table-cell md-numeric> {{row.username}}</md-table-cell>
-            <md-table-cell md-numeric> {{row.email}}</md-table-cell>
-            <md-table-cell md-numeric> {{row.site}} </md-table-cell>
-            <md-table-cell md-numeric> {{row.content}} </md-table-cell>
-            <md-table-cell md-numeric> {{row.created}} </md-table-cell>
-            <md-table-cell md-numeric>
+      <mu-icon-button  icon="filter_list" />
+      <mu-icon-button icon="search"/>
+      <mu-table >
+        <mu-thead slot="header">
+          <mu-tr>
+            <mu-th>id</mu-th>
+            <mu-th><span>username</span></mu-th>
+            <mu-th><span>email</span></mu-th>
+            <mu-th><span>site</span></mu-th>
+            <mu-th>
+             <mu-icon-button icon="message"/>
+            </mu-th>
+            <mu-th><span>created</span></mu-th>
+            <mu-th><span>action</span></mu-th>
+          </mu-table-row>
+        </mu-thead>
+        <mu-body>
+          <mu-tr v-for="row in list" :key="row.id" :mu-item="{id:row.id}">
+            <mu-td> {{row.id}} </mu-td>
+            <mu-td> {{row.username}}</mu-td>
+            <mu-td> {{row.email}}</mu-td>
+            <mu-td> {{row.site}} </mu-td>
+            <mu-td> {{row.content}} </mu-td>
+            <mu-td> {{row.created}} </mu-td>
+            <mu-td>
              <div class="action"><router-link to="/admin/edit/1">edit &nbsp;</router-link>|
                <span @click="del(row.id)">&nbsp; delete</span></div>
-            </md-table-cell>
-          </md-table-row>
-        </md-table-body>
-      </md-table>
-
-      <md-table-pagination
-        :md-size="pageSize"
-        :md-total="total"
-        :md-page="page"
-        md-label="records"
-        md-separator="of"
-        :md-page-options="[5, 10, 25, 50]"
-        @pagination="onPagination"></md-table-pagination>
-    </md-table-card>
+            </mu-td>
+          </mu-tr>
+        </mu-table-body>
+      </mu-table>
   </div>
 </template>
 <style>
-  .md-table .md-table-head {
+  .mu-table .mu-th {
     text-align: center;
   }
   .action {
