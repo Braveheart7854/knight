@@ -1,9 +1,10 @@
 .main-wrapper {
-    margin: 0.2em auto;
-    width: 80%;
+    position: relative;
+    margin-left: 10%;
+    /* min-height: 768px; */
     padding: 1em;
-    text-align: center;
 }
+
 hr {
     display: block;
     -webkit-margin-before: 0.5em;

@@ -1,19 +1,7 @@
 <template>
   <div>
-    <mu-toolbar>
-      <div class="mu-toolbar-container">
-        <mu-button class="mu-icon-button" @click.native="toggleLeftSidenav">
-          <mu-icon>menu</mu-icon>
-        </mu-button>
-        <h2 class="mu-title" style="flex: 1;"><router-link to="/admin/home">夏拾桑</router-link></h2>
-      </div>
-    </mu-toolbar>
-    <mu-sidenav class="mu-left" ref="leftSidenav" @open="open('Left')" @close="close('Left')">
-      <mu-toolbar>
-        <div class="mu-toolbar-container">
-          <h4 class="mu-title">knight 管理后台</h4>
-        </div>
-      </mu-toolbar>
+    <mu-drawer left docked :open="open" @close="toggle()">
+      <mu-appbar title="knight"/>
       <div>
         <mu-list>
           <mu-list-item>
@@ -43,7 +31,7 @@
           </mu-list-item>
         </mu-list>
       </div>
-    </mu-sidenav>
+    </mu-drawer>
   </div>
 </template>
 <style>
@@ -53,15 +41,17 @@
 </style>
 <script>
   export default {
+    data () {
+      return {
+        open: true,
+      }
+    },
     methods: {
-      open(ref) {
-        console.log('Opened: ' + ref);
+      close() {
+        console.log('Opened: ');
       },
-      close(ref) {
-        console.log('Opened: ' + ref);
-      },
-      toggleLeftSidenav() {
-        this.$refs.leftSidenav.toggle();
+      toggle() {
+        this.open = !this.open;
       },
     },
     created() {
