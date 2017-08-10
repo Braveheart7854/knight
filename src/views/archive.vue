@@ -1,16 +1,19 @@
 <template>
   <div>
     <div class="arch-wrap">
-      <div v-for="(posts, month) in archive">
+      <div v-for="(posts, month) in archive" :key="month">
         <div class="month">{{month}}</div>
-        <div v-for="post in posts" v-if="Array.isArray(posts)" class="arch-box">
-          <md-card md-with-hover>
-            <md-card-header>
-              <div class="md-title">{{post.title}}</div>
-              <div class="md-subhead">{{new Date(post.created * 1000).toLocaleString()}}# 自言自语</div>
-            </md-card-header>
-          </md-card>
-        </div>
+        <div v-if="Array.isArray(posts)">
+          <div v-for="post in posts"  class="arch-box" :key="post.id">
+            <mu-card>
+              <mu-card-header>
+                <div>{{new Date(post.created * 1000).toLocaleString()}}</div>
+                <div>#标签</div>
+              </mu-card-header>
+              <mu-card-title :title="post.title" />
+            </mu-card>
+          </div>
+        </div>  
       </div>
     </div>
     <Pagination :page="page" :total="total" :pageSize="pageSize"></Pagination>
