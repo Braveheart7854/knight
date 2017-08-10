@@ -1,18 +1,18 @@
 <template>
   <div>
     <div class="content">
-      <md-card md-with-hover>
-        <md-card-header>
-          <div class="md-title">{{article.title}}</div>
-          <div class="md-subhead">{{new Date(article.created*1000).toLocaleDateString()}}</div>
-        </md-card-header>
-        <md-card-content>
+      <mu-card>
+        <mu-card-header @click="detail(article.id)" :title="article.title"
+          :subTitle="new Date(article.created * 1000).toLocaleDateString()">
+          <mu-avatar src="/images/uicon.jpg" slot="avatar"/>
+        </mu-card-header>
+        <mu-card-tex>
           <div v-html="article.content"></div>
-        </md-card-content>
-      </md-card>
+        </mu-card-text>
+      </mu-card>
     </div>
     <div class="comment-wrapper">
-      <div v-for="comment in comments.list">
+      <div v-for="comment in comments.list" :key="comment.id">
         <div class="comments">
           <div class="user">{{comment.username}}</div>
           <div class="text">
@@ -22,32 +22,18 @@
       </div>
       <div class="form-outside">
         <div class="form-inside">
-          <md-input-container md-inline>
-            <label>username</label>
-            <md-input placeholder="username" v-model="username"></md-input>
-          </md-input-container>
-          <md-input-container>
-            <label>site</label>
-            <md-input placeholder="your site" v-model="site"></md-input>
-          </md-input-container>
-          <md-input-container md-inline>
-            <label>email</label>
-            <md-input placeholder="email" v-model="email" type="email"></md-input>
-          </md-input-container>
-          <md-input-container>
-            <label>content</label>
-            <md-textarea v-model="content"></md-textarea>
-          </md-input-container>
+          <mu-text-field label="username" hintText="username" v-model="username"/>
+          <mu-text-field label="email" hintText="email" v-model="email"/>
+          <mu-text-field label="site" hintText="site" v-model="site"/>
+          <mu-text-field label="content" hintText="content" v-model="content" multiLine :rows="10" :rowsMax="60" :maxLength="100"/>
         </div>
         <div class="from-btn">
           <div @click="submit">
-            <md-button class="md-raised md-primary">发表评论</md-button>
+            <mu-button class="mu-raised mu-primary">发表评论</mu-button>
           </div>
         </div>
       </div>
-      <md-snackbar md-position="top center" ref="snackbar" :md-duration="2000">
-        <span>{{message}}</span>
-      </md-snackbar>
+      <mu-snackbar v-if="snackbar.show" :message="snackbar.message" action="close" @actionClick="hideSnackbar" @close="hideSnackbar"/>
     </div>
   </div>
 </template>

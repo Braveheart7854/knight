@@ -1,38 +1,38 @@
 <template>
   <div>
     <div class="menu">
-      <md-button class="md-icon-button" @click.native="toggleLeftSidenav">
-        <md-icon>menu</md-icon>
-      </md-button>
+      <mu-button class="mu-icon-button" @click="toggle()">
+        <mu-icon>menu</mu-icon>
+      </mu-button>
     </div>
-    <md-sidenav class="md-left" ref="leftSidenav" @open="open('Left')" @close="close('Left')">
+    <mu-drawer right :open="open" @close="toggle()">
       <div class="resume">
         <div class="avatar">
           <img src="../../assets/icon.jpg">
         </div>
       </div>
       <div class="phone-viewport">
-        <md-list>
-          <md-list-item>
-            <md-icon>toys</md-icon>
+        <mu-list>
+          <mu-list-item>
+            <mu-icon>toys</mu-icon>
             <span>在他乡</span>
-          </md-list-item>
-          <md-list-item @click.native="whisper">
-            <md-icon>gesture</md-icon>
+          </mu-list-item>
+          <mu-list-item @click.native="whisper">
+            <mu-icon>gesture</mu-icon>
             <span>桑下语</span>
-          </md-list-item>
-          <md-list-item>
-            <md-icon>date_range</md-icon>
+          </mu-list-item>
+          <mu-list-item>
+            <mu-icon>date_range</mu-icon>
             <span>分类</span>
-            <md-list-expand>
-              <md-list v-for="cate in category" key="{{cate.id}}">
-                <md-list-item class="md-inset">{{cate.name}}</md-list-item>
-              </md-list>
-            </md-list-expand>
-          </md-list-item>
-        </md-list>
+            <mu-list-expand>
+              <mu-list v-for="cate in category" key="{{cate.id}}">
+                <mu-list-item class="mu-inset">{{cate.name}}</mu-list-item>
+              </mu-list>
+            </mu-list-expand>
+          </mu-list-item>
+        </mu-list>
       </div>
-    </md-sidenav>
+    </mu-sidenav>
   </div>
 </template>
 
@@ -65,13 +65,14 @@
     data: function () {
       return {
         category: [],
+        open: false,
       };
     },
     async beforeMount() {
 
     },
     methods: {
-      toggleLeftSidenav() {
+      toggle() {
         this.$refs.leftSidenav.toggle();
       },
       async open(ref) {
@@ -80,6 +81,7 @@
           await this.$store.dispatch('category');
           this.category = this.$store.getters.getCategory;
         }
+        this.open = !this.open;
       },
       close(ref) {
         console.log('Closed: ' + ref);

@@ -1,60 +1,43 @@
 <template>
   <div class="main-wrapper">
-    <md-table-card>
-      <md-toolbar>
-        <md-button class="md-icon-button">
-          <md-icon>filter_list</md-icon>
-        </md-button>
-        <md-button class="md-icon-button">
-          <md-icon>search</md-icon>
-        </md-button>
-      </md-toolbar>
-      <md-table @sort="onSort">
-        <md-table-header>
-          <md-table-row>
-            <md-table-head md-numeric>id</md-table-head>
-            <md-table-head md-numeric><span>category</span></md-table-head>
-            <md-table-head md-numeric><span>permission</span></md-table-head>
-            <md-table-head md-numeric>
-              <md-icon>message</md-icon>
+      <mu-table :fixedFooter="fixedFooter" :fixedHeader="fixedHeader" :height="height"
+        :enableSelectAll="enableSelectAll" :multiSelectable="multiSelectable"
+        :selectable="selectable" :showCheckbox="showCheckbox">
+        <mu-thead slot="header">
+           <mu-tr>
+            <mu-th tooltip="ID">ID</mu-th>
+            <mu-th tooltip="ID"><span>category</span></mu-th>
+            <mu-th tooltip="ID"><span>permission</span></mu-th>
+            <mu-th tooltip="ID">
+              <mu-icon-button icon="message"/>
               <span>title</span>
-            </md-table-head>
-            <md-table-head md-numeric><span>created at</span></md-table-head>
-            <md-table-head><span>action</span></md-table-head>
-          </md-table-row>
-        </md-table-header>
-        <md-table-body>
-          <md-table-row v-for="row in posts" :key="row.id" :md-item="{id:row.id}">
-            <md-table-cell md-numeric> {{row.id}} </md-table-cell>
-            <md-table-cell md-numeric> {{row.category}}</md-table-cell>
-            <md-table-cell md-numeric> {{row.permission|permit}}</md-table-cell>
-            <md-table-cell md-numeric> {{row.title}} </md-table-cell>
-            <md-table-cell md-numeric> {{row.created}} </md-table-cell>
-            <md-table-cell md-numeric>
+            </mu-th>
+            <mu-th tooltip="ID"><span>created at</span></mu-th>
+            <mu-th><span>action</span></mu-th>
+          </mu-tr>
+        </mu-thead>
+        <mu-tbody>
+          <mu-tr v-for="row in posts" :key="row.id">
+            <mu-td> {{row.id}} </mu-td>
+            <mu-td> {{row.category}}</mu-td>
+            <mu-td> {{row.permission|permit}}</mu-td>
+            <mu-td> {{row.title}} </mu-td>
+            <mu-td> {{row.created}} </mu-td>
+            <mu-td>
               <div class="action">
                 <button class="action-btn" @click="edit(row.id)">编辑</button>
                 <button class="action-btn" @click="del(row.id)">删除</button>
               </div>
-            </md-table-cell>
-          </md-table-row>
-        </md-table-body>
-      </md-table>
-
-      <md-table-pagination
-        :md-size="pageSize"
-        :md-total="total"
-        :md-page="page"
-        md-label="Rows"
-        md-separator="of"
-        :md-page-options="[5, 10, 25, 50]"
-        @pagination="onPagination"></md-table-pagination>
-    </md-table-card>
+            </mu-td>
+          </mu-tr>
+        </mu-tbody>
+      </mu-table>
   </div>
 </template>
 <style>
-  .md-table .md-table-head {
+  /* .md-table .mu-th {
     text-align: center;
-  }
+  } */
   .action {
     text-align: center;
   }
@@ -74,6 +57,13 @@
       list: [],
       category: [],
       selected: [],
+      fixedHeader: true,
+      fixedFooter: true,
+      selectable: true,
+      multiSelectable: true,
+      enableSelectAll: false,
+      showCheckbox: true,
+      height: '300px'
     }),
     methods: {
       async onPagination() {

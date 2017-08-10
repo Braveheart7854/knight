@@ -2,14 +2,16 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routers';
 import store from './store';
-import VueMaterial from 'vue-material';
 import 'vue-material/dist/vue-material.css';
 import FastClick from 'fastclick';
 import { sync } from 'vuex-router-sync';
 import mdIcon from './assets/md-icon.css';
 import Cellar from './util/storage';
 import App from './App.vue';
-
+import MuseUI from 'muse-ui'
+import 'muse-ui/dist/muse-ui.css'
+import teal from '!raw!muse-ui/dist/theme-teal.css'
+Vue.use(MuseUI)
 const storage = new Cellar();
 window.addEventListener('load', () => {
   FastClick.attach(document.body)
@@ -32,17 +34,6 @@ router.beforeEach((to, from, next, ...rest) => {
     return next({ path: '/admin/home' });
   }
   next();
-});
-Vue.use(VueMaterial);
-Vue.material.registerTheme({
-  default: {
-    primary: 'cyan',
-    accent: 'pink'
-  },
-  indigo: {
-    primary: 'indigo',
-    accent: 'pink'
-  }
 });
 new Vue({
   router,

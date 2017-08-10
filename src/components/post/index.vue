@@ -1,19 +1,16 @@
 <template>
   <div>
     <div class="content">
-      <md-card md-with-hover>
-        <md-card-header>
-          <router-link v-bind:to="'/posts/' + article.id">
-            <div class="md-title" @click="detail(article.id)">
-              {{article.title}}
-            </div>
-          </router-link>
-          <div class="md-subhead">{{new Date(article.created * 1000).toLocaleDateString()}}</div>
-        </md-card-header>
-        <md-card-content>
+      <mu-card>
+        <mu-card-header @click="detail(article.id)" :title="article.title"
+          :subTitle="new Date(article.created * 1000).toLocaleDateString()">
+            <mu-avatar src="/images/uicon.jpg" slot="avatar"/>
+        </mu-card-header>
+        </mu-card-header>
+        <mu-card-text>
           <div v-html="article.content"></div>
-        </md-card-content>
-      </md-card>
+        </mu-card-text>
+      </mu-card>
     </div>
   </div>
 </template>
