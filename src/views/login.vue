@@ -1,19 +1,10 @@
 <template>
   <div class="bg">
     <div class="login-wrap">
-      <form novalidate @submit.stop.prevent="submit">
-        <span class="md-error">{{message}}</span>
-        <md-input-container class="container">
-          <label>username</label>
-          <md-input type="text" v-model="username"></md-input>
-        </md-input-container>
-
-        <md-input-container md-has-password class="container">
-          <label>password</label>
-          <md-input type="password" v-model="password"></md-input>
-        </md-input-container>
-        <md-button class="md-raised md-primary" type="submit">Login</md-button>
-      </form>
+      <span class="md-error">{{message}}</span>
+      <mu-text-field label="username" hintText="username" class="container" v-model="username" labelFloat/>
+      <mu-text-field label="password" hintText="password" type="password" class="container" v-model="password" labelFloat/>
+       <mu-flat-button label="login" @click="submit" primary/>
     </div>
   </div>
 </template>
