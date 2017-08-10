@@ -5,8 +5,8 @@
         <quillEditor id="editor" v-model="content" :options="editorOptions"></quillEditor>
         <div class="editor-option">
           <form novalidate @submit.stop.prevent="submit">
-            <mu-text-field placeholder="title" v-model="title">
-            <mu-select-field v-model="cateId" multiple label="选择多个">
+            <mu-text-field placeholder="title" v-model="title"/>
+            <mu-select-field v-model="cateId" multiple label="选择多个"/>
               <div v-for="cate in category" v-bind:key="cate.id">
                 <mu-menu-item :value="cate.id" :title="cate.name"/>
               </div>

@@ -20,7 +20,7 @@
         <div class="sur-li">相册: {{survey.albumNumber}}</div>
         <div class="sur-li">总共上传图片: {{survey.photoNumber}}</div>
         <div class="sur-li">
-          <mu-float-button icon="cloud_upload">
+          <mu-float-button icon="cloud_upload"/>
         </div>
       </div>
       <hr>
