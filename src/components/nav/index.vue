@@ -4,26 +4,26 @@
       <mu-appbar title="knight"/>
       <div>
         <mu-list>
-          <mu-list-item>
+          <mu-list-item to="/admin/create">
             <mu-icon>create</mu-icon>
-            <span><router-link to="/admin/create">写文章</router-link></span>
+            <span>写文章</span>
           </mu-list-item>
-          <mu-list-item>
+          <mu-list-item to="/admin/article">
             <mu-icon>sort</mu-icon>
-            <span><router-link to="/admin/article">文章管理</router-link></span>
+            <span>文章管理</span>
           </mu-list-item>
-            <mu-list-item>
+            <mu-list-item to="/admin/comment">
             <mu-icon>sort</mu-icon>
-            <span><router-link to="/admin/comment">评论管理</router-link></span>
+            <span>评论管理</span>
           </mu-list-item>
           <mu-list-item>
             <mu-icon>perm_media</mu-icon>
             <span>图片管理</span>
           </mu-list-item>
           </mu-list-item>
-            <mu-list-item>
+            <mu-list-item to="/admin/upload">
             <mu-icon>photo</mu-icon>
-            <span><router-link to="/admin/upload">上传图片</router-link></span>
+            <span>上传图片</span>
           </mu-list-item>
           <mu-list-item>
             <mu-icon>settings</mu-icon>

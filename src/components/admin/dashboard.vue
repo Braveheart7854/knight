@@ -42,19 +42,10 @@
   </div>
 </template>
 <style>
-  /* @import './main.css'; */
   .sur-wrap {
-     position: relative;
+    position: relative;
     min-height: 100%;
     text-align: left; 
-    /* display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center; */
   }
 
   .sur-desc {
@@ -66,7 +57,6 @@
     margin: 2em;
     margin-bottom: 5em;
     margin-top: 5em;
-    /* height: 500px; */
   }
   .sur-divider {
     margin: 0;

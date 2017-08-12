@@ -45,11 +45,21 @@ class Admin extends Controller
         $page = abs($page) ?: 1;
         $offset = ($page - 1) * $pageSize;
         $article = new Post();
-        $posts = $article->find(['id' => ['$gt' => 0]],
-            ['limit' => $pageSize, 'offset' => $offset]);
+        $condition = [
+            'id' => ['$gt' => 0]
+        ];
+        $options = [
+            'limit' => $pageSize,
+            'offset' => $offset,
+            'order' => [
+                'created' => 'desc',
+            ]
+        ];
+        $posts = $article->find($condition, $options);
         $posts = $article->toArray($posts);
+        $total = $article->count($condition);
         $ret = [
-            'total' => 10, // @fixme
+            'total' => $total, // @fixme
             'page' => $page,
             'pageSize' => $pageSize,
             'list' => $posts,
@@ -65,13 +75,12 @@ class Admin extends Controller
      * @body string title
      * @body string content
      * @body integer cateId
-     *
-     *
      */
     public function create()
     {
         $request = $this->request;
         $response = $this->response;
+        var_dump($this->payload);
         $title = $this->body('title');
         $content = $this->body('content');
         $tags = $this->body('body');
@@ -117,6 +126,7 @@ class Admin extends Controller
         ]);
     }
 
+    
     public function category()
     {
         $category = new Category();
@@ -154,16 +164,18 @@ class Admin extends Controller
                 'code' => 2,
             ]);
         }
-        $art['title'] = $title;
-        $art['content'] = $content;
-        $art['cateId'] = $cateId;
-        $art['tags'] = $tags;
-        $art['permission'] = $permission;
+        $art->title = $title;
+        $art->content = $content;
+        $art->cateId = $cateId;
+        $art->tags = $tags;
+        $art->permission = $permission;
         if ($time) {
             $time = mktime($time);
-            $art['created'] = $time;
+            $art->created = $time;
         }
-        $art->update();
+        var_dump($this->payload);
+        $result = $art->update();
+        var_dump($result->toArray());
         $this->response->json([
             'message' => 'ok',
             'code' => 0,

@@ -1,28 +1,21 @@
 <template>
   <div>
     <SideNav></SideNav>
-    <router-view></router-view>
+    <div class="main-wrapper">
+      <router-view></router-view>
+    </div>
     <Bottom></Bottom>
   </div>
 </template>
-
+<style>
+@import './main.css';
+</style>
 <script>
 import SideNav from '../nav/index.vue';
-import Survey from  './survey.vue';
 import Bottom from '../common/bottom.vue';
-import Cellar from '../../util/storage';
 export default {
-
-  beforeMount() {
-    const user = this.$store.state.user;
-    if (!user.auth) {
-      this.$router.push('/login');
-    }
-  },
-
   components: {
     SideNav,
-    Survey,
     Bottom,
   },
 }

@@ -65,7 +65,7 @@
           await this.$store.dispatch('login', { username, password });
           const { message, ok } = this.$store.getters.getUser;
           if (ok) {
-            this.$router.push('/admin/home');
+            this.$router.push('/admin/dashboard');
           } else {
             this.message = message;
             this.ok = ok;
