@@ -2,15 +2,12 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routers';
 import store from './store';
-// import 'vue-material/dist/vue-material.css';
 import FastClick from 'fastclick';
 import { sync } from 'vuex-router-sync';
-import mdIcon from './assets/md-icon.css';
 import Cellar from './util/storage';
 import App from './App.vue';
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
-// import teal from '!raw!muse-ui/dist/theme-teal.css'
 Vue.use(MuseUI)
 const storage = new Cellar();
 window.addEventListener('load', () => {
@@ -21,8 +18,6 @@ const router = new VueRouter({
   mode: 'hash',
   routes,
 });
-window.$router = router;
-sync(store, router);
 router.beforeEach((to, from, next, ...rest) => {
   const meta = to.meta || {};
   const user = storage.getUser();
@@ -35,6 +30,8 @@ router.beforeEach((to, from, next, ...rest) => {
   }
   next();
 });
+window.$router = router;
+sync(store, router);
 new Vue({
   router,
   store,

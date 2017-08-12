@@ -19,16 +19,16 @@ class Controller
 
     public $response;
 
-    public $body  = [];
+    protected $payload  = [];
 
     public function __construct(Request $req, Response $res)
     {
         $this->request = $req;
         $this->response = $res;
-        $this->body = $this->request->getParsedBody();
+        $this->payload = $this->request->getParsedBody();
     }
 
-    public function body($key, $default = null) {
-        return $this->body[$key] ?? $default;
+    public function body($key = null, $default = null) {
+        return $this->payload[$key] ?? $default;
     }
 }

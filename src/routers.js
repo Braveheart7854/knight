@@ -23,9 +23,9 @@ export default [
     component: require('./components/admin/index.vue'),
     children: [
       {
-        path: 'home',
+        path: 'dashboard',
         meta: { auth: true },
-        component: require('./components/admin/main.vue')
+        component: require('./components/admin/dashboard.vue')
       },
       {
         path: 'create',

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Editor v-bind:article="article" name="article"></Editor>
+    <Editor :article="article" name="article"></Editor>
   </div>
 </template>
 <style lang='sass'>
@@ -11,8 +11,8 @@
     data () {
       return {
         article: {
-          permission: 1,
-          category: '请选择分类'
+          permission: "1",
+          category: ['0'],
         }
       }
     },
@@ -22,6 +22,7 @@
       const state = this.$store.state;
       const article = state.admin.article;
       this.article = article;
+      console.log('*****', this.article);
     },
     components: {
       Editor
