@@ -1,40 +1,45 @@
 <template>
-  <div class="main-wrapper">
+  <div>
     <div class="editor">
       <div class="row">
-        <quillEditor id="editor" v-model="content" :options="editorOptions"></quillEditor>
+        <quillEditor id="editor" v-model="art.content" :options="editorOptions"/>
         <div class="editor-option">
-          <form novalidate @submit.stop.prevent="submit">
-            <mu-text-field placeholder="title" v-model="title"/>
-            <mu-select-field v-model="cateId" multiple label="选择多个"/>
-              <div v-for="cate in category" v-bind:key="cate.id">
-                <mu-menu-item :value="cate.id" :title="cate.name"/>
-              </div>
-            </mu-select-field>
-            <div>
-              <mu-radio v-model="article.permission" nativeValue="1" label="public"/>
-              <mu-radio v-model="article.permission" nativeValue="2" label="hidden"/>
-              <mu-radio v-model="article.permission" nativeValue="3" label="private"/>
-            </div>
-            <mu-raised-button label="submit" class="demo-raised-button" @click="commit"/>
-          </form>
+          <mu-date-picker hintText="publish at"/>
+          <mu-text-field hintText="title" v-model="art.title"/>
+          <mu-select-field v-model="art.cateId" :labelFocusClass="['label-foucs']" label="category">
+            <mu-menu-item v-for="(cate,index) in category" :key="index" :value="cate.id" :title="cate.name" />
+          </mu-select-field>
+          <br/>
+          <div class="permission">
+            <mu-radio label="public" name="permission" :nativeValue="permission" v-model="art.permission" />
+            <mu-radio label="hidden" name="permission" :nativeValue="permission" v-model="art.permission" />
+            <mu-radio label="private" name="permission" :nativeValue="permission" v-model="art.permission" />
+          </div>
+          <br/>
+          <mu-raised-button label="submit" @click="commit"/>
         </div>
       </div>
     </div>
-    <mu-snackbar v-if="snackbar.show" :message="snackbar.message" action="close" @actionClick="hideSnackbar" @close="hideSnackbar"/>
+    <mu-snackbar v-if="snackbar.show" :message="snackbar.message" 
+      action="close" @actionClick="hideSnackbar" @close="hideSnackbar">
+    </mu-snackbar>  
   </div>
 </template>
 <style lang='sass'>
   @import './editor.scss';
   @import '../admin/main.css';
 </style>
+<style>
+  .permission {
+    margin-top: 1em;
+  }
+</style>
+
 <script>
-import hljs from 'highlightjs';
 import {quillEditor} from 'vue-quill-editor';
 hljs.configure({
-  tabReplace: '    ', // 4 spaces
-  classPrefix: ''     // don't append class prefix
-                      // … other options aren't changed
+  tabReplace: '    ',
+  classPrefix: ''
 });
 hljs.initHighlighting();
 export default {
@@ -44,11 +49,12 @@ export default {
       required: false,
       default: function () {
         return {
-          permission: 1,
+          permission: "1",
           tags: [],
           title: '',
           content: '',
-          cateId: 1
+          cateId: 1,
+          created: 0,
         };
       },
     }
@@ -57,6 +63,8 @@ export default {
     return {
       snackbar: {
         message: '',
+        show: false,
+        snackTimer: 3000,
       },
       editor: null,
       category: [],
@@ -64,7 +72,7 @@ export default {
       title: '',
       tags: [],
       cateId: 1,
-      permission: 1,
+      permission: "1",
       editorOptions: {
         modules: {
           syntax: {
@@ -86,57 +94,58 @@ export default {
   },
   async beforeMount() {
     await this.$store.dispatch('category');
+    console.log('+++++++++++++++++', this);
     this.category = this.$store.getters.getCategory;
-    this.content = this.article.content;
-    this.title = this.article.title || '';
-    this.cateId = this.article.cateId;
-    this.tags = this.article.tags;
-    this.permission = this.article.permission;
   },
   methods: {
     tag() {
 
     },
-    cate(cateId) {
-      this.article.cateId = cateId;
-    },
     async commit() {
       const id = this.$route.params.id;
-      this.article.content = this.content;
-      if (!this.title) {
+      const article = Object.assign({}, this.art);
+      if (!article.title) {
         const message = 'title required~!';
         return this.tip(message);
       }
-      if (!this.content) {
+      if (!article.content) {
         return this.tip('content can not be empty~!');
       }
       const data = {
-        title: this.title,
-        cateId: this.cateId,
-        permission: this.permission,
-        content: this.content,
-        tags: this.tags,
+        title: article.title,
+        cateId: article.cateId,
+        permission: article.permission,
+        content: article.content,
+        tags: article.tags,
       }
+      console.log('$$$$$$$$', data);
       if (!id) {
+        await this.$store.dispatch('addArticle', data);
       } else {
         data.id = id;
-        await his.$store.dispatch('editArticle', data);
+        await this.$store.dispatch('editArticle', data);
       }
       this.tip('success~!');
     },
     tip(message) {
-      this.$refs.snackbar.open();
-    },
-    showSnackbar () {
       this.snackbar.show = true
       this.snackbar.message = message;
-      if (this.snackTimer) clearTimeout(this.snackTimer)
-      this.snackTimer = setTimeout(() => { this.snackbar = false }, 2000)
+      if (this.snackbar.snackTimer) {
+        clearTimeout(this.snackbar.snackTimer);
+      }
+      this.snackbar.snackTimer = setTimeout(() => { this.snackbar.show = false }, 2000);
     },
     hideSnackbar () {
       this.snackbar = false
       if (this.snackTimer) clearTimeout(this.snackTimer)
     },
+  },
+  computed: {
+    art: function() {
+      const data = Object.assign({}, this.article);
+      data.permission = String(data.permission);
+      return data;
+    }
   },
   components: {
     quillEditor

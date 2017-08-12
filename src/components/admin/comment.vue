@@ -1,22 +1,22 @@
 <template>
-  <div class="main-wrapper">
+  <div>
       <mu-icon-button  icon="filter_list" />
       <mu-icon-button icon="search"/>
-      <mu-table >
+      <mu-table fixedHeader enableSelectAll multiSelectable selectable showCheckbox>
         <mu-thead slot="header">
           <mu-tr>
-            <mu-th>id</mu-th>
+            <mu-th>ID</mu-th>
             <mu-th><span>username</span></mu-th>
             <mu-th><span>email</span></mu-th>
             <mu-th><span>site</span></mu-th>
             <mu-th>
-             <mu-icon-button icon="message"/>
+              <span>content</span>
             </mu-th>
             <mu-th><span>created</span></mu-th>
             <mu-th><span>action</span></mu-th>
           </mu-tr>
         </mu-thead>
-        <mu-body>
+        <mu-tbody>
           <mu-tr v-for="row in list" :key="row.id" :mu-item="{id:row.id}">
             <mu-td> {{row.id}} </mu-td>
             <mu-td> {{row.username}}</mu-td>
@@ -29,7 +29,7 @@
                <span @click="del(row.id)">&nbsp; delete</span></div>
             </mu-td>
           </mu-tr>
-        </mu-body>
+        </mu-tbody>
       </mu-table>
   </div>
 </template>

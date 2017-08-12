@@ -1,8 +1,7 @@
 .main-wrapper {
     position: relative;
-    margin-left: 10%;
-    /* min-height: 768px; */
-    padding: 1em;
+    margin-left: 256px;
+    min-height: 80%; 
 }
 
 hr {

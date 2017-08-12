@@ -13,13 +13,13 @@ import Cellar from '../util/storage';
 Vue.use(Vuex);
 const $storage = new Cellar();
 const auth = store => {
-  // 当 store 初始化后调用
   store.subscribe((mutation, state) => {
-    console.log('-------', mutation, state, store);
+    console.log('>>>>>', mutation.payload.code == 10401);
     if (
-      mutation.type === 'FETCH_FAILURE' &&
-      mutation.payload.certification === false
+      // mutation.type === 'FETCH_FAILURE' &&
+      mutation.payload.code == 10401
     ) {
+      console.log('%%%%%%', store);
       $storage.clear();
       state.user.auth = null;
     }
