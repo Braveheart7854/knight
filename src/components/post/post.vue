@@ -2,12 +2,12 @@
   <div>
     <div class="content">
       <mu-card>
-        <mu-card-header @click="detail(article.id)" :title="article.title"
-          :subTitle="new Date(article.created * 1000).toLocaleDateString()">
+        <mu-card-header @click="detail(result.id)" :title="result.title"
+          :subTitle="new Date(result.created * 1000).toLocaleDateString()">
           <mu-avatar src="../../assets/avatar.png" slot="avatar"/>
         </mu-card-header>
         <mu-card-text>
-          <div v-html="article.content"></div>
+          <div v-html="result.content"></div>
         </mu-card-text>
       </mu-card>
     </div>
@@ -38,6 +38,8 @@
   </div>
 </template>
 <script>
+  import marked from 'marked';
+
   export default {
     props: {
       article: {
@@ -73,6 +75,9 @@
         };
       }
     },
+    mounted() {
+      console.log(this.article);
+    },
     methods: {
       async submit() {
         const username = this.username;
@@ -99,6 +104,17 @@
       },
       snackbar() {
         this.$refs.snackbar.open();
+      }
+    },
+    computed: {
+      result: function () {
+        console.log('nimabi');
+        const data = Object.assign({}, this.article);
+        // console.log('//////', simplemde.value);
+        data.content =  marked(data.content);
+        console.log('xxxxx-----====>>>', data);
+
+        return data;
       }
     }
   }

@@ -4,7 +4,6 @@
       <!-- <quillEditor id="editor" v-model="art.content" :options="editorOptions"/> -->
       <markdownEditor :configs="configs" ref="editor" v-model="art.content"></markdownEditor>
       <div class="editor-option">
-        <mu-date-picker hintText="publish at"  v-model="art.created" autoOk format="YYYY-MM-DD"/>
         <mu-text-field hintText="title" v-model="art.title"/>
         <mu-select-field v-model="art.cateId" :labelFocusClass="['label-foucs']" label="category">
           <mu-menu-item v-for="(cate,index) in category" :key="index" :value="cate.id" :title="cate.name" />
@@ -42,6 +41,7 @@
 </style>
 <script>
 import { markdownEditor } from 'vue-simplemde';
+import SimpleMDE from 'simplemde';
 export default {
   props: {
     article: {
@@ -84,9 +84,11 @@ export default {
       }
     }
   },
-  async beforeMount() {
+  async mounted() {
     await this.$store.dispatch('category');
     this.category = this.$store.getters.getCategory;
+    console.log('>>>>>>', this.article);
+    console.log();
   },
   methods: {
     tag() {
@@ -102,12 +104,12 @@ export default {
       if (!article.content) {
         return this.tip('content can not be empty~!');
       }
-      const html = this.simplemde.markdown(article.content)
+      
       const data = {
         title: article.title,
         cateId: article.cateId,
         permission: article.permission,
-        content: html,
+        content: article.content,
         tags: article.tags,
       }
       console.log('$$$$$$$$', data);
@@ -135,8 +137,10 @@ export default {
   },
   computed: {
     art: function() {
+      console.log('ffffuck')
       const data = Object.assign({}, this.article);
       data.permission = String(data.permission);
+
       return data;
     },
     simplemde (){
