@@ -35,7 +35,7 @@ return [
         'expired' => 3600,
         'key' => 'test',
     ],
-    'courser' => [
+    'eclogue' => [
         'loader' => [
             'Photo' => 'Knight\Model\Photo',
         ]

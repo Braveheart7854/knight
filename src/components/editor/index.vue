@@ -1,23 +1,22 @@
 <template>
   <div>
     <div class="editor">
-      <div class="row">
-        <quillEditor id="editor" v-model="art.content" :options="editorOptions"/>
-        <div class="editor-option">
-          <mu-date-picker hintText="publish at"/>
-          <mu-text-field hintText="title" v-model="art.title"/>
-          <mu-select-field v-model="art.cateId" :labelFocusClass="['label-foucs']" label="category">
-            <mu-menu-item v-for="(cate,index) in category" :key="index" :value="cate.id" :title="cate.name" />
-          </mu-select-field>
-          <br/>
-          <div class="permission">
-            <mu-radio label="public" name="permission" :nativeValue="permission" v-model="art.permission" />
-            <mu-radio label="hidden" name="permission" :nativeValue="permission" v-model="art.permission" />
-            <mu-radio label="private" name="permission" :nativeValue="permission" v-model="art.permission" />
-          </div>
-          <br/>
-          <mu-raised-button label="submit" @click="commit"/>
+      <!-- <quillEditor id="editor" v-model="art.content" :options="editorOptions"/> -->
+      <markdownEditor :configs="configs" ref="editor" v-model="art.content"></markdownEditor>
+      <div class="editor-option">
+        <mu-date-picker hintText="publish at"  v-model="art.created" autoOk format="YYYY-MM-DD"/>
+        <mu-text-field hintText="title" v-model="art.title"/>
+        <mu-select-field v-model="art.cateId" :labelFocusClass="['label-foucs']" label="category">
+          <mu-menu-item v-for="(cate,index) in category" :key="index" :value="cate.id" :title="cate.name" />
+        </mu-select-field>
+        <br/>
+        <div class="permission">
+          <mu-radio label="public" name="permission" :nativeValue="permission" v-model="art.permission" />
+          <mu-radio label="hidden" name="permission" :nativeValue="permission" v-model="art.permission" />
+          <mu-radio label="private" name="permission" :nativeValue="permission" v-model="art.permission" />
         </div>
+        <br/>
+        <mu-raised-button label="submit" @click="commit"/>
       </div>
     </div>
     <mu-snackbar v-if="snackbar.show" :message="snackbar.message" 
@@ -33,15 +32,16 @@
   .permission {
     margin-top: 1em;
   }
+  .markdown-editor {
+    width: 65%;
+     display: inline-block;
+  }
+  .markdown-editor .CodeMirror, .markdown-editor .CodeMirror-scroll {
+    min-height: 40em;
+  }
 </style>
-
 <script>
-import {quillEditor} from 'vue-quill-editor';
-hljs.configure({
-  tabReplace: '    ',
-  classPrefix: ''
-});
-hljs.initHighlighting();
+import { markdownEditor } from 'vue-simplemde';
 export default {
   props: {
     article: {
@@ -54,7 +54,7 @@ export default {
           title: '',
           content: '',
           cateId: 1,
-          created: 0,
+          created: new Date().toLocaleDateString(),
         };
       },
     }
@@ -73,28 +73,19 @@ export default {
       tags: [],
       cateId: 1,
       permission: "1",
-      editorOptions: {
-        modules: {
-          syntax: {
-            highlight: text => hljs.highlightAuto(text).value
-          },              // Include syntax module
-          toolbar: [
-            ['bold', 'italic', 'strike'],
-            ['blockquote', 'code-block', 'image'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'indent': '-1' }, { 'indent': '+1' }],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'font': [] }],
-            [{ 'align': [] }],
-            ['clean']
-          ]
-        },
-      },
+      configs: {
+        autosave: true,
+        status: true,
+        initialValue: '###',
+        renderingConfig: {
+          codeSyntaxHighlighting: true,
+          highlightingTheme: 'github'
+        }
+      }
     }
   },
   async beforeMount() {
     await this.$store.dispatch('category');
-    console.log('+++++++++++++++++', this);
     this.category = this.$store.getters.getCategory;
   },
   methods: {
@@ -111,11 +102,12 @@ export default {
       if (!article.content) {
         return this.tip('content can not be empty~!');
       }
+      const html = this.simplemde.markdown(article.content)
       const data = {
         title: article.title,
         cateId: article.cateId,
         permission: article.permission,
-        content: article.content,
+        content: html,
         tags: article.tags,
       }
       console.log('$$$$$$$$', data);
@@ -136,8 +128,9 @@ export default {
       this.snackbar.snackTimer = setTimeout(() => { this.snackbar.show = false }, 2000);
     },
     hideSnackbar () {
-      this.snackbar = false
-      if (this.snackTimer) clearTimeout(this.snackTimer)
+      this.snackbar.show = false;
+      this.snackbar.message = '';
+      if (this.snackbar.snackTimer) clearTimeout(this.snackbar.snackTimer)
     },
   },
   computed: {
@@ -145,10 +138,15 @@ export default {
       const data = Object.assign({}, this.article);
       data.permission = String(data.permission);
       return data;
+    },
+    simplemde (){
+      console.log('---|---', this.$refs);
+      return this.$refs.editor.simplemde
     }
   },
   components: {
-    quillEditor
+    // quillEditor
+    markdownEditor
   },
 }
 </script>
